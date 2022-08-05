@@ -44,7 +44,7 @@ const Tabs = () => (
       options={{
         tabBarIcon: ({color, size}) => (
           <Icon
-            name={color === '#8E8E8F' ? 'medal-outline' : 'medal'}
+            name={color === '#8E8E8F' ? 'heart-outline' : 'heart'}
             color={'black'}
             size={size}
           />
@@ -58,9 +58,7 @@ const Tabs = () => (
       options={{
         tabBarIcon: ({color, size}) => (
           <Icon
-            name={
-              color === '#8E8E8F' ? 'person-circle-outline' : 'person-circle'
-            }
+            name={color === '#8E8E8F' ? 'cash-outline' : 'cash'}
             color={'black'}
             size={size}
           />

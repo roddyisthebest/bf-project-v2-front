@@ -9,7 +9,9 @@ const SnsLogin = () => {
   const dispatch = useDispatch();
 
   const IJECTED_JAVASCRIPT = `
+  
   const element = document.getElementsByTagName("pre");
+  
   if(element){
     window.ReactNativeWebView.postMessage(element[0].innerHTML);
     const body = document.getElementsByTagName("body");
@@ -21,7 +23,6 @@ const SnsLogin = () => {
   const [refreshToken, setRefreshToken] = useState<string>();
   const onWebViewMessage = (e: any) => {
     const jsonData = JSON.parse(e.nativeEvent.data);
-    console.log(jsonData.payload);
     if (
       jsonData.payload.token.access_token &&
       jsonData.payload.token.refresh_token
@@ -50,13 +51,14 @@ const SnsLogin = () => {
       <WebView
         userAgent="Chrome"
         source={{
-          uri: 'https://kauth.kakao.com/oauth/authorize?client_id=8e90fd53b25935044191bd3ebd2bf726&redirect_uri=http://localhost:3000/user/auth/kakao/callback&response_type=code',
+          uri: 'https://kauth.kakao.com/oauth/authorize?client_id=8e90fd53b25935044191bd3ebd2bf726&redirect_uri=http://192.168.123.105:3000/user/auth/kakao/callback&response_type=code',
         }}
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}
         javaScriptEnabled={true}
         injectedJavaScript={IJECTED_JAVASCRIPT}
         onMessage={onWebViewMessage}
+        originWhitelist={['*']}
       />
     </View>
   );
