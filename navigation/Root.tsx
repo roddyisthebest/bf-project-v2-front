@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import {useSelector} from 'react-redux';
 import {initialStateProps} from '../store/slice';
+import Auth from './Auth';
+import Tabs from './Tabs';
 
 const LoadingContainer = styled.View`
   flex: 1;
@@ -19,6 +21,13 @@ const Nav = createNativeStackNavigator();
 
 const Root = () => {
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   const {isLoggedIn} = useSelector((state: initialStateProps) => ({
     isLoggedIn: state.isLoggedIn,
   }));
@@ -35,7 +44,6 @@ const Root = () => {
       {isLoggedIn ? (
         <>
           <Nav.Screen name="Tabs" component={Tabs} />
-          <Nav.Screen name="Stacks" component={Stack} />
         </>
       ) : (
         <Nav.Screen name="Auth" component={Auth} />
