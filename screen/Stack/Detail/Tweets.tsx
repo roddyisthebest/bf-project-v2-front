@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, ScrollView} from 'react-native';
+import Tweet from '../../../components/Tweet';
 const Tweets = () => {
   const [clicked, setClicked] = useState<boolean>(false);
 
@@ -10,7 +11,13 @@ const Tweets = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Text>Detail - {clicked ? 'fetch' : 'not fetch'}</Text>
+      <ScrollView>
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+      </ScrollView>
     </View>
   );
 };

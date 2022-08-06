@@ -55,6 +55,7 @@ const Info = styled.View`
 const Name = styled.Text`
   font-size: 35px;
   font-weight: 800;
+  color: black;
 `;
 
 const SubColumn = styled.View`
@@ -69,7 +70,6 @@ const SubText = styled.Text`
 `;
 
 const TabWrapper = styled.View`
-  padding: 0 20px;
   flex: 1;
 `;
 
@@ -91,7 +91,9 @@ const Detail = ({route: {name}}: {route: {name: string}}) => {
           />
           <SetBtn>
             <Icon name="settings" color="black" size={20} />
-            <Text style={{fontWeight: '500', marginLeft: 5}}>설정</Text>
+            <Text style={{fontWeight: '500', marginLeft: 5, color: 'black'}}>
+              설정
+            </Text>
           </SetBtn>
         </Column>
         <Info>
@@ -104,9 +106,13 @@ const Detail = ({route: {name}}: {route: {name: string}}) => {
             <SubText> Joined March 2022</SubText>
           </SubColumn>
           <SubColumn>
-            <Text style={{fontWeight: '600', marginRight: 6}}>5</Text>
+            <Text style={{fontWeight: '600', marginRight: 6, color: 'black'}}>
+              5
+            </Text>
             <SubText style={{marginRight: 6}}>Following</SubText>
-            <Text style={{fontWeight: '600', marginRight: 6}}>5</Text>
+            <Text style={{fontWeight: '600', marginRight: 6, color: 'black'}}>
+              5
+            </Text>
             <SubText>Following</SubText>
           </SubColumn>
         </Info>
