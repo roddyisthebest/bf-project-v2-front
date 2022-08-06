@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Text} from 'react-native';
+import {Pressable, Text} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Penalty from './Penalty';
 import Pray from './Pray';
@@ -17,6 +17,7 @@ const UserBkg = styled.View`
 
 const UserContents = styled.View`
   /* transform: translateY(-${Dimensions.get('window').width / (4 * 2)}px); */
+  background-color: white;
   padding: 0 20px;
 `;
 
@@ -56,6 +57,7 @@ const Name = styled.Text`
   font-size: 35px;
   font-weight: 800;
   color: black;
+  margin-bottom: 5px;
 `;
 
 const SubColumn = styled.View`
@@ -69,15 +71,24 @@ const SubText = styled.Text`
   color: #687684;
 `;
 
-const TabWrapper = styled.View`
-  flex: 1;
-`;
-
 const Tab = createMaterialTopTabNavigator();
-const Detail = ({route: {name}}: {route: {name: string}}) => {
+const Detail = ({
+  navigation: {setOptions, goBack},
+}: {
+  navigation: {setOptions: Function; goBack: Function};
+}) => {
   useEffect(() => {
-    console.log(name);
-  }, [name]);
+    setOptions({
+      headerLeft: () => (
+        <Pressable
+          onPress={() => {
+            goBack();
+          }}>
+          <Icon name="arrow-back-outline" color="black" size={25} />
+        </Pressable>
+      ),
+    });
+  }, [setOptions, goBack]);
   return (
     <Container>
       <UserBkg style={{height: Dimensions.get('window').height / 7}} />
@@ -117,23 +128,22 @@ const Detail = ({route: {name}}: {route: {name: string}}) => {
           </SubColumn>
         </Info>
       </UserContents>
-      <TabWrapper>
-        <Tab.Navigator
-          screenOptions={{
-            tabBarIndicatorStyle: {
-              backgroundColor: '#10DDC2',
-            },
-            tabBarIndicatorContainerStyle: {
-              borderBottomWidth: 1,
-              borderBottomColor: '#CED5DC',
-            },
-          }}
-          initialRouteName="기도제목">
-          <Tab.Screen name="매일성경" component={Tweets} />
-          <Tab.Screen name="기도제목" component={Pray} />
-          <Tab.Screen name="벌금" component={Penalty} />
-        </Tab.Navigator>
-      </TabWrapper>
+
+      <Tab.Navigator
+        screenOptions={{
+          tabBarIndicatorStyle: {
+            backgroundColor: '#10DDC2',
+          },
+          tabBarIndicatorContainerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#CED5DC',
+          },
+        }}
+        initialRouteName="매일성경">
+        <Tab.Screen name="매일성경" component={Tweets} />
+        <Tab.Screen name="기도제목" component={Pray} />
+        <Tab.Screen name="벌금" component={Penalty} />
+      </Tab.Navigator>
     </Container>
   );
 };

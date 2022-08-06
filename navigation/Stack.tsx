@@ -1,6 +1,5 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Detail from '../screen/Stack/Detail';
 import Setting from '../screen/Stack/Setting';
 import Write from '../screen/Stack/Write';
 import Service from '../screen/Stack/Setting/Service';
@@ -18,12 +17,8 @@ const Stack = () => (
         fontWeight: '700',
       },
       contentStyle: {backgroundColor: 'white'},
+      presentation: 'transparentModal',
     }}>
-    <NativeStack.Screen
-      name="Detail"
-      component={Detail}
-      options={{title: '유저 세부정보'}}
-    />
     <NativeStack.Screen name="Setting" component={Setting} />
     <NativeStack.Screen name="Service" component={Service} />
     <NativeStack.Screen name="Profile" component={Profile} />

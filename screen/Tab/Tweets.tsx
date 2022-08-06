@@ -1,10 +1,18 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-
+import {View, ScrollView} from 'react-native';
+import Tweet from '../../components/Tweet';
 const Tweets = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Text>Tweets</Text>
+      <ScrollView>
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+        <Tweet />
+      </ScrollView>
     </View>
   );
 };

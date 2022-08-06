@@ -6,6 +6,17 @@ import {initialStateProps} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
 import Stack from './Stack';
+
+export type LoggedInParamList = {
+  Stacks: {
+    screen: string;
+    params: {idx: number};
+  };
+  Tabs: {
+    screen: string;
+    params: any;
+  };
+};
 const LoadingContainer = styled.View`
   flex: 1;
   align-items: center;
@@ -43,8 +54,8 @@ const Root = () => {
       }}>
       {isLoggedIn ? (
         <>
-          <Nav.Screen name="Stack" component={Stack} />
           <Nav.Screen name="Tabs" component={Tabs} />
+          <Nav.Screen name="Stack" component={Stack} />
         </>
       ) : (
         <Nav.Screen name="Auth" component={Auth} />

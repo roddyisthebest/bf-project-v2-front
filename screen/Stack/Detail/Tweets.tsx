@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Tweet from '../../../components/Tweet';
 const Tweets = () => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('data fetch');
+    console.log('tweet!');
     setClicked(true);
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      <ScrollView>
+    <>
+      <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
         <Tweet />
         <Tweet />
         <Tweet />
         <Tweet />
         <Tweet />
       </ScrollView>
-    </View>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import Tweets from '../screen/Tab/Tweets';
 import Pray from '../screen/Tab/Pray';
 import Penalty from '../screen/Tab/Penalty';
 import {Image, TouchableOpacity} from 'react-native';
+import Detail from '../screen/Stack/Detail';
 
 const Tab = createBottomTabNavigator();
 
@@ -96,6 +97,14 @@ const Tabs = () => (
             size={20}
           />
         ),
+      }}
+    />
+    <Tab.Screen
+      name="Detail"
+      component={Detail}
+      options={{
+        tabBarIcon: () => null,
+        tabBarButton: () => null,
       }}
     />
   </Tab.Navigator>

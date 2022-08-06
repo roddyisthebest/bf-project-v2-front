@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LoggedInParamList} from '../navigation/Root';
+
 const Container = styled.View`
   flex-direction: row;
   padding: 30px 0;
@@ -65,10 +68,15 @@ const Input = styled.TextInput`
 `;
 
 const Tweet = () => {
+  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+
   return (
     <Container>
       <Left>
-        <UserBtn>
+        <UserBtn
+          onPress={() => {
+            navigation.navigate('Tabs', {screen: 'Detail', params: {idx: 2}});
+          }}>
           <UserImg
             source={{
               uri: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
@@ -83,13 +91,13 @@ const Tweet = () => {
           <MainText>배성연</MainText>
           <SubText>@kakao · 4 hours ago</SubText>
         </Title>
-        {/* <Input
+        <Input
           multiline
           numberOfLines={10}
           value="wadadadadadadaa"
           editable={false}
           style={{textAlignVertical: 'top'}}
-        /> */}
+        />
         <TweetImgBtn>
           <TweetImg
             source={{
