@@ -10,7 +10,7 @@ const Pray = ({navigation}: {navigation: any}) => {
   }, [navigation, clicked]);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Text>Detail - Pray / {clicked ? 'data fetch' : 'non fetch'}</Text>
     </View>
   );

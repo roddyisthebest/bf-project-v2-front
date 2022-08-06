@@ -9,7 +9,7 @@ const Tweets = () => {
   }, []);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Text>Detail - {clicked ? 'fetch' : 'not fetch'}</Text>
     </View>
   );
