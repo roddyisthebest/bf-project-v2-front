@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {initialStateProps} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
-
+import Stack from './Stack';
 const LoadingContainer = styled.View`
   flex: 1;
   align-items: center;
@@ -43,6 +43,7 @@ const Root = () => {
       }}>
       {isLoggedIn ? (
         <>
+          <Nav.Screen name="Stack" component={Stack} />
           <Nav.Screen name="Tabs" component={Tabs} />
         </>
       ) : (

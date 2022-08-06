@@ -11,7 +11,7 @@ const TitleText = styled.Text`
   color: black;
   font-weight: 900;
   font-size: 27px;
-  margin: 50px 0;
+  margin: 35px 0 50px 0;
 `;
 
 const LoginBtn = styled.TouchableOpacity`

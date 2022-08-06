@@ -18,6 +18,7 @@ const Auth = () => (
       ),
       headerShadowVisible: false,
       contentStyle: {backgroundColor: 'white'},
+      headerTitleAlign: 'center',
     }}>
     <NativeStack.Screen name="Login" component={Login} />
     <NativeStack.Screen name="SnsLogin" component={SnsLogin} />
