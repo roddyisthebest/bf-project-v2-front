@@ -91,13 +91,13 @@ const Tweet = () => {
           <MainText>배성연</MainText>
           <SubText>@kakao · 4 hours ago</SubText>
         </Title>
-        <Input
+        {/* <Input
           multiline
           numberOfLines={10}
           value="wadadadadadadaa"
           editable={false}
           style={{textAlignVertical: 'top'}}
-        />
+        /> */}
         <TweetImgBtn>
           <TweetImg
             source={{

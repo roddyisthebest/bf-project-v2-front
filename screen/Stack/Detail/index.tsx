@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const Container = styled.View`
   flex: 1;
+  background-color: white;
 `;
 const UserBkg = styled.View`
   background-color: #d9d9d9;
@@ -17,8 +18,10 @@ const UserBkg = styled.View`
 
 const UserContents = styled.View`
   /* transform: translateY(-${Dimensions.get('window').width / (4 * 2)}px); */
-  background-color: white;
-  padding: 0 20px;
+  padding: 0 20px 20px 20px;
+  border-bottom-width: 1px;
+  border-color: #ced5dc;
+  margin-bottom: 20px;
 `;
 
 const Column = styled.View`
@@ -54,7 +57,7 @@ const Info = styled.View`
 `;
 
 const Name = styled.Text`
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 800;
   color: black;
   margin-bottom: 5px;
@@ -69,6 +72,27 @@ const SubText = styled.Text`
   font-size: 15px;
   font-weight: 400;
   color: #687684;
+`;
+
+const MenuTitle = styled.Text`
+  font-size: 23px;
+  font-weight: 900;
+  color: black;
+  padding: 0 20px;
+  margin-bottom: 5px;
+`;
+
+const MenuColumn = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+`;
+
+const MenuText = styled.Text`
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 10px;
+  color: black;
 `;
 
 const Tab = createMaterialTopTabNavigator();
@@ -92,7 +116,6 @@ const Detail = ({
   return (
     <Container>
       <UserBkg style={{height: Dimensions.get('window').height / 7}} />
-
       <UserContents>
         <Column>
           <Img
@@ -128,8 +151,20 @@ const Detail = ({
           </SubColumn>
         </Info>
       </UserContents>
-
-      <Tab.Navigator
+      <MenuTitle>나의 이력</MenuTitle>
+      <MenuColumn>
+        <Icon name="book-outline" color="black" size={25} />
+        <MenuText>매일 성경</MenuText>
+      </MenuColumn>
+      <MenuColumn>
+        <Icon name="heart-outline" color="black" size={25} />
+        <MenuText>기도 제목</MenuText>
+      </MenuColumn>
+      <MenuColumn>
+        <Icon name="cash-outline" color="black" size={25} />
+        <MenuText>벌금</MenuText>
+      </MenuColumn>
+      {/* <Tab.Navigator
         screenOptions={{
           tabBarIndicatorStyle: {
             backgroundColor: '#10DDC2',
@@ -143,7 +178,7 @@ const Detail = ({
         <Tab.Screen name="매일성경" component={Tweets} />
         <Tab.Screen name="기도제목" component={Pray} />
         <Tab.Screen name="벌금" component={Penalty} />
-      </Tab.Navigator>
+      </Tab.Navigator> */}
     </Container>
   );
 };
