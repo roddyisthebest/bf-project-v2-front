@@ -1,9 +1,5 @@
 import React, {useEffect} from 'react';
 import {Pressable, Text} from 'react-native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Penalty from './Penalty';
-import Pray from './Pray';
-import Tweets from './Tweets';
 import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -95,11 +91,10 @@ const MenuText = styled.Text`
   color: black;
 `;
 
-const Tab = createMaterialTopTabNavigator();
 const Detail = ({
-  navigation: {setOptions, goBack},
+  navigation: {setOptions, goBack, navigate},
 }: {
-  navigation: {setOptions: Function; goBack: Function};
+  navigation: {setOptions: Function; goBack: Function; navigate: Function};
 }) => {
   useEffect(() => {
     setOptions({
@@ -152,15 +147,24 @@ const Detail = ({
         </Info>
       </UserContents>
       <MenuTitle>Records</MenuTitle>
-      <MenuColumn>
+      <MenuColumn
+        onPress={() => {
+          navigate('Stack', {screen: 'Tweets', params: {idx: 1}});
+        }}>
         <Icon name="book-outline" color="black" size={25} />
         <MenuText>매일 성경</MenuText>
       </MenuColumn>
-      <MenuColumn>
+      <MenuColumn
+        onPress={() => {
+          navigate('Stack', {screen: 'Pray', params: {idx: 1}});
+        }}>
         <Icon name="heart-outline" color="black" size={25} />
         <MenuText>기도 제목</MenuText>
       </MenuColumn>
-      <MenuColumn>
+      <MenuColumn
+        onPress={() => {
+          navigate('Stack', {screen: 'Penalty', params: {idx: 1}});
+        }}>
         <Icon name="cash-outline" color="black" size={25} />
         <MenuText>벌금</MenuText>
       </MenuColumn>
