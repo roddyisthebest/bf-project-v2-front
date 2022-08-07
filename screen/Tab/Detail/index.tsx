@@ -75,11 +75,11 @@ const SubText = styled.Text`
 `;
 
 const MenuTitle = styled.Text`
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 900;
   color: black;
   padding: 0 20px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 `;
 
 const MenuColumn = styled.TouchableOpacity`
@@ -151,7 +151,7 @@ const Detail = ({
           </SubColumn>
         </Info>
       </UserContents>
-      <MenuTitle>나의 이력</MenuTitle>
+      <MenuTitle>Records</MenuTitle>
       <MenuColumn>
         <Icon name="book-outline" color="black" size={25} />
         <MenuText>매일 성경</MenuText>

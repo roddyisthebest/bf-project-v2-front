@@ -6,7 +6,7 @@ import Tweets from '../screen/Tab/Tweets';
 import Pray from '../screen/Tab/Pray';
 import Penalty from '../screen/Tab/Penalty';
 import {Image, TouchableOpacity} from 'react-native';
-import Detail from '../screen/Stack/Detail';
+import Detail from '../screen/Tab/Detail';
 
 const Tab = createBottomTabNavigator();
 
