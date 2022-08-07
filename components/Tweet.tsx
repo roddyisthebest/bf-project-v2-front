@@ -6,8 +6,7 @@ import {LoggedInParamList} from '../navigation/Root';
 const Container = styled.View`
   flex-direction: row;
   padding: 30px 0;
-  border-bottom-color: #ced5dc;
-  border-bottom-width: 1px;
+
   padding: 30px 20px;
 `;
 
