@@ -13,7 +13,7 @@ const Tweets = () => {
         oauth: 'KAKAO',
       },
       content: 'hello',
-      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ const Tweets = () => {
         img: 'https://k.kakaocdn.net/dn/iO4QU/btruArCoCYq/8nu5Fi1KlanudmlTO0xg3K/img_640x640.jpg',
         oauth: 'KAKAO',
       },
-      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
       content: '',
     },
     {
@@ -34,7 +34,7 @@ const Tweets = () => {
         img: 'https://k.kakaocdn.net/dn/bhJefA/btrhc7jhuuY/VM39uBdT2EjLMJD1WUKmv0/img_640x640.jpg',
         oauth: 'KAKAO',
       },
-      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
       content: '',
     },
     {
@@ -46,7 +46,7 @@ const Tweets = () => {
         oauth: 'KAKAO',
       },
       content: '',
-      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
     },
   ]);
   const deleteTweet = useCallback((id: number) => {

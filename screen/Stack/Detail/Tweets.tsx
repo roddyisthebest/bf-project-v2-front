@@ -1,15 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, SafeAreaView, View} from 'react-native';
 import Tweet from '../../../components/Tweet';
 import {TweetType} from '../../../types/Tweet';
 import styled from 'styled-components/native';
 
-const Empty = styled.View`
-  height: 500px;
-`;
-
 const Tweets = () => {
-  const [clicked, setClicked] = useState<boolean>(false);
   const [data, setData] = useState<TweetType[]>([
     {
       id: 1,
@@ -60,11 +55,6 @@ const Tweets = () => {
     setData(tweet => tweet.filter(e => e.id !== id));
   }, []);
 
-  useEffect(() => {
-    console.log('tweet!');
-    setClicked(true);
-  }, []);
-
   const renderItem = ({item}: {item: TweetType}) => (
     <Tweet data={item} del={deleteTweet} />
   );
@@ -78,7 +68,6 @@ const Tweets = () => {
         )}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={<Empty />}
       />
     </SafeAreaView>
   );
