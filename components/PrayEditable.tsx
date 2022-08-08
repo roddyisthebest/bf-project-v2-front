@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {User} from '../types/User';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
+import {PrayEditType} from '../types/PrayEdit';
+import {Keyboard} from 'react-native';
+
 const Container = styled.View`
   padding: 20px 20px 15px 20px;
   background-color: white;
@@ -58,7 +61,71 @@ const Btn = styled.TouchableOpacity<{backgroundColor: string}>`
   justify-content: center;
 `;
 
+const CreateBtn = styled.TouchableOpacity`
+  width: 100px;
+  height: 30px;
+  background-color: #10ddc2;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 15px;
+`;
+const CreateText = styled.Text`
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+`;
+
+const CreateColumn = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
+`;
+
 const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
+  useEffect(() => {
+    data.Pray?.map(e => {
+      setPrays(prev => [...prev, {...e, edit: false}]);
+    });
+  }, [data]);
+
+  const [prays, setPrays] = useState<PrayEditType[]>([]);
+  useEffect(() => {
+    console.log(prays);
+  }, [prays]);
+  const deletePray = useCallback((id: number) => {
+    setPrays(prev => prev?.filter(pray => pray.id !== id));
+  }, []);
+
+  const addPray = useCallback(() => {
+    setPrays(prev => [
+      ...prev,
+      {
+        id: Math.floor(Math.random() * 100000000000) + 1 + 1,
+        content: '너가 과연?',
+        weekend: '2022-06-02',
+        edit: false,
+      },
+    ]);
+  }, []);
+
+  const editPray = useCallback(
+    (index: number, edit: boolean) => {
+      prays.splice(index, 1, {...prays[index], edit: !edit});
+      setPrays([...prays]);
+      // api 저장 로직
+    },
+    [prays],
+  );
+
+  const setContents = useCallback(
+    (index: number, content: string) => {
+      prays.splice(index, 1, {...prays[index], content});
+      setPrays([...prays]);
+    },
+    [prays],
+  );
+
   return (
     <Container>
       <UserBtn>
@@ -71,23 +138,61 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
         />
         <UserName>{data.name}</UserName>
       </UserBtn>
-      {data.Pray?.map(pray => (
+      {prays?.map((pray, index) => (
         <Content key={pray.id}>
-          <ContentText multiline editable={editable}>
+          <ContentText
+            multiline
+            returnKeyType="done"
+            editable={editable && pray.edit}
+            blurOnSubmit={true}
+            onChangeText={text => setContents(index, text)}
+            onSubmitEditing={() => {
+              Keyboard.dismiss();
+              editPray(index, pray.edit);
+            }}>
             {pray.content}
           </ContentText>
+
           {editable ? (
             <BtnColumn>
-              <Btn backgroundColor="#EBF6FD" style={{marginRight: 7}}>
-                <AwesomeIcon name="pen" color="#198CED" size={10} />
-              </Btn>
-              <Btn backgroundColor="#ffeaed">
+              {pray.edit ? (
+                <Btn
+                  backgroundColor="#EAFFEA"
+                  style={{marginRight: 7}}
+                  onPress={() => {
+                    editPray(index, pray.edit);
+                  }}>
+                  <Icon name="save" color="#43A54D" size={10} />
+                </Btn>
+              ) : (
+                <Btn
+                  backgroundColor="#EBF6FD"
+                  style={{marginRight: 7}}
+                  onPress={() => {
+                    editPray(index, pray.edit);
+                  }}>
+                  <AwesomeIcon name="pen" color="#198CED" size={10} />
+                </Btn>
+              )}
+
+              <Btn
+                backgroundColor="#ffeaed"
+                onPress={() => {
+                  deletePray(pray.id);
+                }}>
                 <Icon name="trash" color="red" size={10} />
               </Btn>
             </BtnColumn>
           ) : null}
         </Content>
       ))}
+      {editable ? (
+        <CreateColumn>
+          <CreateBtn onPress={addPray}>
+            <CreateText>추가하기</CreateText>
+          </CreateBtn>
+        </CreateColumn>
+      ) : null}
     </Container>
   );
 };
