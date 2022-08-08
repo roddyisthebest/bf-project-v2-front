@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
 import {TweetType} from '../types/Tweet';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import {initialStateProps} from '../store/slice';
@@ -67,21 +66,6 @@ const Input = styled.TextInput`
   height: 80px;
   margin-top: 10px;
   color: black;
-`;
-
-const Column = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 20px;
-  background-color: black;
-`;
-
-const DelBtn = styled.TouchableOpacity`
-  width: 50px;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
 `;
 
 const DelBtn2 = styled.TouchableOpacity`

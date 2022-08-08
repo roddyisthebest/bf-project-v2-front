@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {PrayType} from '../types/Pray';
 
 const Container = styled.View`
-  padding: 25px 20px;
+  padding: 25px 30px;
   background-color: white;
   flex-direction: row;
 `;
