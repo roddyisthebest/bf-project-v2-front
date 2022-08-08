@@ -4,7 +4,7 @@ import {User} from '../types/User';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 const Container = styled.View`
-  padding: 20px 20px 5px 20px;
+  padding: 20px 20px 15px 20px;
   background-color: white;
 `;
 
@@ -32,12 +32,12 @@ const Content = styled.View`
   border-radius: 30px;
   margin-bottom: 15px;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const ContentText = styled.TextInput`
   color: #141619;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 400;
   flex: 1;
   padding: 0;
@@ -45,7 +45,7 @@ const ContentText = styled.TextInput`
 
 const BtnColumn = styled.View`
   flex-direction: row;
-  align-items: center;
+  align-self: flex-start;
   margin-left: 10px;
 `;
 
