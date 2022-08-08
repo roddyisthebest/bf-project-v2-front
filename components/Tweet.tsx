@@ -68,7 +68,7 @@ const Input = styled.TextInput`
   color: black;
 `;
 
-const DelBtn2 = styled.TouchableOpacity`
+const DelBtn = styled.TouchableOpacity`
   padding: 5px 10px;
   background-color: #ffeaed;
   border-radius: 10px;
@@ -103,12 +103,12 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
           <MainText>{data.User.name}</MainText>
           <SubText>@kakao · 4 hours ago</SubText>
           {userInfo.id === data.id ? (
-            <DelBtn2
+            <DelBtn
               onPress={() => {
                 del(data.id);
               }}>
               <Text style={{fontSize: 10, color: 'red'}}>삭제하기</Text>
-            </DelBtn2>
+            </DelBtn>
           ) : null}
         </Title>
         {data.content.length !== 0 ? (
