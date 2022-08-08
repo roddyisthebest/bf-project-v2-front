@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {PrayType} from '../../../types/Pray';
 import PrayEditable from '../../../components/PrayEditable';
 import {User} from '../../../types/User';
-
+import moment from 'moment';
 const DateSection = styled.View`
   height: 70px;
   flex-direction: row;
@@ -86,6 +86,7 @@ const Reading = () => {
       ],
     },
   ]);
+  const [weekend, setWeekend] = useState<number>(0);
 
   const renderItem = ({item}: {item: User}) => (
     <PrayEditable data={item} editable={false} />
@@ -102,13 +103,19 @@ const Reading = () => {
         keyExtractor={item => item.id.toString()}
         ListHeaderComponent={
           <DateSection>
-            <DateBtn>
+            <DateBtn
+              onPress={() => {
+                setWeekend(prev => prev - 7);
+              }}>
               <Icon name="caret-back-outline" size={15} color="#10ddc2" />
             </DateBtn>
             <DateWrapper>
-              <Date>2022-06-29</Date>
+              <Date>{moment().day(weekend).format('YYYY-MM-DD')}</Date>
             </DateWrapper>
-            <DateBtn>
+            <DateBtn
+              onPress={() => {
+                setWeekend(prev => prev + 7);
+              }}>
               <Icon name="caret-forward-outline" size={15} color="#10ddc2" />
             </DateBtn>
           </DateSection>
