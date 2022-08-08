@@ -10,7 +10,7 @@ const {actions, reducer} = createSlice({
   name: 'redux',
   initialState: {
     userInfo: {
-      id: null,
+      id: 1,
       oauth: '',
       name: '',
       img: '',

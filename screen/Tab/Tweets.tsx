@@ -1,17 +1,64 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import Tweet from '../../components/Tweet';
+import {TweetType} from '../../types/Tweet';
 const Tweets = () => {
+  const [data, setData] = useState<TweetType[]>([
+    {
+      id: 1,
+      User: {
+        name: '배성연',
+        id: 1,
+        img: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
+        oauth: 'KAKAO',
+      },
+      content: 'hello',
+      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+    },
+    {
+      id: 2,
+      User: {
+        name: '김영원',
+        id: 2,
+        img: 'https://k.kakaocdn.net/dn/iO4QU/btruArCoCYq/8nu5Fi1KlanudmlTO0xg3K/img_640x640.jpg',
+        oauth: 'KAKAO',
+      },
+      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      content: '',
+    },
+    {
+      id: 3,
+      User: {
+        name: '고양석',
+        id: 3,
+        img: 'https://k.kakaocdn.net/dn/bhJefA/btrhc7jhuuY/VM39uBdT2EjLMJD1WUKmv0/img_640x640.jpg',
+        oauth: 'KAKAO',
+      },
+      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+      content: '',
+    },
+    {
+      id: 4,
+      User: {
+        name: '정다운',
+        id: 4,
+        img: 'https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/242662512_441381613958947_6972902439521450150_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=107&_nc_ohc=68yMHE5on2kAX8rkOmS&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AT_BWsltT39e3y8bUQEG5OELVMp80fLOYccKxq1rE1eQ-g&oe=62F5D365&_nc_sid=8fd12b',
+        oauth: 'KAKAO',
+      },
+      content: '',
+      img: 'http://api.bf-church.click/img/tweet-img/0E99F7A6-8F02-4C6A-921E-DD88342299921659885163144.jpeg',
+    },
+  ]);
+  const deleteTweet = useCallback((id: number) => {
+    setData(tweet => tweet.filter(e => e.id !== id));
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
+        {data.map((e, index) => (
+          <Tweet data={e} del={deleteTweet} key={index} />
+        ))}
       </ScrollView>
     </View>
   );

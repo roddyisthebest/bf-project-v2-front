@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
+import {TweetType} from '../types/Tweet';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Text} from 'react-native';
+import {useSelector} from 'react-redux';
+import {initialStateProps} from '../store/slice';
 
 const Container = styled.View`
   flex-direction: row;
-  padding: 30px 0;
-
-  padding: 30px 20px;
+  padding: 40px 20px 0 20px;
 `;
 
 const Left = styled.View`
@@ -38,7 +41,6 @@ const Title = styled.View`
 const MainText = styled.Text`
   font-size: 20px;
   font-weight: 800;
-  margin-right: 7.5px;
   color: black;
 `;
 
@@ -46,6 +48,7 @@ const SubText = styled.Text`
   font-size: 12px;
   font-weight: 500;
   color: #687684;
+  margin: 0 7.5px;
 `;
 
 const TweetImgBtn = styled.TouchableOpacity`
@@ -54,7 +57,7 @@ const TweetImgBtn = styled.TouchableOpacity`
 
 const TweetImg = styled.ImageBackground`
   flex: 1;
-  height: 250px;
+  height: 280px;
 `;
 
 const Input = styled.TextInput`
@@ -66,44 +69,82 @@ const Input = styled.TextInput`
   color: black;
 `;
 
-const Tweet = () => {
-  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+const Column = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+  background-color: black;
+`;
 
+const DelBtn = styled.TouchableOpacity`
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DelBtn2 = styled.TouchableOpacity`
+  padding: 5px 10px;
+  background-color: #ffeaed;
+  border-radius: 10px;
+`;
+
+const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
+  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+  const {userInfo} = useSelector((state: initialStateProps) => ({
+    userInfo: state.userInfo,
+  }));
   return (
-    <Container>
+    <Container style={{minHeight: data.content.length !== 0 ? 510 : 420}}>
       <Left>
         <UserBtn
           onPress={() => {
-            navigation.navigate('Tabs', {screen: 'Detail', params: {idx: 2}});
+            navigation.navigate('Tabs', {
+              screen: 'Detail',
+              params: {id: data.User.id},
+            });
           }}>
           <UserImg
             source={{
-              uri: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
+              uri: data.User.img,
             }}
-            resizeMode="contain"
+            resizeMode="cover"
             borderRadius={50}
           />
         </UserBtn>
       </Left>
       <Right>
         <Title>
-          <MainText>배성연</MainText>
+          <MainText>{data.User.name}</MainText>
           <SubText>@kakao · 4 hours ago</SubText>
+          {userInfo.id === data.id ? (
+            <DelBtn2
+              onPress={() => {
+                del(data.id);
+              }}>
+              <Text style={{fontSize: 10, color: 'red'}}>삭제하기</Text>
+            </DelBtn2>
+          ) : null}
         </Title>
-        {/* <Input
-          multiline
-          numberOfLines={10}
-          value="wadadadadadadaa"
-          editable={false}
-          style={{textAlignVertical: 'top'}}
-        /> */}
+        {data.content.length !== 0 ? (
+          <Input
+            multiline
+            numberOfLines={10}
+            value={data.content}
+            editable={false}
+            style={{textAlignVertical: 'top'}}
+          />
+        ) : null}
+
         <TweetImgBtn>
           <TweetImg
             source={{
-              uri: 'https://media.triple.guide/triple-cms/c_limit,f_auto,h_1024,w_1024/3d281f7d-6b44-4550-ab20-856a1a8e0fc1.jpeg',
+              uri: data.img,
             }}
             resizeMode="cover"
             borderRadius={30}
+            defaultSource={require('../assets/img/loading.png')}
           />
         </TweetImgBtn>
       </Right>
