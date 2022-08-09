@@ -17,13 +17,13 @@ const UserBtn = styled.TouchableOpacity`
   align-items: center;
 `;
 const UserImg = styled.ImageBackground`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   margin-right: 15px;
 `;
 
 const UserName = styled.Text`
-  font-size: 30px;
+  font-size: 22.5px;
   font-weight: 800;
   color: black;
 `;

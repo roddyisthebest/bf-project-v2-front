@@ -15,16 +15,6 @@ const DateSection = styled.View`
   border-bottom-width: 1px;
 `;
 
-const DateBtn = styled.TouchableOpacity`
-  width: 30px;
-  height: 30px;
-  border-width: 1px;
-  border-color: #10ddc2;
-  border-radius: 50px;
-  align-items: center;
-  justify-content: center;
-`;
-
 const DateWrapper = styled.View`
   width: 100px;
   height: 30px;
@@ -63,6 +53,7 @@ const Creating = () => {
           weekend: '2022-06-05',
         },
       ],
+      payed: false,
     },
     {
       name: '배성연',
@@ -84,6 +75,7 @@ const Creating = () => {
           weekend: '2022-06-05',
         },
       ],
+      payed: false,
     },
   ]);
 

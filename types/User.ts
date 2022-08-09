@@ -6,4 +6,5 @@ export type User = {
   name: string;
   img: string;
   Pray: PrayType[] | null;
+  payed: boolean;
 };
