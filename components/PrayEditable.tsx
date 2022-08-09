@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import {PrayEditType} from '../types/PrayEdit';
 import {Keyboard} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LoggedInParamList} from '../navigation/Root';
 
 const Container = styled.View`
   padding: 20px 20px 15px 20px;
@@ -83,6 +85,8 @@ const CreateColumn = styled.View`
 `;
 
 const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
+  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+
   const target = useRef<any[]>([]);
 
   useEffect(() => {
@@ -130,7 +134,13 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
 
   return (
     <Container>
-      <UserBtn>
+      <UserBtn
+        onPress={() => {
+          navigation.navigate('Tabs', {
+            screen: 'Detail',
+            params: {id: data.id},
+          });
+        }}>
         <UserImg
           source={{
             uri: data.img,
