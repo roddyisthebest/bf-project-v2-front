@@ -24,7 +24,13 @@ const Stack = () => (
     <NativeStack.Screen name="Setting" component={Setting} />
     <NativeStack.Screen name="Service" component={Service} />
     <NativeStack.Screen name="Profile" component={Profile} />
-    <NativeStack.Screen name="Write" component={Write} />
+    <NativeStack.Screen
+      name="Write"
+      component={Write}
+      options={{
+        title: '글쓰기',
+      }}
+    />
     <NativeStack.Screen name="Penalty" component={Penalty} />
     <NativeStack.Screen name="Pray" component={Pray} />
     <NativeStack.Screen name="Tweets" component={Tweets} />

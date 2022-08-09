@@ -12,8 +12,8 @@ const {actions, reducer} = createSlice({
     userInfo: {
       id: 1,
       oauth: '',
-      name: '',
-      img: '',
+      name: '조유리',
+      img: 'https://thumbs.gfycat.com/ArcticSlimCommabutterfly-max-1mb.gif',
     },
   },
   reducers: {
