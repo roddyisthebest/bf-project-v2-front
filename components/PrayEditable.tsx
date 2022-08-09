@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {User} from '../types/User';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -83,6 +83,8 @@ const CreateColumn = styled.View`
 `;
 
 const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
+  const target = useRef<any[]>([]);
+
   useEffect(() => {
     data.Pray?.map(e => {
       setPrays(prev => [...prev, {...e, edit: false}]);
@@ -138,6 +140,7 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
         />
         <UserName>{data.name}</UserName>
       </UserBtn>
+      {/* <ContentText multiline ref={target} placeholder="입력" autoFocus={true} /> */}
       {prays?.map((pray, index) => (
         <Content key={pray.id}>
           <ContentText
@@ -145,6 +148,7 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
             returnKeyType="done"
             editable={editable && pray.edit}
             blurOnSubmit={true}
+            ref={el => (target.current[index] = el)}
             onChangeText={text => setContents(index, text)}
             onSubmitEditing={() => {
               Keyboard.dismiss();
@@ -170,6 +174,9 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
                   style={{marginRight: 7}}
                   onPress={() => {
                     editPray(index, pray.edit);
+                    setTimeout(() => {
+                      target.current[index].focus();
+                    }, 1);
                   }}>
                   <AwesomeIcon name="pen" color="#198CED" size={10} />
                 </Btn>
