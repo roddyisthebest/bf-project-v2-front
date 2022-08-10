@@ -1,9 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {LoggedInParamList} from '../../navigation/Root';
-import {TweetType} from '../../types/Tweet';
-import {Platform, Text, TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import {initialStateProps} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -92,7 +89,6 @@ const UploadBtnText = styled.Text<{color: string}>`
 `;
 
 const Write = () => {
-  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
   }));
