@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {Switch} from 'react-native';
+import {Switch, Alert} from 'react-native';
 
 const Container = styled.View`
   flex: 1;
@@ -70,6 +70,25 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
     },
     [val],
   );
+
+  const showConfirmDialog = useCallback(() => {
+    return Alert.alert(
+      '최종 설정',
+      '이 설정은 언제든지 수정가능합니다. 확정하시겠습니까? ',
+      [
+        // The "Yes" button
+        {
+          text: '네',
+          onPress: () => {},
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: '아니오',
+        },
+      ],
+    );
+  }, []);
   return (
     <Container>
       <Title>기능 사용 설정</Title>
@@ -120,7 +139,7 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
           매일 성경(큐티) 벌금 로직에 참여할 수 있습니다.
         </SwitchSubTitle>
       </SwitchWrapper>
-      <Btn bkgColor={'#10DDC2'}>
+      <Btn bkgColor={'#10DDC2'} onPress={showConfirmDialog}>
         <BtnText color={'white'}>확인</BtnText>
       </Btn>
     </Container>
