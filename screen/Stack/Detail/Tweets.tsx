@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
-import {FlatList, SafeAreaView, View} from 'react-native';
+import {Dimensions, FlatList, SafeAreaView, View} from 'react-native';
 import Tweet from '../../../components/Tweet';
 import {TweetType} from '../../../types/Tweet';
-
+import ImageModal from 'react-native-image-modal';
 const Tweets = () => {
   const [data, setData] = useState<TweetType[]>([
     {
@@ -16,7 +16,7 @@ const Tweets = () => {
         payed: false,
       },
       content: 'hello',
-      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
+      img: 'https://wallpaperaccess.com/full/7981367.jpg',
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ const Tweets = () => {
         Pray: [],
         payed: false,
       },
-      img: 'http://api.bf-church.click/img/tweet-img/image1659925698220.jpg',
+      img: 'http://api.bf-church.click/img/tweet-img/image1660114695063.jpg',
       content: '',
     },
     {

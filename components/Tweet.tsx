@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
@@ -52,6 +52,9 @@ const SubText = styled.Text`
 
 const TweetImgBtn = styled.TouchableOpacity`
   margin-top: 30px;
+  border-width: 0.5px;
+  border-color: #e5e5e5;
+  border-radius: 30px;
 `;
 
 const TweetImg = styled.ImageBackground`
@@ -75,6 +78,7 @@ const DelBtn = styled.TouchableOpacity`
 `;
 
 const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
+  const [resize, setResize] = useState<boolean>(true);
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
@@ -86,7 +90,7 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
           onPress={() => {
             navigation.navigate('Tabs', {
               screen: 'Detail',
-              params: {id: data.User.id},
+              params: {id: data.User.id, uri: null},
             });
           }}>
           <UserImg
@@ -121,12 +125,21 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
           />
         ) : null}
 
-        <TweetImgBtn>
+        <TweetImgBtn
+          onPress={() => {
+            setResize(prev => !prev);
+          }}
+          onLongPress={() => {
+            navigation.navigate('Stack', {
+              screen: 'Image',
+              params: {uri: data.img, id: null},
+            });
+          }}>
           <TweetImg
             source={{
               uri: data.img,
             }}
-            resizeMode="cover"
+            resizeMode={resize ? 'cover' : 'contain'}
             borderRadius={30}
             defaultSource={require('../assets/img/loading.png')}
           />

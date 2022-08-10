@@ -6,7 +6,7 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Tweets from '../screen/Tab/Tweets';
 import Pray from '../screen/Tab/Pray';
 import Penalty from '../screen/Tab/Penalty';
-import {Image, TouchableOpacity, Platform} from 'react-native';
+import {TouchableOpacity, Platform, Image} from 'react-native';
 import Detail from '../screen/Tab/Detail';
 import styled from 'styled-components/native';
 
@@ -123,7 +123,6 @@ const Tabs = ({navigation: {navigate}}: {navigation: {navigate: Function}}) => (
         }}
       />
     </Tab.Navigator>
-
     <Btn
       style={{
         elevation: 8,

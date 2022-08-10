@@ -8,13 +8,16 @@ import Tabs from './Tabs';
 import Stack from './Stack';
 
 export type LoggedInParamList = {
-  Stacks: {
+  Stack: {
     screen: string;
-    params: {idx: number};
+    params: {id: number | null; uri: string | null};
   };
   Tabs: {
     screen: string;
-    params: any;
+    params: {id: number | null; uri: string | null};
+  };
+  Image: {
+    params: {uri: string};
   };
 };
 const LoadingContainer = styled.View`
