@@ -13,7 +13,7 @@ const Title = styled.Text`
   font-size: 25px;
   font-weight: 800;
   color: black;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 const SubTitle = styled.Text`
@@ -55,8 +55,11 @@ const Dot = styled.View`
 `;
 
 const Btn = styled.Pressable<{bkgColor: string}>`
-  padding: 10px 25px;
-  border-radius: 15px;
+  width: 95px;
+  height: 35px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
   background-color: ${props => props.bkgColor};
 `;
 
