@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {View, Text, Switch} from 'react-native';
+import {Switch} from 'react-native';
 import styled from 'styled-components/native';
 
 const Container = styled.View`

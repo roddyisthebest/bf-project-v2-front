@@ -15,14 +15,19 @@ const {actions, reducer} = createSlice({
       name: '조유리',
       img: 'https://thumbs.gfycat.com/ArcticSlimCommabutterfly-max-1mb.gif',
     },
+    isLoggedIn: false,
   },
   reducers: {
     login: (state, {payload: log}: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: log,
     }),
+    logout: state => ({
+      ...state,
+      isLoggedIn: false,
+    }),
   },
 });
 
-export const {login} = actions;
+export const {login, logout} = actions;
 export default reducer;
