@@ -56,7 +56,7 @@ const Profile = ({
     setOptions({
       headerRight: () => (
         <Pressable onPress={() => {}}>
-          <Text style={{color: 'blue'}}>완료</Text>
+          <Text style={{color: '#3478F6', fontSize: 17}}>완료</Text>
         </Pressable>
       ),
     });
