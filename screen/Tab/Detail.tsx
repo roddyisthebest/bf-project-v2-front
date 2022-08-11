@@ -13,7 +13,6 @@ const UserBkg = styled.View`
 `;
 
 const UserContents = styled.View`
-  /* transform: translateY(-${Dimensions.get('window').width / (4 * 2)}px); */
   padding: 0 20px 20px 20px;
   border-bottom-width: 1px;
   border-color: #ced5dc;
@@ -118,7 +117,10 @@ const Detail = ({
               uri: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
             }}
           />
-          <SetBtn>
+          <SetBtn
+            onPress={() => {
+              navigate('Stack', {screen: 'Setting'});
+            }}>
             <Icon name="settings" color="black" size={20} />
             <Text style={{fontWeight: '500', marginLeft: 5, color: 'black'}}>
               설정

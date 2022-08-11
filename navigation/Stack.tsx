@@ -15,16 +15,28 @@ const NativeStack = createNativeStackNavigator();
 const Stack = () => (
   <NativeStack.Navigator
     screenOptions={{
-      headerBackTitleVisible: false,
+      headerBackTitleVisible: true,
       headerTitleStyle: {
         fontWeight: '700',
       },
       contentStyle: {backgroundColor: 'white'},
-      presentation: 'transparentModal',
+      presentation: 'card',
     }}>
-    <NativeStack.Screen name="Setting" component={Setting} />
-    <NativeStack.Screen name="Service" component={Service} />
-    <NativeStack.Screen name="Profile" component={Profile} />
+    <NativeStack.Screen
+      name="Setting"
+      component={Setting}
+      options={{title: '내 설정'}}
+    />
+    <NativeStack.Screen
+      name="Service"
+      component={Service}
+      options={{title: '사용 기능'}}
+    />
+    <NativeStack.Screen
+      name="Profile"
+      component={Profile}
+      options={{title: '프로필 수정'}}
+    />
     <NativeStack.Screen
       name="Write"
       component={Write}
@@ -32,9 +44,21 @@ const Stack = () => (
         title: '글쓰기',
       }}
     />
-    <NativeStack.Screen name="Penalty" component={Penalty} />
-    <NativeStack.Screen name="Pray" component={Pray} />
-    <NativeStack.Screen name="Tweets" component={Tweets} />
+    <NativeStack.Screen
+      name="Penalty"
+      component={Penalty}
+      options={{title: '벌금 이력'}}
+    />
+    <NativeStack.Screen
+      name="Pray"
+      component={Pray}
+      options={{title: '기도제목 이력'}}
+    />
+    <NativeStack.Screen
+      name="Tweets"
+      component={Tweets}
+      options={{title: '매일성경 이력'}}
+    />
     <NativeStack.Screen
       name="Image"
       component={Image}

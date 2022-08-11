@@ -9,6 +9,7 @@ import Penalty from '../screen/Tab/Penalty';
 import {TouchableOpacity, Platform, Image} from 'react-native';
 import Detail from '../screen/Tab/Detail';
 import styled from 'styled-components/native';
+import SwipeUpDown from 'react-native-swipe-up-down';
 
 const Btn = styled.TouchableOpacity`
   width: 80px;

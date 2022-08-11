@@ -35,18 +35,18 @@ const ImagePage = ({
       <View
         style={{
           width: Dimensions.get('window').width,
-          height: Platform.OS === 'android' ? 100 : 140,
+          height: Platform.OS === 'android' ? 60 : 80,
           backgroundColor: 'black',
           position: 'absolute',
           zIndex: 5,
           justifyContent: 'center',
-          paddingHorizontal: 20,
+          paddingHorizontal: Platform.OS === 'android' ? 15 : 20,
         }}>
         <Pressable
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon name="close" color="white" size={25} />
+          <Icon name="arrow-back-outline" color="white" size={25} />
         </Pressable>
       </View>
       <ImageViewer
