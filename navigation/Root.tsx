@@ -37,9 +37,13 @@ const Root = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    function firstLoading() {
+      return setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
+    firstLoading();
+    return () => clearTimeout(firstLoading, null, null);
   }, []);
 
   const {isLoggedIn} = useSelector((state: initialStateProps) => ({
