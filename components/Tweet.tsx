@@ -132,12 +132,15 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
           onLongPress={() => {
             navigation.navigate('Stack', {
               screen: 'Image',
-              params: {uri: data.img, id: null},
+              params: {
+                uri: `http://192.168.123.105:3000/${data.img}`,
+                id: null,
+              },
             });
           }}>
           <TweetImg
             source={{
-              uri: data.img,
+              uri: `http://192.168.123.105:3000/${data.img}`,
             }}
             resizeMode={resize ? 'cover' : 'contain'}
             borderRadius={30}

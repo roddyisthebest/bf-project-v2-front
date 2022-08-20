@@ -8,7 +8,7 @@ export type response = {
 };
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000' as string,
+  baseURL: 'http://192.168.123.105:3000' as string,
 });
 
 export const setToken = async () => {

@@ -9,6 +9,7 @@ const getTokenByRefresh = async () => {
     if (!refreshToken) {
       return false;
     }
+    console.log(refreshToken);
     const {
       data: {
         payload: {access_token},
@@ -18,11 +19,13 @@ const getTokenByRefresh = async () => {
         payload: {access_token: string};
       };
     } = await getAccessTokenByRefresh(refreshToken);
+    console.log(access_token);
     await EncryptedStorage.setItem('accessToken', access_token);
     await setToken();
 
     return true;
   } catch (e: any) {
+    console.log(e);
     if (e.response.status === 401) {
       Alert.alert('refresh토큰이 만료되었습니다. 다시 로그인해주세요.');
     } else {
