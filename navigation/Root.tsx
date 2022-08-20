@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
-import {useSelector} from 'react-redux';
-import {initialStateProps} from '../store/slice';
+import {useDispatch, useSelector} from 'react-redux';
+import {initialStateProps, login} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
 import Stack from './Stack';
-
+import getTokenByRefresh from '../util/getToken';
 export type LoggedInParamList = {
   Stack: {
     screen: string;
@@ -34,6 +34,8 @@ const LoadingImage = styled.Image`
 const Nav = createNativeStackNavigator();
 
 const Root = () => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -42,9 +44,21 @@ const Root = () => {
         setLoading(false);
       }, 2000);
     }
+    async function getToken() {
+      const data = await getTokenByRefresh();
+      console.log(data);
+      if (data) {
+        dispatch(login(true));
+      }
+    }
+
+    getToken();
     firstLoading();
-    return () => clearTimeout(firstLoading, null, null);
-  }, []);
+
+    // return () => {
+    //   clearTimeout(firstLoading, null, null);
+    // };
+  }, [dispatch]);
 
   const {isLoggedIn} = useSelector((state: initialStateProps) => ({
     isLoggedIn: state.isLoggedIn,

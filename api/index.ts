@@ -14,4 +14,5 @@ export const api = axios.create({
 export const setToken = async () => {
   const accessToken = await EncryptedStorage.getItem('accessToken');
   api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  console.log(api.defaults.headers.common.Authorization);
 };

@@ -10,7 +10,8 @@ import Detail from '../screen/Tab/Detail';
 import styled from 'styled-components/native';
 import {logout} from '../store/slice';
 import {useDispatch} from 'react-redux';
-
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {logoutNode} from '../api/user';
 const Btn = styled.TouchableOpacity`
   width: 80px;
   height: 80px;
@@ -183,8 +184,14 @@ const Tabs = ({
           </Item>
           <Item style={{borderTopWidth: 1, borderTopColor: 'lightgray'}}>
             <NavBtn
-              onPress={() => {
-                dispatch(logout());
+              onPress={async () => {
+                try {
+                  dispatch(logout());
+                  await logoutNode();
+                  await EncryptedStorage.clear();
+                } catch (e) {
+                  console.log(e);
+                }
               }}>
               <Icon name="log-out-outline" color="red" size={15} />
               <NavBtnText color="red">로그아웃</NavBtnText>

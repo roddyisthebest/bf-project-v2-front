@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {WebView} from 'react-native-webview';
 import {useDispatch} from 'react-redux';
+import {setToken} from '../../api';
 import {login} from '../../store/slice';
 
 const SnsLogin = () => {
@@ -35,8 +36,7 @@ const SnsLogin = () => {
   const setTokenInfo = async (access: string, refresh: string) => {
     await EncryptedStorage.setItem('refreshToken', refresh);
     await EncryptedStorage.setItem('accessToken', access);
-
-    // await setToken();
+    await setToken();
     dispatch(login(true));
   };
 

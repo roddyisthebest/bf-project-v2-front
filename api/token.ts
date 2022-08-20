@@ -4,7 +4,9 @@ import {api, response} from './index';
 const authToken = (): Promise<AxiosResponse<response>> =>
   api.post('/token/authenticate');
 
-const getAccessTokenByRefresh = (): Promise<AxiosResponse<response>> =>
-  api.post('/token/refresh');
+const getAccessTokenByRefresh = (
+  refreshToken: string,
+): Promise<AxiosResponse<response>> =>
+  api.post('/token/refresh', {refreshToken});
 
 export {authToken, getAccessTokenByRefresh};

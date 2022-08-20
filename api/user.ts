@@ -6,7 +6,8 @@ const getMyInfo = (): Promise<AxiosResponse<response>> => api.get('/user');
 const getInfoById = (id: string): Promise<AxiosResponse<response>> =>
   api.get(`/user/${id}/info`);
 
-const logout = (): Promise<AxiosResponse<response>> => api.post('/user/logout');
+const logoutNode = (): Promise<AxiosResponse<response>> =>
+  api.post('/user/logout');
 
 const authCode = (code: string): Promise<AxiosResponse<response>> =>
   api.post('/user/auth/code', {code});
@@ -54,7 +55,7 @@ const getPraysByUserId = (
 export {
   getMyInfo,
   getInfoById,
-  logout,
+  logoutNode,
   authCode,
   saveMyInfo,
   saveMyService,
