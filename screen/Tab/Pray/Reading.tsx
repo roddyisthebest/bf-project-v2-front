@@ -48,7 +48,7 @@ const Reading = () => {
       id: 1,
       img: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
       oauth: 'KAKAO',
-      Pray: [
+      Prays: [
         {id: 1, content: '로또 1등 할 수 있도록', weekend: '2022-06-05'},
         {
           id: 2,
@@ -63,13 +63,14 @@ const Reading = () => {
           weekend: '2022-06-05',
         },
       ],
+      payed: false,
     },
     {
       name: '배성연',
       id: 2,
       img: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
       oauth: 'KAKAO',
-      Pray: [
+      Prays: [
         {id: 4, content: '로또 1등 할 수 있도록', weekend: '2022-06-05'},
         {
           id: 5,
@@ -84,6 +85,7 @@ const Reading = () => {
           weekend: '2022-06-05',
         },
       ],
+      payed: false,
     },
   ]);
   const [weekend, setWeekend] = useState<number>(0);
@@ -94,7 +96,7 @@ const Reading = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <FlatList
+      {/* <FlatList
         data={data}
         ItemSeparatorComponent={() => (
           <View style={{height: 1, backgroundColor: '#ced5dc'}} />
@@ -120,7 +122,7 @@ const Reading = () => {
             </DateBtn>
           </DateSection>
         }
-      />
+      /> */}
     </SafeAreaView>
   );
 };

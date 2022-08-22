@@ -88,7 +88,7 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
       <Left>
         <UserBtn
           onPress={() => {
-            navigation.navigate('Tabs', {
+            navigation.navigate('Stack', {
               screen: 'Detail',
               params: {id: data.User.id, uri: null},
             });

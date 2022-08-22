@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import styled from 'styled-components/native';
 import PrayEditable from '../../../components/PrayEditable';
 import {User} from '../../../types/User';
 import moment from 'moment';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import {getPrays} from '../../../api/pray';
 
 const DateSection = styled.View`
   height: 70px;
@@ -32,58 +33,49 @@ const Date = styled.Text`
 `;
 
 const Creating = () => {
-  const [data, setData] = useState<User[]>([
-    {
-      name: '배성연',
-      id: 1,
-      img: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
-      oauth: 'KAKAO',
-      Pray: [
-        {id: 1, content: '로또 1등 할 수 있도록', weekend: '2022-06-05'},
-        {
-          id: 2,
-          content:
-            '로또 1등 할 수 있도록 로또 1등 할 수 있도록asdasd로또 1등 할 수 있도록로또 1등 할 수 있도록로또 1등 할 수 있도록',
-          weekend: '2022-06-05',
-        },
-        {
-          id: 3,
-          content:
-            '로또 1등 할 수 있도록 로또 1등 할 수 있도록로또das 1등 할 수 있도록 로또 1등 할 수 있도록로또 1등 할 수 있도록',
-          weekend: '2022-06-05',
-        },
-      ],
-      payed: false,
-    },
-    {
-      name: '배성연',
-      id: 2,
-      img: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
-      oauth: 'KAKAO',
-      Pray: [
-        {id: 4, content: '로또 1등 할 수 있도록', weekend: '2022-06-05'},
-        {
-          id: 5,
-          content:
-            '로또 1등 할 수 있도록 로또 1등 할 수 있도록asdasd로또 1등 할 수 있도록로또 1등 할 수 있도록로또 1등 할 수 있도록',
-          weekend: '2022-06-05',
-        },
-        {
-          id: 6,
-          content:
-            '로또 1등 할 수 있도록 로또 1등 할 수 있도록로또das 1등 할 수 있도록 로또 1등 할 수 있도록로또 1등 할 수 있도록',
-          weekend: '2022-06-05',
-        },
-      ],
-      payed: false,
-    },
-  ]);
+  const [data, setData] = useState<User[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  //   const editData = useCallback((id: number, content: string) => {
-  //     setData(prev =>
-  //       prev.splice(id, 1, {...prev[id], Pray: prev[id].Pray?.splice()}),
-  //     );
-  //   }, []);
+  const [lastId, setLastId] = useState<number>(-1);
+
+  const getData = useCallback(
+    async (id: number) => {
+      try {
+        const {
+          data: {payload},
+        }: {data: {payload: User[]}} = await getPrays(id);
+        console.log(payload);
+        if (id === -1) {
+          setData([]);
+          setData([...payload]);
+        } else {
+          setData(prev => [...prev, ...payload]);
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        if (loading) {
+          setLoading(false);
+        }
+      }
+    },
+    [loading],
+  );
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      setRefreshing(true);
+      setLastId(-1);
+    } catch (e) {
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+  useEffect(() => {
+    getData(lastId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastId]);
 
   const renderItem = ({item}: {item: User}) => (
     <PrayEditable data={item} editable={true} />
@@ -106,6 +98,11 @@ const Creating = () => {
             </DateWrapper>
           </DateSection>
         }
+        onEndReached={() => {
+          setLastId(data[data.length - 1].id);
+        }}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
     </SafeAreaView>
   );

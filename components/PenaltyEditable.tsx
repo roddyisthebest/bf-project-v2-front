@@ -65,9 +65,9 @@ const PenaltyEditable = ({data}: {data: PenaltyType}) => {
     <Container>
       <UserBtn
         onPress={() => {
-          navigation.navigate('Tabs', {
+          navigation.navigate('Stack', {
             screen: 'Detail',
-            params: {id: data.User.id},
+            params: {id: data.User.id, uri: null},
           });
         }}>
         <UserImg

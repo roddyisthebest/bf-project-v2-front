@@ -5,6 +5,6 @@ export type User = {
   oauth: 'KAKAO';
   name: string;
   img: string;
-  Pray: PrayType[] | null;
+  Prays: PrayType[] | null;
   payed: boolean;
 };

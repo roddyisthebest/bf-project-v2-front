@@ -1,7 +1,8 @@
 import {AxiosResponse} from 'axios';
 import {api, response} from './index';
 
-const getPrays = (): Promise<AxiosResponse<response>> => api.get('/pray');
+const getPrays = (id: number): Promise<AxiosResponse<response>> =>
+  api.get(`pray/${id}`);
 
 const getPraysByDate = (date: string): Promise<AxiosResponse<response>> =>
   api.get(`/pray/${date}`);

@@ -90,15 +90,13 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
   const target = useRef<any[]>([]);
 
   useEffect(() => {
-    data.Pray?.map(e => {
+    data.Prays?.map(e => {
       setPrays(prev => [...prev, {...e, edit: false}]);
     });
   }, [data]);
 
   const [prays, setPrays] = useState<PrayEditType[]>([]);
-  useEffect(() => {
-    console.log(prays);
-  }, [prays]);
+
   const deletePray = useCallback((id: number) => {
     setPrays(prev => prev?.filter(pray => pray.id !== id));
   }, []);
@@ -136,9 +134,9 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
     <Container>
       <UserBtn
         onPress={() => {
-          navigation.navigate('Tabs', {
+          navigation.navigate('Stack', {
             screen: 'Detail',
-            params: {id: data.id},
+            params: {id: data.id, uri: null},
           });
         }}>
         <UserImg

@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Pressable, Text} from 'react-native';
+import React from 'react';
+import {Text} from 'react-native';
 import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -91,22 +91,10 @@ const MenuText = styled.Text`
 `;
 
 const Detail = ({
-  navigation: {setOptions, goBack, navigate},
+  navigation: {navigate},
 }: {
-  navigation: {setOptions: Function; goBack: Function; navigate: Function};
+  navigation: {navigate: Function};
 }) => {
-  useEffect(() => {
-    setOptions({
-      headerLeft: () => (
-        <Pressable
-          onPress={() => {
-            goBack();
-          }}>
-          <Icon name="arrow-back-outline" color="black" size={25} />
-        </Pressable>
-      ),
-    });
-  }, [setOptions, goBack]);
   return (
     <Container>
       <UserBkg style={{height: Dimensions.get('window').height / 7}} />

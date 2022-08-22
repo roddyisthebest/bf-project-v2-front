@@ -6,7 +6,6 @@ import Tweets from '../screen/Tab/Tweets';
 import Pray from '../screen/Tab/Pray';
 import Penalty from '../screen/Tab/Penalty';
 import {TouchableOpacity, Platform, Image} from 'react-native';
-import Detail from '../screen/Tab/Detail';
 import styled from 'styled-components/native';
 import {logout} from '../store/slice';
 import {useDispatch} from 'react-redux';
@@ -157,14 +156,6 @@ const Tabs = ({
             ),
           }}
         />
-        <Tab.Screen
-          name="Detail"
-          component={Detail}
-          options={{
-            tabBarIcon: () => null,
-            tabBarButton: () => null,
-          }}
-        />
       </Tab.Navigator>
       {visible ? (
         <Navigation
@@ -175,7 +166,7 @@ const Tabs = ({
           <Item>
             <NavBtn
               onPress={() => {
-                navigate('Detail', {params: {id: 1}});
+                navigate('Stack', {screen: 'Detail', params: {id: 1}});
                 setVisible(false);
               }}>
               <Icon name="person-circle-outline" color="black" size={18} />

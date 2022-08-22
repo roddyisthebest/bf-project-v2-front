@@ -8,6 +8,7 @@ import Penalty from '../screen/Stack/Detail/Penalty';
 import Pray from '../screen/Stack/Detail/Pray';
 import Tweets from '../screen/Stack/Detail/Tweets';
 import Image from '../screen/Stack/Image';
+import Detail from '../screen/Stack/Detail';
 const NativeStack = createNativeStackNavigator();
 
 // stack에 해당되는 네비게이션 구조입니다. Edit,MyStore,MyStyle,MyReservation 페이지들이 이 네비게이션에 포함됩니다.
@@ -70,6 +71,18 @@ const Stack = () => (
         //   color: 'white',
         // },
         header: () => null,
+      }}
+    />
+    <NativeStack.Screen
+      name="Detail"
+      component={Detail}
+      options={{
+        title: '',
+        // title: 'hello',
+        // headerTitleStyle: {
+        //   color: 'white',
+        // },
+        // header: () => null,
       }}
     />
   </NativeStack.Navigator>
