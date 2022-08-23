@@ -1,3 +1,4 @@
+import {PenaltyType} from './Penalty';
 import {PrayType} from './Pray';
 
 export type User = {
@@ -7,4 +8,5 @@ export type User = {
   img: string;
   Prays: PrayType[] | null;
   payed: boolean;
+  Penalties: PenaltyType[];
 };

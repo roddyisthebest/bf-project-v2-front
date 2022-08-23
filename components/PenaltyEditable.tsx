@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styled from 'styled-components/native';
 import {LoggedInParamList} from '../navigation/Root';
-import {PenaltyType} from '../types/Penalty';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {User} from '../types/User';
+import {ActivityIndicator, Alert} from 'react-native';
+import {checkPayed} from '../api/user';
 
 const Container = styled.View`
   padding: 25px 30px;
@@ -54,12 +56,25 @@ const Btn = styled.TouchableOpacity<{bkgColor: string}>`
   justify-content: center;
 `;
 
-const PenaltyEditable = ({data}: {data: PenaltyType}) => {
+const PenaltyEditable = ({data}: {data: User}) => {
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
 
   const [check, setCheck] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const setPayed = useCallback(async (id: number, payed: boolean) => {
+    try {
+      setLoading(true);
+      await checkPayed(id, !payed);
+      setCheck(prev => !prev);
+    } catch (e) {
+      console.log(e);
+      Alert.alert('오류입니다.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
   useEffect(() => {
-    setCheck(data.User.payed);
+    setCheck(data.payed);
   }, [data]);
   return (
     <Container>
@@ -67,34 +82,39 @@ const PenaltyEditable = ({data}: {data: PenaltyType}) => {
         onPress={() => {
           navigation.navigate('Stack', {
             screen: 'Detail',
-            params: {id: data.User.id, uri: null},
+            params: {id: data.id, uri: null},
           });
         }}>
         <UserImg
           source={{
-            uri: data.User.img,
+            uri: data.img,
           }}
           resizeMode="cover"
           borderRadius={50}
         />
-        <UserName>{data.User.name}</UserName>
+        <UserName>{data.name}</UserName>
       </UserBtn>
       <Column style={{marginBottom: 12.5, marginTop: 5}}>
         <Key>금액</Key>
-        <Value>{data.paper}</Value>
+        <Value>{data.Penalties[0].paper}</Value>
       </Column>
       <Column>
         <Key>payed</Key>
         <Btn
           bkgColor={check ? '#DFF3F1' : '#ffeaed'}
           onPress={() => {
-            setCheck(prev => !prev);
-          }}>
-          <Icon
-            name={check ? 'checkmark-outline' : 'close-outline'}
-            color={check ? '#10DDC2' : 'red'}
-            size={18}
-          />
+            setPayed(data.id, check);
+          }}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color={check ? '#10DDC2' : 'red'} size={15} />
+          ) : (
+            <Icon
+              name={check ? 'checkmark-outline' : 'close-outline'}
+              color={check ? '#10DDC2' : 'red'}
+              size={18}
+            />
+          )}
         </Btn>
       </Column>
     </Container>

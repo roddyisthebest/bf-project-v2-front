@@ -34,7 +34,7 @@ const saveFollow = (
 const checkPayed = (
   id: number,
   payed: boolean,
-): Promise<AxiosResponse<response>> => api.post('/user/follow', {payed, id});
+): Promise<AxiosResponse<response>> => api.post('/user/check', {payed, id});
 
 const getPenaltysByUserId = (
   id: number,

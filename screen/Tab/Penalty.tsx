@@ -1,76 +1,85 @@
-import React, {useState} from 'react';
-import {FlatList, SafeAreaView, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  View,
+} from 'react-native';
+import {getPenaltys} from '../../api/penalty';
 import PenaltyEditable from '../../components/PenaltyEditable';
-import {PenaltyType} from '../../types/Penalty';
+import {User} from '../../types/User';
 
 const Penalty = () => {
-  const [data, setData] = useState<PenaltyType[]>([
-    {
-      id: 1,
-      weekend: '2022-06-20',
-      paper: 1000,
-      User: {
-        name: '조유리',
-        img: 'https://image.xportsnews.com/contents/images/upload/article/2020/1005/mb_1601823938888337.jpg',
-        id: 1,
-        oauth: 'KAKAO',
-        Pray: [],
-        payed: true,
-      },
-    },
-    {
-      id: 2,
-      weekend: '2022-06-20',
-      paper: 0,
-      User: {
-        name: '배성연',
-        img: 'https://image.xportsnews.com/contents/images/upload/article/2020/1005/mb_1601823938888337.jpg',
-        id: 2,
-        oauth: 'KAKAO',
-        Pray: [],
-        payed: false,
-      },
-    },
-    {
-      id: 3,
-      weekend: '2022-06-20',
-      paper: 0,
-      User: {
-        name: '삼다수',
-        img: 'https://image.xportsnews.com/contents/images/upload/article/2020/1005/mb_1601823938888337.jpg',
-        id: 3,
-        oauth: 'KAKAO',
-        Pray: [],
-        payed: true,
-      },
-    },
-    {
-      id: 4,
-      weekend: '2022-06-20',
-      paper: 0,
-      User: {
-        name: '신일 선풍기',
-        img: 'https://image.xportsnews.com/contents/images/upload/article/2020/1005/mb_1601823938888337.jpg',
-        id: 4,
-        oauth: 'KAKAO',
-        Pray: [],
-        payed: false,
-      },
-    },
-  ]);
-  const renderItem = ({item}: {item: PenaltyType}) => (
-    <PenaltyEditable data={item} />
-  );
+  const [data, setData] = useState<User[]>([]);
+  const [lastId, setLastId] = useState<number>(-1);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const handleRefresh = useCallback(async (id: number) => {
+    try {
+      setRefreshing(true);
+      if (id === -1) {
+        const {
+          data: {payload},
+        }: {data: {payload: User[]}} = await getPenaltys(id);
+        setData(payload);
+      } else {
+        setLastId(-1);
+      }
+    } catch (e) {
+      Alert.alert('오류입니다.');
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  const getData = useCallback(async (id: number) => {
+    try {
+      const {
+        data: {payload},
+      }: {data: {payload: User[]}} = await getPenaltys(id);
+
+      if (id === -1) {
+        setData(payload);
+      } else {
+        setData(prev => [...prev, ...payload]);
+      }
+    } catch (e) {
+      Alert.alert('오류입니다.');
+    } finally {
+      if (loading) {
+        setLoading(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    getData(lastId);
+  }, [getData, lastId]);
+
+  const renderItem = ({item}: {item: User}) => <PenaltyEditable data={item} />;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <FlatList
-        data={data}
-        ItemSeparatorComponent={() => (
-          <View style={{height: 1, backgroundColor: '#ced5dc'}} />
-        )}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderItem}
-      />
+      {loading ? (
+        <ActivityIndicator color="#687684" size={50} style={{marginTop: 30}} />
+      ) : (
+        <FlatList
+          data={data}
+          ItemSeparatorComponent={() => (
+            <View style={{height: 1, backgroundColor: '#ced5dc'}} />
+          )}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+          onEndReached={() => {
+            setLastId(data[data.length - 1].id);
+          }}
+          refreshing={refreshing}
+          onRefresh={() => {
+            handleRefresh(lastId);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };
