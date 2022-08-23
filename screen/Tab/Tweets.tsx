@@ -69,7 +69,7 @@ const Tweets = () => {
     <Container>
       {loading ? (
         <LoadingContainer>
-          <ActivityIndicator color="black" size={50} />
+          <ActivityIndicator color="#687684" size={50} />
         </LoadingContainer>
       ) : (
         <FlatList

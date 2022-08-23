@@ -16,6 +16,7 @@ const Pray = () => {
             borderBottomWidth: 1,
             borderBottomColor: '#CED5DC',
           },
+          swipeEnabled: false,
         }}
         initialRouteName="열람하기">
         <Tab.Screen name="열람하기" component={Reading} />

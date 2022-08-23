@@ -4,9 +4,10 @@ import {User} from '../types/User';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import {PrayEditType} from '../types/PrayEdit';
-import {Keyboard} from 'react-native';
+import {ActivityIndicator, Alert, Keyboard} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
+import {deletePray, postPray, updatePray} from '../api/pray';
 
 const Container = styled.View`
   padding: 20px 20px 15px 20px;
@@ -88,35 +89,77 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
 
   const target = useRef<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     data.Prays?.map(e => {
-      setPrays(prev => [...prev, {...e, edit: false}]);
+      setPrays(prev => [
+        ...prev,
+        {...e, edit: false, editLoading: false, deleteLoading: false},
+      ]);
     });
   }, [data]);
 
   const [prays, setPrays] = useState<PrayEditType[]>([]);
 
-  const deletePray = useCallback((id: number) => {
-    setPrays(prev => prev?.filter(pray => pray.id !== id));
-  }, []);
+  const delPray = useCallback(
+    async (index: number, id: number) => {
+      prays.splice(index, 1, {...prays[index], deleteLoading: true});
+      setPrays([...prays]);
+      try {
+        await deletePray(id);
+        setPrays(prev => prev?.filter(pray => pray.id !== id));
+      } catch (e) {
+        Alert.alert('에러입니다.');
+        prays.splice(index, 1, {...prays[index], deleteLoading: false});
+        setPrays([...prays]);
+      }
+    },
+    [prays],
+  );
 
-  const addPray = useCallback(() => {
-    setPrays(prev => [
-      ...prev,
-      {
-        id: Math.floor(Math.random() * 100000000000) + 1 + 1,
-        content: '너가 과연?',
-        weekend: '2022-06-02',
-        edit: false,
-      },
-    ]);
+  const addPray = useCallback(async (id: number) => {
+    try {
+      setLoading(true);
+      const {
+        data: {payload},
+      } = await postPray(id);
+
+      setPrays(prev => [
+        ...prev,
+        {
+          id: payload.id,
+          content: payload.content,
+          weekend: payload.weekend,
+          edit: false,
+          editLoading: false,
+          deleteLoading: false,
+        },
+      ]);
+    } catch (e) {
+      Alert.alert('에러입니다.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const editPray = useCallback(
-    (index: number, edit: boolean) => {
-      prays.splice(index, 1, {...prays[index], edit: !edit});
+    async (index: number, id: number, userId: number, edit: boolean) => {
+      prays.splice(index, 1, {...prays[index], editLoading: true});
       setPrays([...prays]);
+      try {
+        await updatePray(id, userId, prays[index].content);
+      } catch (e) {
+        Alert.alert('에러입니다.');
+      } finally {
+        prays.splice(index, 1, {
+          ...prays[index],
+          editLoading: false,
+          edit: !edit,
+        });
+        setPrays([...prays]);
+      }
+
       // api 저장 로직
     },
     [prays],
@@ -160,7 +203,7 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
             onChangeText={text => setContents(index, text)}
             onSubmitEditing={() => {
               Keyboard.dismiss();
-              editPray(index, pray.edit);
+              editPray(index, pray.id, data.id, pray.edit);
             }}>
             {pray.content}
           </ContentText>
@@ -169,19 +212,28 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
             <BtnColumn>
               {pray.edit ? (
                 <Btn
+                  disabled={pray.editLoading}
                   backgroundColor="#EAFFEA"
                   style={{marginRight: 7}}
                   onPress={() => {
-                    editPray(index, pray.edit);
+                    editPray(index, pray.id, data.id, pray.edit);
                   }}>
-                  <Icon name="save" color="#43A54D" size={10} />
+                  {pray.editLoading ? (
+                    <ActivityIndicator color="#43A54D" size={10} />
+                  ) : (
+                    <Icon name="save" color="#43A54D" size={10} />
+                  )}
                 </Btn>
               ) : (
                 <Btn
                   backgroundColor="#EBF6FD"
                   style={{marginRight: 7}}
-                  onPress={() => {
-                    editPray(index, pray.edit);
+                  onPress={async () => {
+                    prays.splice(index, 1, {
+                      ...prays[index],
+                      edit: true,
+                    });
+                    setPrays([...prays]);
                     setTimeout(() => {
                       target.current[index].focus();
                     }, 1);
@@ -191,11 +243,16 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
               )}
 
               <Btn
+                disabled={pray.deleteLoading}
                 backgroundColor="#ffeaed"
                 onPress={() => {
-                  deletePray(pray.id);
+                  delPray(index, pray.id);
                 }}>
-                <Icon name="trash" color="red" size={10} />
+                {pray.deleteLoading ? (
+                  <ActivityIndicator color="red" size={10} />
+                ) : (
+                  <Icon name="trash" color="red" size={10} />
+                )}
               </Btn>
             </BtnColumn>
           ) : null}
@@ -203,8 +260,15 @@ const PrayEditable = ({data, editable}: {data: User; editable: boolean}) => {
       ))}
       {editable ? (
         <CreateColumn>
-          <CreateBtn onPress={addPray}>
-            <CreateText>추가하기</CreateText>
+          <CreateBtn
+            onPress={() => {
+              addPray(data.id);
+            }}>
+            {loading ? (
+              <ActivityIndicator color="white" size={12} />
+            ) : (
+              <CreateText>추가하기</CreateText>
+            )}
           </CreateBtn>
         </CreateColumn>
       ) : null}

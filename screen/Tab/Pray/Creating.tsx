@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, SafeAreaView} from 'react-native';
+import {View, SafeAreaView, Alert, ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
 import PrayEditable from '../../../components/PrayEditable';
 import {User} from '../../../types/User';
@@ -32,48 +32,75 @@ const Date = styled.Text`
   color: #10ddc2;
 `;
 
-const Creating = () => {
+const Creating = ({
+  navigation: {addListener},
+}: {
+  navigation: {addListener: Function};
+}) => {
   const [data, setData] = useState<User[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [lastId, setLastId] = useState<number>(-1);
 
-  const getData = useCallback(
-    async (id: number) => {
-      try {
-        const {
-          data: {payload},
-        }: {data: {payload: User[]}} = await getPrays(id);
-        console.log(payload);
-        if (id === -1) {
-          setData([]);
-          setData([...payload]);
-        } else {
-          setData(prev => [...prev, ...payload]);
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        if (loading) {
-          setLoading(false);
-        }
+  const getData = useCallback(async (id: number) => {
+    try {
+      const {
+        data: {payload, code},
+      }: {data: {payload: User[]; code: number}} = await getPrays(id);
+      if (code === 202) {
+        setDisabled(true);
       }
-    },
-    [loading],
-  );
+      if (id === -1) {
+        setData([]);
+        setData([...payload]);
+      } else {
+        setData(prev => [...prev, ...payload]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   const handleRefresh = useCallback(async () => {
     try {
       setRefreshing(true);
-      setLastId(-1);
+      setDisabled(false);
+      if (lastId === -1) {
+        try {
+          const {
+            data: {payload, code},
+          }: {data: {payload: User[]; code: number}} = await getPrays(-1);
+          if (code === 202) {
+            setDisabled(true);
+          }
+          setData([]);
+          setData(payload);
+        } catch (e) {}
+      } else {
+        setLastId(-1);
+      }
     } catch (e) {
+      Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [lastId]);
+
   useEffect(() => {
-    getData(lastId);
+    const unsubcribe = addListener('tabPress', async () => {
+      if (loading) {
+        await getData(-1);
+        setLoading(false);
+      }
+    });
+    return unsubcribe;
+  }, [addListener, getData, loading]);
+
+  useEffect(() => {
+    if (!loading && !disabled) {
+      getData(lastId);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastId]);
 
@@ -83,27 +110,31 @@ const Creating = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <KeyboardAwareFlatList
-        extraScrollHeight={100}
-        data={data}
-        ItemSeparatorComponent={() => (
-          <View style={{height: 1, backgroundColor: '#ced5dc'}} />
-        )}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        ListHeaderComponent={
-          <DateSection>
-            <DateWrapper>
-              <Date>{moment().day(0).format('YYYY-MM-DD')}</Date>
-            </DateWrapper>
-          </DateSection>
-        }
-        onEndReached={() => {
-          setLastId(data[data.length - 1].id);
-        }}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
-      />
+      {loading ? (
+        <ActivityIndicator color="#687684" size={50} style={{marginTop: 30}} />
+      ) : (
+        <KeyboardAwareFlatList
+          extraScrollHeight={100}
+          data={data}
+          ItemSeparatorComponent={() => (
+            <View style={{height: 1, backgroundColor: '#ced5dc'}} />
+          )}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+          ListHeaderComponent={
+            <DateSection>
+              <DateWrapper>
+                <Date>{moment().day(0).format('YYYY-MM-DD')}</Date>
+              </DateWrapper>
+            </DateSection>
+          }
+          onEndReached={async () => {
+            setLastId(data[data.length - 1].id);
+          }}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+        />
+      )}
     </SafeAreaView>
   );
 };
