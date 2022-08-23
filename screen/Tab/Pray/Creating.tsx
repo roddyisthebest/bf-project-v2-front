@@ -130,6 +130,7 @@ const Creating = ({
           }
           onEndReached={async () => {
             setLastId(data[data.length - 1].id);
+            console.log('밑에 닿았어!');
           }}
           refreshing={refreshing}
           onRefresh={handleRefresh}
