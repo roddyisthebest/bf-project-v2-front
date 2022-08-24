@@ -1,5 +1,6 @@
 import {PenaltyType} from './Penalty';
 import {PrayType} from './Pray';
+import {Service} from './service';
 
 export type User = {
   id: number;
@@ -9,4 +10,9 @@ export type User = {
   Prays: PrayType[] | null;
   payed: boolean;
   Penalties: PenaltyType[];
+  Followers: User[];
+  Followings: User[];
+  service: Service;
+  createdAt: Date;
+  updatedAt: Date;
 };

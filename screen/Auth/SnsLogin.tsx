@@ -51,7 +51,7 @@ const SnsLogin = () => {
       <WebView
         userAgent="Chrome"
         source={{
-          uri: 'https://kauth.kakao.com/oauth/authorize?client_id=8e90fd53b25935044191bd3ebd2bf726&redirect_uri=http://192.168.123.105:3000/user/auth/kakao/callback&response_type=code',
+          uri: 'https://kauth.kakao.com/oauth/authorize?client_id=8e90fd53b25935044191bd3ebd2bf726&redirect_uri=http://192.168.123.103:3000/user/auth/kakao/callback&response_type=code',
         }}
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}

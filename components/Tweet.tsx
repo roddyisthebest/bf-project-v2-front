@@ -6,7 +6,7 @@ import {TweetType} from '../types/Tweet';
 import {Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import {initialStateProps} from '../store/slice';
-
+import moment from 'moment';
 const Container = styled.View`
   flex-direction: row;
   padding: 40px 20px 0 20px;
@@ -105,8 +105,10 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
       <Right>
         <Title>
           <MainText>{data.User.name}</MainText>
-          <SubText>@kakao · 4 hours ago</SubText>
-          {userInfo.id === data.id ? (
+          <SubText>
+            @{data.User.oauth} · {moment(data.createdAt).fromNow()}
+          </SubText>
+          {userInfo.id === data.User.id ? (
             <DelBtn
               onPress={() => {
                 del(data.id);
@@ -133,14 +135,14 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
             navigation.navigate('Stack', {
               screen: 'Image',
               params: {
-                uri: `http://192.168.123.105:3000/${data.img}`,
+                uri: `http://192.168.123.103:3000/${data.img}`,
                 id: null,
               },
             });
           }}>
           <TweetImg
             source={{
-              uri: `http://192.168.123.105:3000/${data.img}`,
+              uri: `http://192.168.123.103:3000/${data.img}`,
             }}
             resizeMode={resize ? 'cover' : 'contain'}
             borderRadius={30}

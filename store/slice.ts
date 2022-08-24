@@ -14,6 +14,13 @@ const {actions, reducer} = createSlice({
       oauth: '',
       name: '조유리',
       img: 'https://thumbs.gfycat.com/ArcticSlimCommabutterfly-max-1mb.gif',
+      Followers: [] as User[],
+      Followings: [] as User[],
+      service: {
+        penalty: false,
+        pray: false,
+        tweet: false,
+      },
     },
     isLoggedIn: false,
   },
@@ -26,8 +33,35 @@ const {actions, reducer} = createSlice({
       ...state,
       isLoggedIn: false,
     }),
+    setUserInfo: (state, {payload}: PayloadAction<User>) => ({
+      ...state,
+      userInfo: {
+        id: payload.id,
+        oauth: payload.oauth,
+        name: payload.name,
+        img: payload.img,
+        Followers: payload.Followers,
+        Followings: payload.Followings,
+        service: payload.service,
+      },
+    }),
+    setFollowings: (state, {payload}: PayloadAction<User>) => ({
+      ...state,
+      userInfo: {
+        ...state.userInfo,
+        Followings: [...state.userInfo.Followings, payload],
+      },
+    }),
+    deleteFollowings: (state, {payload}: PayloadAction<number>) => ({
+      ...state,
+      userInfo: {
+        ...state.userInfo,
+        Followings: state.userInfo.Followings.filter(e => e.id !== payload),
+      },
+    }),
   },
 });
 
-export const {login, logout} = actions;
+export const {login, logout, setUserInfo, setFollowings, deleteFollowings} =
+  actions;
 export default reducer;

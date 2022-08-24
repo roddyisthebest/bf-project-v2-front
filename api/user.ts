@@ -3,7 +3,7 @@ import {api, response} from './index';
 
 const getMyInfo = (): Promise<AxiosResponse<response>> => api.get('/user');
 
-const getInfoById = (id: string): Promise<AxiosResponse<response>> =>
+const getInfoById = (id: number): Promise<AxiosResponse<response>> =>
   api.get(`/user/${id}/info`);
 
 const logoutNode = (): Promise<AxiosResponse<response>> =>

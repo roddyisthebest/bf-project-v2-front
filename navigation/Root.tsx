@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {initialStateProps, login} from '../store/slice';
+import {initialStateProps, login, setUserInfo} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
 import Stack from './Stack';
 import getTokenByRefresh from '../util/getToken';
+import {getMyInfo} from '../api/user';
+import {User} from '../types/User';
 export type LoggedInParamList = {
   Stack: {
     screen: string;
@@ -46,18 +48,24 @@ const Root = () => {
     }
     async function getToken() {
       const data = await getTokenByRefresh();
-      console.log(data);
       if (data) {
-        dispatch(login(true));
+        try {
+          const {
+            data: {payload},
+          }: {data: {payload: User}} = await getMyInfo();
+          dispatch(setUserInfo(payload));
+        } catch (e) {
+          console.log(e);
+        } finally {
+          dispatch(login(true));
+        }
       }
     }
 
     getToken();
     firstLoading();
 
-    // return () => {
-    //   clearTimeout(firstLoading, null, null);
-    // };
+    // return ()=>firstLoading();
   }, [dispatch]);
 
   const {isLoggedIn} = useSelector((state: initialStateProps) => ({
