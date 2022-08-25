@@ -4,6 +4,7 @@ import {User} from '../types/User';
 export type initialStateProps = {
   userInfo: User;
   isLoggedIn: boolean;
+  refresh: boolean;
 };
 
 const {actions, reducer} = createSlice({
@@ -23,6 +24,7 @@ const {actions, reducer} = createSlice({
       },
     },
     isLoggedIn: false,
+    refresh: false,
   },
   reducers: {
     login: (state, {payload: log}: PayloadAction<boolean>) => ({
@@ -59,9 +61,19 @@ const {actions, reducer} = createSlice({
         Followings: state.userInfo.Followings.filter(e => e.id !== payload),
       },
     }),
+    setRefresh: (state, {payload}: PayloadAction<boolean>) => ({
+      ...state,
+      refresh: payload,
+    }),
   },
 });
 
-export const {login, logout, setUserInfo, setFollowings, deleteFollowings} =
-  actions;
+export const {
+  login,
+  logout,
+  setUserInfo,
+  setFollowings,
+  deleteFollowings,
+  setRefresh,
+} = actions;
 export default reducer;

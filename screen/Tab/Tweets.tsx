@@ -1,8 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, Alert, FlatList, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {getTweets} from '../../api/tweet';
 import Tweet from '../../components/Tweet';
+import {initialStateProps, setRefresh} from '../../store/slice';
 import {TweetType} from '../../types/Tweet';
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -16,6 +18,13 @@ const LoadingContainer = styled.SafeAreaView`
 `;
 
 const Tweets = () => {
+  const dispatch = useDispatch();
+  const target = useRef<any>();
+
+  const {refresh} = useSelector((state: initialStateProps) => ({
+    refresh: state.refresh,
+  }));
+
   const [data, setData] = useState<TweetType[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,16 +63,33 @@ const Tweets = () => {
   const handleRefresh = useCallback(async () => {
     try {
       setRefreshing(true);
-      setLastId(-1);
+      if (lastId === -1) {
+        const {
+          data: {payload},
+        }: {data: {payload: TweetType[]}} = await getTweets(lastId);
+        setData(payload);
+      } else {
+        setLastId(-1);
+      }
     } catch (e) {
+      Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [lastId]);
 
   useEffect(() => {
     getData(lastId);
   }, [getData, lastId]);
+
+  useEffect(() => {
+    if (refresh) {
+      handleRefresh();
+      target.current.scrollToOffset({animated: true, offset: 0});
+      Alert.alert('성공적으로 업로드되었습니다🔥');
+      dispatch(setRefresh(false));
+    }
+  }, [refresh, handleRefresh, dispatch]);
 
   return (
     <Container>
@@ -85,6 +111,7 @@ const Tweets = () => {
           }}
           refreshing={refreshing}
           onRefresh={handleRefresh}
+          ref={target}
         />
       )}
     </Container>

@@ -1,12 +1,14 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Platform, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux';
-import {initialStateProps} from '../../store/slice';
+import {Alert, Platform, TouchableOpacity} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {initialStateProps, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
+import {postTweet} from '../../api/tweet';
 import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -33,26 +35,23 @@ const Right = styled.View`
   flex: 1;
 `;
 
-const Title = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const MainText = styled.Text`
-  font-size: 20px;
-  font-weight: 800;
-  color: black;
-`;
-
-const SubText = styled.Text`
-  font-size: 12px;
-  font-weight: 500;
-  color: #687684;
-  margin: 0 7.5px;
-`;
-
-const TweetImgBtn = styled.TouchableOpacity`
+const TweetImgBtn = styled.View`
   margin-top: 5px;
+  position: relative;
+`;
+
+const DelBtn = styled.Pressable`
+  width: 30px;
+  height: 30px;
+  border-radius: 25px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  align-items: center;
+  justify-content: center;
 `;
 
 const TweetImg = styled.ImageBackground`
@@ -65,7 +64,6 @@ const Input = styled.TextInput`
   border-bottom-width: 1px;
   border-color: #494949;
   height: 120px;
-  margin-top: 10px;
   color: black;
 `;
 
@@ -88,13 +86,20 @@ const UploadBtnText = styled.Text<{color: string}>`
   font-weight: 600;
 `;
 
-const Write = () => {
+const Write = ({
+  navigation: {navigate},
+}: {
+  navigation: {navigate: Function};
+}) => {
+  const dispatch = useDispatch();
+
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
   }));
 
   const [image, setImage] = useState<ImageType>();
-
+  const [content, setContent] = useState<string>('');
+  const [disabled, setDisabled] = useState<boolean>(true);
   const upload = useCallback(async () => {
     try {
       if (Platform.OS === 'ios') {
@@ -111,6 +116,7 @@ const Write = () => {
         });
         setImage(data.assets[0] as ImageType);
       }
+
       console.log(image);
       // const data = await launchImageLibrary({
       //   quality: 1,
@@ -121,29 +127,45 @@ const Write = () => {
     }
   }, [image]);
 
-  const test = async () => {
-    console.log('yap');
-    try {
-      const formData = new FormData();
-      const val = {name: image?.fileName, type: image?.type, uri: image?.uri};
-      formData.append('img', val);
-      formData.append('content', 'yoyo');
-
-      const {data} = await axios.post(
-        'http://localhost:3000/tweet/',
-        formData,
-        {
-          headers: {
-            accesstoken:
-              'vfowDugqNQQnkRLvcWBVHg5ZZ8BTsjB8UQX5utU1Cj10mQAAAYKC6tI-',
-          },
-        },
-      );
-      console.log(data);
-    } catch (e) {
-      console.log(e);
+  useEffect(() => {
+    if (image || content.length) {
+      setDisabled(false);
+    } else {
+      if (!disabled) {
+        setDisabled(true);
+      }
     }
-  };
+  }, [image, content, disabled]);
+
+  const uploadTweet = useCallback(
+    async (text: string, img: ImageType | undefined) => {
+      try {
+        console.log(img);
+        const formData = new FormData();
+        const val = {name: img?.fileName, type: img?.type, uri: img?.uri};
+        formData.append('img', val);
+        formData.append('content', text);
+        const accessToken = await EncryptedStorage.getItem('accessToken');
+        await fetch('http://192.168.123.103:3000/tweet/', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        });
+        dispatch(setRefresh(true));
+        navigate('Tabs', {screen: 'Tweets'});
+      } catch (e: any) {
+        if (Platform.OS === 'android' && e.column) {
+          uploadTweet(text, img);
+        } else {
+          Alert.alert('에러입니다');
+        }
+      }
+    },
+    [dispatch, navigate],
+  );
+
   return (
     <Container>
       <Left>
@@ -158,28 +180,39 @@ const Write = () => {
         </UserBtn>
       </Left>
       <Right>
-        <Title>
-          <MainText>{userInfo.name}</MainText>
-          <SubText>@kakao · 4 hours ago</SubText>
-        </Title>
-
         <Input
           placeholderTextColor="#484848"
           multiline
           placeholder="사진 또는 글을 올려주세요."
           numberOfLines={10}
           style={{textAlignVertical: 'top'}}
+          onChangeText={(text: string) => {
+            setContent(text);
+          }}
         />
         <BtnColumn>
           <TouchableOpacity onPress={upload}>
             <Icon name="image" size={33} color="#10DDC2" />
           </TouchableOpacity>
-          <UploadBtn bkgColor="#E0E0E0" onPress={test}>
-            <UploadBtnText color="#6f6f6f">올리기</UploadBtnText>
+          <UploadBtn
+            bkgColor={disabled ? '#E0E0E0' : '#10DDC2'}
+            onPress={() => {
+              uploadTweet(content, image);
+            }}
+            disabled={disabled}>
+            <UploadBtnText color={disabled ? '#6f6f6f' : 'white'}>
+              올리기
+            </UploadBtnText>
           </UploadBtn>
         </BtnColumn>
         {image ? (
           <TweetImgBtn>
+            <DelBtn
+              onPress={() => {
+                setImage(undefined);
+              }}>
+              <Icon name="close-outline" color="black" size={18} />
+            </DelBtn>
             <TweetImg
               source={{
                 uri: image.uri,
