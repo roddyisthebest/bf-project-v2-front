@@ -7,8 +7,8 @@ import Pray from '../screen/Tab/Pray';
 import Penalty from '../screen/Tab/Penalty';
 import {TouchableOpacity, Platform, Image} from 'react-native';
 import styled from 'styled-components/native';
-import {logout} from '../store/slice';
-import {useDispatch} from 'react-redux';
+import {initialStateProps, logout} from '../store/slice';
+import {useDispatch, useSelector} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {logoutNode} from '../api/user';
 const Btn = styled.TouchableOpacity`
@@ -62,6 +62,9 @@ const Tabs = ({
   navigation: {navigate: Function; dispatch: Function};
 }) => {
   const dispatch = useDispatch();
+  const {userInfo} = useSelector((state: initialStateProps) => ({
+    userInfo: state.userInfo,
+  }));
   const [visible, setVisible] = useState(false);
   return (
     <>
@@ -166,7 +169,10 @@ const Tabs = ({
           <Item>
             <NavBtn
               onPress={() => {
-                navigate('Stack', {screen: 'Detail', params: {id: 1}});
+                navigate('Stack', {
+                  screen: 'Detail',
+                  params: {id: userInfo.id},
+                });
                 setVisible(false);
               }}>
               <Icon name="person-circle-outline" color="black" size={18} />
