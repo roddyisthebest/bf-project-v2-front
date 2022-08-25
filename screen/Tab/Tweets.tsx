@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, Alert, FlatList, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import {getTweets} from '../../api/tweet';
+import {deleteTweet, getTweets} from '../../api/tweet';
 import Tweet from '../../components/Tweet';
 import {initialStateProps, setRefresh} from '../../store/slice';
 import {TweetType} from '../../types/Tweet';
@@ -28,14 +28,42 @@ const Tweets = () => {
   const [data, setData] = useState<TweetType[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const deleteTweet = useCallback((id: number) => {
-    setData(tweet => tweet.filter(e => e.id !== id));
+
+  const showConfirmDialog = useCallback((id: number) => {
+    return Alert.alert('게시글 삭제', '정말로 이 게시글을 삭제할까요?', [
+      // The "Yes" button
+      {
+        text: '취소',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: '삭제',
+        onPress: async () => {
+          try {
+            await deleteTweet(id);
+            setData(tweet => tweet.filter(e => e.id !== id));
+          } catch (e) {
+            Alert.alert('에러입니다.');
+          }
+        },
+        style: 'destructive',
+      },
+    ]);
   }, []);
+  const delTweet = useCallback(
+    async (id: number) => {
+      showConfirmDialog(id);
+    },
+    [showConfirmDialog],
+  );
 
   const [lastId, setLastId] = useState<number>(-1);
 
   const renderItem = ({item}: {item: TweetType}) => (
-    <Tweet data={item} del={deleteTweet} />
+    <Tweet data={item} del={delTweet} />
   );
 
   const getData = useCallback(

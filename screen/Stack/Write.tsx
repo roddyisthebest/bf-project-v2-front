@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Alert, Platform, TouchableOpacity} from 'react-native';
+import {Alert, Image, Platform, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
-import {postTweet} from '../../api/tweet';
-import axios from 'axios';
+
 import EncryptedStorage from 'react-native-encrypted-storage';
 const Container = styled.View`
   flex-direction: row;
@@ -117,7 +116,6 @@ const Write = ({
         setImage(data.assets[0] as ImageType);
       }
 
-      console.log(image);
       // const data = await launchImageLibrary({
       //   quality: 1,
       //   mediaType: 'photo',
@@ -125,7 +123,7 @@ const Write = ({
     } catch (e) {
       console.log(e);
     }
-  }, [image]);
+  }, []);
 
   useEffect(() => {
     if (image || content.length) {
@@ -138,14 +136,14 @@ const Write = ({
   }, [image, content, disabled]);
 
   const uploadTweet = useCallback(
-    async (text: string, img: ImageType | undefined) => {
+    async (img: ImageType | undefined, text: string) => {
       try {
-        console.log(img);
         const formData = new FormData();
         const val = {name: img?.fileName, type: img?.type, uri: img?.uri};
-        formData.append('img', val);
-        formData.append('content', text);
+        img && formData.append('img', val);
+        text && formData.append('content', text);
         const accessToken = await EncryptedStorage.getItem('accessToken');
+
         await fetch('http://192.168.123.103:3000/tweet/', {
           method: 'POST',
           headers: {
@@ -156,8 +154,8 @@ const Write = ({
         dispatch(setRefresh(true));
         navigate('Tabs', {screen: 'Tweets'});
       } catch (e: any) {
-        if (Platform.OS === 'android' && e.column) {
-          uploadTweet(text, img);
+        if (e.column && Platform.OS === 'android') {
+          uploadTweet(img, text);
         } else {
           Alert.alert('에러입니다');
         }
@@ -197,7 +195,7 @@ const Write = ({
           <UploadBtn
             bkgColor={disabled ? '#E0E0E0' : '#10DDC2'}
             onPress={() => {
-              uploadTweet(content, image);
+              uploadTweet(image, content);
             }}
             disabled={disabled}>
             <UploadBtnText color={disabled ? '#6f6f6f' : 'white'}>

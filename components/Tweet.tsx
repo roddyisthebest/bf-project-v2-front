@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
@@ -79,12 +79,23 @@ const DelBtn = styled.TouchableOpacity`
 
 const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
   const [resize, setResize] = useState<boolean>(true);
+  const [minHeight, setMinHeight] = useState<number>();
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
   }));
+
+  useEffect(() => {
+    if (data.content.length !== 0 && data.img.length !== 0) {
+      setMinHeight(500);
+    } else if (data.content.length !== 0 && data.img.length === 0) {
+      setMinHeight(220);
+    } else {
+      setMinHeight(410);
+    }
+  }, [data]);
   return (
-    <Container style={{minHeight: data.content.length !== 0 ? 510 : 420}}>
+    <Container style={{minHeight}}>
       <Left>
         <UserBtn
           onPress={() => {
@@ -126,29 +137,30 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
             style={{textAlignVertical: 'top'}}
           />
         ) : null}
-
-        <TweetImgBtn
-          onPress={() => {
-            setResize(prev => !prev);
-          }}
-          onLongPress={() => {
-            navigation.navigate('Stack', {
-              screen: 'Image',
-              params: {
-                uri: `http://192.168.123.103:3000/${data.img}`,
-                id: null,
-              },
-            });
-          }}>
-          <TweetImg
-            source={{
-              uri: `http://192.168.123.103:3000/${data.img}`,
+        {data.img.length !== 0 && minHeight ? (
+          <TweetImgBtn
+            onPress={() => {
+              setResize(prev => !prev);
             }}
-            resizeMode={resize ? 'cover' : 'contain'}
-            borderRadius={30}
-            defaultSource={require('../assets/img/loading.png')}
-          />
-        </TweetImgBtn>
+            onLongPress={() => {
+              navigation.navigate('Stack', {
+                screen: 'Image',
+                params: {
+                  uri: `http://192.168.123.103:3000/${data.img}`,
+                  id: null,
+                },
+              });
+            }}>
+            <TweetImg
+              source={{
+                uri: `http://192.168.123.103:3000/${data.img}`,
+              }}
+              resizeMode={resize ? 'cover' : 'contain'}
+              borderRadius={30}
+              defaultSource={require('../assets/img/loading.png')}
+            />
+          </TweetImgBtn>
+        ) : null}
       </Right>
     </Container>
   );
