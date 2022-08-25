@@ -17,7 +17,7 @@ const {actions, reducer} = createSlice({
       img: 'https://thumbs.gfycat.com/ArcticSlimCommabutterfly-max-1mb.gif',
       Followers: [] as User[],
       Followings: [] as User[],
-      service: {
+      Service: {
         penalty: false,
         pray: false,
         tweet: false,
@@ -44,7 +44,7 @@ const {actions, reducer} = createSlice({
         img: payload.img,
         Followers: payload.Followers,
         Followings: payload.Followings,
-        service: payload.service,
+        Service: payload.Service,
       },
     }),
     setFollowings: (state, {payload}: PayloadAction<User>) => ({
@@ -65,6 +65,19 @@ const {actions, reducer} = createSlice({
       ...state,
       refresh: payload,
     }),
+    setService: (
+      state,
+      {payload}: PayloadAction<'penalty' | 'pray' | 'tweet'>,
+    ) => ({
+      ...state,
+      userInfo: {
+        ...state.userInfo,
+        Service: {
+          ...state.userInfo.Service,
+          [payload]: !state.userInfo.Service[payload],
+        },
+      },
+    }),
   },
 });
 
@@ -75,5 +88,6 @@ export const {
   setFollowings,
   deleteFollowings,
   setRefresh,
+  setService,
 } = actions;
 export default reducer;

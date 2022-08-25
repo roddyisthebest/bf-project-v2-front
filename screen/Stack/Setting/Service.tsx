@@ -1,6 +1,9 @@
-import React, {useCallback, useState} from 'react';
-import {Switch} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, Switch} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {saveMyService} from '../../../api/user';
+import {initialStateProps, setService} from '../../../store/slice';
 
 const Container = styled.View`
   flex: 1;
@@ -32,14 +35,45 @@ const SwitchSubTitle = styled.Text`
 `;
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const {userInfo} = useSelector((state: initialStateProps) => ({
+    userInfo: state.userInfo,
+  }));
+
   const [val, setVal] = useState([false, false, false]);
+
   const toggleVal = useCallback(
-    (index: number) => {
-      val.splice(index, 1, !val[index]);
-      setVal([...val]);
+    async (index: number) => {
+      try {
+        const {data} = await saveMyService({
+          tweet: index === 0 ? !val[0] : val[0],
+          pray: index === 1 ? !val[1] : val[1],
+          penalty: index === 2 ? !val[2] : val[2],
+        });
+        console.log(data);
+        if (index === 0) {
+          dispatch(setService('tweet'));
+        } else if (index === 1) {
+          dispatch(setService('pray'));
+        } else {
+          dispatch(setService('penalty'));
+        }
+        val.splice(index, 1, !val[index]);
+        setVal([...val]);
+      } catch (e) {
+        Alert.alert('에러입니다');
+      }
     },
-    [val],
+    [val, dispatch],
   );
+
+  useEffect(() => {
+    setVal([
+      userInfo.Service.tweet,
+      userInfo.Service.pray,
+      userInfo.Service.penalty,
+    ]);
+  }, [userInfo]);
   return (
     <Container>
       <SwitchWrapper>

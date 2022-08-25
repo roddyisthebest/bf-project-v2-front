@@ -1,4 +1,4 @@
-export type Service = {
+export type ServiceType = {
   UserId: number;
   id: number;
   penalty: boolean;

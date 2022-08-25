@@ -23,8 +23,10 @@ const saveMyService = ({
   tweet: boolean;
   pray: boolean;
   penalty: boolean;
-}): Promise<AxiosResponse<response>> =>
-  api.put('/user/', {tweet, pray, penalty});
+}): Promise<AxiosResponse<response>> => {
+  console.log(tweet, pray, penalty);
+  return api.put('/user/service', {tweet, pray, penalty});
+};
 
 const saveFollow = (
   isFollow: boolean,
