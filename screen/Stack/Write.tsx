@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Alert, Image, Platform, TouchableOpacity} from 'react-native';
+import {Alert, Platform, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
