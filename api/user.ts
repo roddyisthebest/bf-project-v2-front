@@ -24,7 +24,6 @@ const saveMyService = ({
   pray: boolean;
   penalty: boolean;
 }): Promise<AxiosResponse<response>> => {
-  console.log(tweet, pray, penalty);
   return api.put('/user/service', {tweet, pray, penalty});
 };
 

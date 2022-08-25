@@ -144,16 +144,26 @@ const Write = ({
         text && formData.append('content', text);
         const accessToken = await EncryptedStorage.getItem('accessToken');
 
-        await fetch('http://192.168.123.103:3000/tweet/', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
+        const response: any = await fetch(
+          'http://192.168.123.103:3000/tweet/',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: formData,
           },
-          body: formData,
-        });
+        );
+
+        if ((response.status as number) === 402) {
+          Alert.alert('게시물 업로드 서비스를 \n 사용하고 있지 않습니다.');
+          return;
+        }
+
         dispatch(setRefresh(true));
         navigate('Tabs', {screen: 'Tweets'});
       } catch (e: any) {
+        console.log(e);
         if (e.column && Platform.OS === 'android') {
           uploadTweet(img, text);
         } else {
