@@ -9,6 +9,8 @@ import Stack from './Stack';
 import getTokenByRefresh from '../util/getToken';
 import {getMyInfo} from '../api/user';
 import {User} from '../types/User';
+import {api} from '../api';
+
 export type LoggedInParamList = {
   Stack: {
     screen: string;
@@ -67,6 +69,23 @@ const Root = () => {
 
     // return ()=>firstLoading();
   }, [dispatch]);
+
+  useEffect(() => {
+    api.interceptors.response.use(
+      res => {
+        console.log('다 여기를 지나간다!');
+        return res;
+      },
+      async error => {
+        const {
+          config,
+          response: {status},
+        } = error;
+        console.log(config, status);
+        return Promise.reject(error);
+      },
+    );
+  }, []);
 
   const {isLoggedIn} = useSelector((state: initialStateProps) => ({
     isLoggedIn: state.isLoggedIn,
