@@ -11,6 +11,8 @@ import {getMyInfo} from '../api/user';
 import {User} from '../types/User';
 import {api} from '../api';
 import useSocket from '../hooks/useSocket';
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 export type LoggedInParamList = {
   Stack: {
@@ -115,6 +117,23 @@ const Root = () => {
       }
     };
   }, [isLoggedIn, disconnect, socket, userInfo.id, dispatch]);
+
+  useEffect(() => {
+    async function getToken() {
+      try {
+        if (!messaging().isDeviceRegisteredForRemoteMessages) {
+          await messaging().registerDeviceForRemoteMessages();
+        }
+        const token = await messaging().getToken();
+        console.log('phone token', token);
+        return axios.post('http://192.168.123.103:3000/phonetoken', {token});
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getToken();
+  }, [dispatch]);
+
   return loading ? (
     <LoadingContainer>
       <LoadingImage source={require('../assets/img/Loading_Logo.png')} />

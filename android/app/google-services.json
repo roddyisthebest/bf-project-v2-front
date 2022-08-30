@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "346855262350",
+    "project_id": "bf-project-v2",
+    "storage_bucket": "bf-project-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346855262350:android:7dc833a57086032cfca1df",
+        "android_client_info": {
+          "package_name": "com.roddyisthebest.bigforest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346855262350-0fivi0mksvd5tsoq1sh9cbgp1blehsr1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYPQzwfbQskVagx_DECxoHEhVbuUnWo0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346855262350-0fivi0mksvd5tsoq1sh9cbgp1blehsr1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
