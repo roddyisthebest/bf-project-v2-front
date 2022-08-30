@@ -111,6 +111,7 @@ const Root = () => {
     return () => {
       if (socket) {
         socket.off('feed-uploading', callback);
+        console.log('on 종료');
       }
     };
   }, [isLoggedIn, disconnect, socket, userInfo.id, dispatch]);
