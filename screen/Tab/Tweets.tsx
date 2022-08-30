@@ -1,11 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, Alert, FlatList, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {deleteTweet, getTweets} from '../../api/tweet';
 import Tweet from '../../components/Tweet';
-import {initialStateProps, setRefresh} from '../../store/slice';
+import {initialStateProps, setFeed, setRefresh} from '../../store/slice';
 import {TweetType} from '../../types/Tweet';
+
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: white;
@@ -17,12 +25,47 @@ const LoadingContainer = styled.SafeAreaView`
   justify-content: center;
 `;
 
+const FlatContainer = styled.View`
+  position: relative;
+  flex: 1;
+`;
+
+const SocketMsgContainer = styled.View`
+  position: absolute;
+  top: 0px;
+  height: 48px;
+  z-index: 100;
+  width: ${Dimensions.get('window').width}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SocketMsg = styled.TouchableOpacity`
+  width: 100px;
+  height: 30px;
+  background-color: #ececec;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+
+const SocketMsgText = styled.Text`
+  color: black;
+  font-size: 12px;
+  font-weight: 600;
+`;
+
 const Tweets = () => {
   const dispatch = useDispatch();
   const target = useRef<any>();
 
   const {refresh} = useSelector((state: initialStateProps) => ({
     refresh: state.refresh,
+  }));
+
+  const {newFeed} = useSelector((state: initialStateProps) => ({
+    newFeed: state.newFeed,
   }));
 
   const [data, setData] = useState<TweetType[]>([]);
@@ -143,21 +186,38 @@ const Tweets = () => {
           </Text>
         </View>
       ) : (
-        <FlatList
-          data={data}
-          ItemSeparatorComponent={() => (
-            <View style={{height: 1, backgroundColor: '#ced5dc'}} />
-          )}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReached={() => {
-            setLastId(data[data.length - 1].id);
-            console.log('밑에 닿았어!');
-          }}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          ref={target}
-        />
+        <FlatContainer>
+          {newFeed !== 0 ? (
+            <SocketMsgContainer>
+              <SocketMsg
+                onPress={() => {
+                  handleRefresh();
+                  dispatch(setFeed(false));
+                }}>
+                <SocketMsgText>새 게시글</SocketMsgText>
+                <SocketMsgText style={{marginLeft: 8}}>
+                  +{newFeed}
+                </SocketMsgText>
+              </SocketMsg>
+            </SocketMsgContainer>
+          ) : null}
+
+          <FlatList
+            data={data}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: '#ced5dc'}} />
+            )}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReached={() => {
+              setLastId(data[data.length - 1].id);
+              console.log('밑에 닿았어!');
+            }}
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            ref={target}
+          />
+        </FlatContainer>
       )}
     </Container>
   );

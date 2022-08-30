@@ -6,8 +6,8 @@ import {initialStateProps, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
-
 import EncryptedStorage from 'react-native-encrypted-storage';
+import useSocket from '../../hooks/useSocket';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -99,6 +99,8 @@ const Write = ({
   const [image, setImage] = useState<ImageType>();
   const [content, setContent] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [socket, disconnect] = useSocket();
   const upload = useCallback(async () => {
     try {
       if (Platform.OS === 'ios') {
@@ -159,7 +161,7 @@ const Write = ({
           Alert.alert('게시물 업로드 서비스를 \n 사용하고 있지 않습니다.');
           return;
         }
-
+        socket?.emit('feed-uploaded', {id: userInfo.id});
         dispatch(setRefresh(true));
         navigate('Tabs', {screen: 'Tweets'});
       } catch (e: any) {
@@ -171,7 +173,7 @@ const Write = ({
         }
       }
     },
-    [dispatch, navigate],
+    [dispatch, navigate, socket, userInfo.id],
   );
 
   return (

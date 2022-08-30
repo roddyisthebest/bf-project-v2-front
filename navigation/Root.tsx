@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {initialStateProps, login, setUserInfo} from '../store/slice';
+import {initialStateProps, login, setFeed, setUserInfo} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
 import Stack from './Stack';
@@ -10,6 +10,7 @@ import getTokenByRefresh from '../util/getToken';
 import {getMyInfo} from '../api/user';
 import {User} from '../types/User';
 import {api} from '../api';
+import useSocket from '../hooks/useSocket';
 
 export type LoggedInParamList = {
   Stack: {
@@ -39,9 +40,15 @@ const Nav = createNativeStackNavigator();
 
 const Root = () => {
   const dispatch = useDispatch();
+  const [socket, disconnect] = useSocket();
 
   const [loading, setLoading] = useState<boolean>(true);
-
+  const {isLoggedIn} = useSelector((state: initialStateProps) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
+  const {userInfo} = useSelector((state: initialStateProps) => ({
+    userInfo: state.userInfo,
+  }));
   useEffect(() => {
     function firstLoading() {
       return setTimeout(() => {
@@ -87,9 +94,26 @@ const Root = () => {
     );
   }, []);
 
-  const {isLoggedIn} = useSelector((state: initialStateProps) => ({
-    isLoggedIn: state.isLoggedIn,
-  }));
+  useEffect(() => {
+    const callback = (data: {id: number}) => {
+      // if (userInfo.id !== data.id) {
+      //   dispatch(setFeed(true));
+      // }
+
+      dispatch(setFeed(true));
+    };
+    if (!isLoggedIn) {
+      console.log('!isLoggedIn', !isLoggedIn);
+      disconnect();
+    } else {
+      socket?.on('feed-uploading', callback);
+    }
+    return () => {
+      if (socket) {
+        socket.off('feed-uploading', callback);
+      }
+    };
+  }, [isLoggedIn, disconnect, socket, userInfo.id, dispatch]);
   return loading ? (
     <LoadingContainer>
       <LoadingImage source={require('../assets/img/Loading_Logo.png')} />

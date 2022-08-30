@@ -65,6 +65,10 @@ const Tabs = ({
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
   }));
+
+  const {newFeed} = useSelector((state: initialStateProps) => ({
+    newFeed: state.newFeed,
+  }));
   const [visible, setVisible] = useState(false);
   return (
     <>
@@ -130,6 +134,7 @@ const Tabs = ({
                 size={20}
               />
             ),
+            tabBarBadge: newFeed === 0 ? undefined : newFeed,
             title: 'Home',
           }}
         />
