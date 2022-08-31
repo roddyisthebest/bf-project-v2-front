@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import styled from 'styled-components/native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
@@ -77,7 +77,7 @@ const DelBtn = styled.TouchableOpacity`
   border-radius: 10px;
 `;
 
-const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
+const Tweet = memo(({data, del}: {data: TweetType; del: Function}) => {
   const [resize, setResize] = useState<boolean>(true);
   const [minHeight, setMinHeight] = useState<number>();
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
@@ -164,6 +164,6 @@ const Tweet = ({data, del}: {data: TweetType; del: Function}) => {
       </Right>
     </Container>
   );
-};
+});
 
 export default Tweet;

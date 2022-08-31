@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, memo} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styled from 'styled-components/native';
 import {LoggedInParamList} from '../navigation/Root';
@@ -56,7 +56,7 @@ const Btn = styled.TouchableOpacity<{bkgColor: string}>`
   justify-content: center;
 `;
 
-const PenaltyEditable = ({data}: {data: User}) => {
+const PenaltyEditable = memo(({data}: {data: User}) => {
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
 
   const [check, setCheck] = useState<boolean>(true);
@@ -119,6 +119,6 @@ const PenaltyEditable = ({data}: {data: User}) => {
       </Column>
     </Container>
   );
-};
+});
 
 export default PenaltyEditable;

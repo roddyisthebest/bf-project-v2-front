@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components/native';
 import {PenaltyType} from '../types/Penalty';
 
@@ -24,7 +24,7 @@ const Value = styled.Text`
   color: #687684;
 `;
 
-const Penalty = ({data}: {data: PenaltyType}) => {
+const Penalty = memo(({data}: {data: PenaltyType}) => {
   return (
     <Container>
       <Column style={{marginBottom: 12.5}}>
@@ -37,6 +37,6 @@ const Penalty = ({data}: {data: PenaltyType}) => {
       </Column>
     </Container>
   );
-};
+});
 
 export default Penalty;

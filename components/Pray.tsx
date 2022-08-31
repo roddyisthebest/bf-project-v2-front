@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import styled from 'styled-components/native';
 import {PrayType} from '../types/Pray';
 
@@ -22,13 +22,13 @@ const Date = styled.Text`
   color: #687684;
 `;
 
-const Pray = ({data}: {data: PrayType}) => {
+const Pray = memo(({data}: {data: PrayType}) => {
   return (
     <Container>
       <Content>{data.content}</Content>
       <Date>{data.weekend}</Date>
     </Container>
   );
-};
+});
 
 export default Pray;
