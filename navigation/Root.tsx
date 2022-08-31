@@ -2,7 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {initialStateProps, login, setFeed, setUserInfo} from '../store/slice';
+import {
+  initialStateProps,
+  login,
+  logout,
+  setFeed,
+  setUserInfo,
+} from '../store/slice';
 import Auth from './Auth';
 import Tabs from './Tabs';
 import Stack from './Stack';
@@ -13,6 +19,8 @@ import {api} from '../api';
 import useSocket from '../hooks/useSocket';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {Alert} from 'react-native';
 
 export type LoggedInParamList = {
   Stack: {
@@ -72,7 +80,6 @@ const Root = () => {
         }
       }
     }
-
     getToken();
     firstLoading();
 
@@ -82,7 +89,6 @@ const Root = () => {
   useEffect(() => {
     api.interceptors.response.use(
       res => {
-        console.log('다 여기를 지나간다!');
         return res;
       },
       async error => {
@@ -90,17 +96,57 @@ const Root = () => {
           config,
           response: {status},
         } = error;
-        console.log(config, status);
-        return Promise.reject(error);
+
+        if (status === 401) {
+          const originalRequest = config;
+
+          try {
+            const refreshToken = await EncryptedStorage.getItem('refreshToken');
+            if (refreshToken) {
+              const {
+                data: {
+                  payload: {access_token},
+                },
+              }: {
+                data: {
+                  payload: {access_token: string};
+                };
+              } = await axios.post(
+                'http://192.168.123.103:3000/token/refresh',
+                {
+                  refreshToken,
+                },
+              );
+              originalRequest.headers.authorization = `Bearer ${access_token}`;
+              return axios(originalRequest);
+            } else {
+              Alert.alert('리프레시 토큰이 없습니다. 다시 로그인 해주세요.');
+              return dispatch(logout());
+            }
+          } catch (e: any) {
+            if (e.response.status === 401) {
+              Alert.alert(
+                '리프레시 토큰이 만료되었습니다. 다시 로그인 해주세요.',
+              );
+              return dispatch(logout());
+            } else {
+              Alert.alert('오류입니다. 다시 로그인 해주세요.');
+              return dispatch(logout());
+            }
+          }
+        } else {
+          Alert.alert('오류입니다. 다시 로그인 해주세요.');
+          return dispatch(logout());
+        }
       },
     );
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const callback = (data: {id: number}) => {
-      // if (userInfo.id !== data.id) {
-      //   dispatch(setFeed(true));
-      // }
+      if (userInfo.id !== data.id) {
+        dispatch(setFeed(true));
+      }
 
       dispatch(setFeed(true));
     };

@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {getAccessTokenByRefresh} from '../api/token';
+import axios from 'axios';
 import {setToken} from '../api';
 
 const getTokenByRefresh = async () => {
@@ -18,7 +18,9 @@ const getTokenByRefresh = async () => {
       data: {
         payload: {access_token: string};
       };
-    } = await getAccessTokenByRefresh(refreshToken);
+    } = await axios.post('http://192.168.123.103:3000/token/refresh', {
+      refreshToken,
+    });
     console.log(access_token);
     await EncryptedStorage.setItem('accessToken', access_token);
     await setToken();
@@ -29,7 +31,7 @@ const getTokenByRefresh = async () => {
     if (e.response.status === 401) {
       Alert.alert('refresh토큰이 만료되었습니다. 다시 로그인해주세요.');
     } else {
-      Alert.alert('에러입니다. 다시 로그인해주세요.');
+      Alert.alert('오류입니다. 다시 로그인해주세요.');
     }
     return false;
   }
