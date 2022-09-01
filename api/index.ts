@@ -1,14 +1,13 @@
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
-
+import Config from 'react-native-config';
 export type response = {
   payload: any;
   code: number;
   msg: string;
 };
-
 export const api = axios.create({
-  baseURL: 'http://192.168.123.103:3000' as string,
+  baseURL: 'https://api.bf-church.click' as string,
 });
 
 export const setToken = async () => {

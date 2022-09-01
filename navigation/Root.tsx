@@ -21,6 +21,7 @@ import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {Alert} from 'react-native';
+import Config from 'react-native-config';
 
 export type LoggedInParamList = {
   Stack: {
@@ -34,6 +35,7 @@ export type LoggedInParamList = {
   Image: {
     params: {uri: string};
   };
+  Auth: {};
 };
 const LoadingContainer = styled.View`
   flex: 1;
@@ -68,16 +70,10 @@ const Root = () => {
     async function getToken() {
       const data = await getTokenByRefresh();
       if (data) {
-        try {
-          const {
-            data: {payload},
-          }: {data: {payload: User}} = await getMyInfo();
-          dispatch(setUserInfo(payload));
-        } catch (e) {
-          console.log(e);
-        } finally {
-          dispatch(login(true));
-        }
+        const {
+          data: {payload},
+        }: {data: {payload: User}} = await getMyInfo();
+        dispatch(setUserInfo(payload));
       }
     }
     getToken();
@@ -111,12 +107,9 @@ const Root = () => {
                 data: {
                   payload: {access_token: string};
                 };
-              } = await axios.post(
-                'http://192.168.123.103:3000/token/refresh',
-                {
-                  refreshToken,
-                },
-              );
+              } = await axios.post(`${Config.API_URL}/token/refresh`, {
+                refreshToken,
+              });
               originalRequest.headers.authorization = `Bearer ${access_token}`;
               return axios(originalRequest);
             } else {
@@ -134,6 +127,8 @@ const Root = () => {
               return dispatch(logout());
             }
           }
+        } else if (status === 405) {
+          return Alert.alert('자격 미이행 스컬');
         } else {
           Alert.alert('오류입니다. 다시 로그인 해주세요.');
           return dispatch(logout());
@@ -172,7 +167,7 @@ const Root = () => {
         }
         const token = await messaging().getToken();
         console.log('phone token', token);
-        return axios.post('http://192.168.123.103:3000/phonetoken', {token});
+        return axios.post(`${Config.API_URL}/phonetoken`, {token});
       } catch (error) {
         console.error(error);
       }

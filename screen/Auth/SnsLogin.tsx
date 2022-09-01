@@ -5,6 +5,7 @@ import {WebView} from 'react-native-webview';
 import {useDispatch} from 'react-redux';
 import {setToken} from '../../api';
 import {login} from '../../store/slice';
+import Config from 'react-native-config';
 
 const SnsLogin = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ const SnsLogin = () => {
   const setTokenInfo = async (access: string, refresh: string) => {
     await EncryptedStorage.setItem('refreshToken', refresh);
     await EncryptedStorage.setItem('accessToken', access);
+    console.log('refresh', refresh);
+    console.log('access', access);
+
     await setToken();
     dispatch(login(true));
   };
@@ -51,7 +55,7 @@ const SnsLogin = () => {
       <WebView
         userAgent="Chrome"
         source={{
-          uri: 'https://kauth.kakao.com/oauth/authorize?client_id=8e90fd53b25935044191bd3ebd2bf726&redirect_uri=http://192.168.123.103:3000/user/auth/kakao/callback&response_type=code',
+          uri: `https://kauth.kakao.com/oauth/authorize?client_id=${Config.CLIENT_ID}&redirect_uri=${Config.KAKAO_CALLBACK}&response_type=code`,
         }}
         sharedCookiesEnabled={true}
         thirdPartyCookiesEnabled={true}

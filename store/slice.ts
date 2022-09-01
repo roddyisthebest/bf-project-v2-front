@@ -6,6 +6,7 @@ export type initialStateProps = {
   isLoggedIn: boolean;
   refresh: boolean;
   newFeed: number;
+  isAuth: boolean;
 };
 
 const {actions, reducer} = createSlice({
@@ -27,6 +28,7 @@ const {actions, reducer} = createSlice({
     isLoggedIn: false,
     refresh: false,
     newFeed: 0,
+    isAuth: false,
   },
   reducers: {
     login: (state, {payload: log}: PayloadAction<boolean>) => ({
@@ -84,6 +86,10 @@ const {actions, reducer} = createSlice({
       ...state,
       newFeed: payload ? state.newFeed + 1 : 0,
     }),
+    setAuth: (state, {payload}: PayloadAction<boolean>) => ({
+      ...state,
+      isAuth: payload,
+    }),
   },
 });
 
@@ -96,5 +102,6 @@ export const {
   setRefresh,
   setService,
   setFeed,
+  setAuth,
 } = actions;
 export default reducer;
