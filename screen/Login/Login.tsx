@@ -1,5 +1,4 @@
 import React from 'react';
-import {Pressable, Text} from 'react-native';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
@@ -48,21 +47,11 @@ const Login = ({
       </TitleText>
       <LoginBtn
         onPress={() => {
-          navigate('Auth', {
-            screen: 'SnsLogin',
-          });
+          navigate('SnsLogin');
         }}>
         <LoginBkg source={require('../../assets/img/Kakao.png')} />
         <LoginText>KAKAO 로그인</LoginText>
       </LoginBtn>
-      <Pressable
-        onPress={() => {
-          navigate('Auth', {
-            screen: 'Code',
-          });
-        }}>
-        <Text>code</Text>
-      </Pressable>
     </Container>
   );
 };

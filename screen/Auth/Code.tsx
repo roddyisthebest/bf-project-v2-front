@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {TextInput, Platform, Alert} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
+import {authCode} from '../../api/user';
 
 const Container = styled.View`
   flex: 1;
@@ -82,16 +83,18 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
     input.current.focus();
   }, []);
 
-  const submit = useCallback(() => {
-    if (val === '123456') {
+  const submit = useCallback(async () => {
+    try {
+      await authCode(val);
       return dispatch(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'Setting'}],
         }),
       );
+    } catch (e) {
+      console.log(e);
     }
-    Alert.alert('올바르지 않은 코드입니다.');
   }, [dispatch, val]);
 
   return (

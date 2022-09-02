@@ -6,6 +6,7 @@ import {
   initialStateProps,
   login,
   logout,
+  setAuth,
   setFeed,
   setUserInfo,
 } from '../store/slice';
@@ -22,6 +23,7 @@ import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {Alert} from 'react-native';
 import Config from 'react-native-config';
+import Login from './Login';
 
 export type LoggedInParamList = {
   Stack: {
@@ -61,9 +63,13 @@ const Root = () => {
   const {userInfo} = useSelector((state: initialStateProps) => ({
     userInfo: state.userInfo,
   }));
+
+  const {isAuth} = useSelector((state: initialStateProps) => ({
+    isAuth: state.isAuth,
+  }));
   useEffect(() => {
     function firstLoading() {
-      return setTimeout(() => {
+      return setTimeout(async () => {
         setLoading(false);
       }, 2000);
     }
@@ -73,7 +79,10 @@ const Root = () => {
         const {
           data: {payload},
         }: {data: {payload: User}} = await getMyInfo();
+        console.log(payload);
+        dispatch(login(true));
         dispatch(setUserInfo(payload));
+        dispatch(setAuth(true));
       }
     }
     getToken();
@@ -92,56 +101,64 @@ const Root = () => {
           config,
           response: {status},
         } = error;
-
+        console.log(status);
         if (status === 401) {
           const originalRequest = config;
-
-          try {
-            const refreshToken = await EncryptedStorage.getItem('refreshToken');
-            if (refreshToken) {
-              const {
-                data: {
-                  payload: {access_token},
-                },
-              }: {
-                data: {
-                  payload: {access_token: string};
-                };
-              } = await axios.post(`${Config.API_URL}/token/refresh`, {
-                refreshToken,
-              });
-              originalRequest.headers.authorization = `Bearer ${access_token}`;
-              return axios(originalRequest);
-            } else {
-              Alert.alert('리프레시 토큰이 없습니다. 다시 로그인 해주세요.');
-              return dispatch(logout());
-            }
-          } catch (e: any) {
-            if (e.response.status === 401) {
-              Alert.alert(
-                '리프레시 토큰이 만료되었습니다. 다시 로그인 해주세요.',
+          if (error.response.data.code === 'expired') {
+            try {
+              const refreshToken = await EncryptedStorage.getItem(
+                'refreshToken',
               );
-              return dispatch(logout());
-            } else {
-              Alert.alert('오류입니다. 다시 로그인 해주세요.');
-              return dispatch(logout());
+              if (refreshToken) {
+                const {
+                  data: {
+                    payload: {access_token},
+                  },
+                }: {
+                  data: {
+                    payload: {access_token: string};
+                  };
+                } = await axios.post(`${Config.API_URL}/token/refresh`, {
+                  refreshToken,
+                });
+                originalRequest.headers.authorization = `Bearer ${access_token}`;
+                return axios(originalRequest);
+              } else {
+                Alert.alert('리프레시 토큰이 없습니다. 다시 로그인 해주세요.');
+                return dispatch(logout());
+              }
+            } catch (e: any) {
+              if (e.response.status === 401) {
+                Alert.alert(
+                  '리프레시 토큰이 만료되었습니다. 다시 로그인 해주세요.',
+                );
+                dispatch(logout());
+              } else {
+                Alert.alert('오류입니다. 다시 로그인 해주세요.');
+                dispatch(logout());
+              }
             }
           }
-        } else if (status === 405) {
-          return Alert.alert('자격 미이행 스컬');
-        } else {
-          Alert.alert('오류입니다. 다시 로그인 해주세요.');
-          return dispatch(logout());
+          if (error.response.data.code === 'wrong access') {
+            if (!isLoggedIn) {
+              dispatch(login(true));
+            }
+            if (!isAuth) {
+              dispatch(setAuth(false));
+            }
+            Alert.alert('유저 인증 작업을 진행해주세요.');
+          }
         }
+        return Promise.reject(error);
       },
     );
-  }, [dispatch]);
+  }, [dispatch, isAuth, isLoggedIn]);
 
   useEffect(() => {
     const callback = (data: {id: number}) => {
-      if (userInfo.id !== data.id) {
-        dispatch(setFeed(true));
-      }
+      // if (userInfo.id !== data.id) {
+      //   dispatch(setFeed(true));
+      // }
 
       dispatch(setFeed(true));
     };
@@ -186,12 +203,16 @@ const Root = () => {
         headerShown: false,
       }}>
       {isLoggedIn ? (
-        <>
-          <Nav.Screen name="Tabs" component={Tabs} />
-          <Nav.Screen name="Stack" component={Stack} />
-        </>
+        isAuth ? (
+          <>
+            <Nav.Screen name="Tabs" component={Tabs} />
+            <Nav.Screen name="Stack" component={Stack} />
+          </>
+        ) : (
+          <Nav.Screen name="Auth" component={Auth} />
+        )
       ) : (
-        <Nav.Screen name="Auth" component={Auth} />
+        <Nav.Screen name="Login" component={Login} />
       )}
     </Nav.Navigator>
   );

@@ -4,8 +4,9 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {WebView} from 'react-native-webview';
 import {useDispatch} from 'react-redux';
 import {setToken} from '../../api';
-import {login} from '../../store/slice';
+import {login, setAuth} from '../../store/slice';
 import Config from 'react-native-config';
+import {getMyInfo} from '../../api/user';
 
 const SnsLogin = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,8 @@ const SnsLogin = () => {
 
     await setToken();
     dispatch(login(true));
+    await getMyInfo();
+    dispatch(setAuth(true));
   };
 
   useEffect(() => {

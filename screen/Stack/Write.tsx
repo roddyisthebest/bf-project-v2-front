@@ -8,6 +8,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import useSocket from '../../hooks/useSocket';
+import Config from 'react-native-config';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -146,16 +147,13 @@ const Write = ({
         text && formData.append('content', text);
         const accessToken = await EncryptedStorage.getItem('accessToken');
 
-        const response: any = await fetch(
-          'http://192.168.123.103:3000/tweet/',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: formData,
+        const response: any = await fetch(`${Config.API_URL}/tweet/`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+          body: formData,
+        });
 
         if ((response.status as number) === 402) {
           Alert.alert('게시물 업로드 서비스를 \n 사용하고 있지 않습니다.');
@@ -165,7 +163,7 @@ const Write = ({
         dispatch(setRefresh(true));
         navigate('Tabs', {screen: 'Tweets'});
       } catch (e: any) {
-        console.log(e);
+        console.log({...e});
         if (e.column && Platform.OS === 'android') {
           uploadTweet(img, text);
         } else {

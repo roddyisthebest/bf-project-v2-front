@@ -19,7 +19,7 @@ const useSocket = (): [Socket | undefined, () => void] => {
   if (!socket && isLoggedIn) {
     console.log(!socket && isLoggedIn, '웹소켓 연결을 진행합니다.');
     console.log(Config.API_URL);
-    socket = SocketIOClient('http://192.168.123.103:3000', {
+    socket = SocketIOClient(Config.API_URL, {
       transports: ['websocket'],
     });
   }

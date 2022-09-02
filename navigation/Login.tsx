@@ -1,11 +1,11 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {Image} from 'react-native';
-import Code from '../screen/Auth/Code';
-import Setting from '../screen/Auth/Setting';
+import Loginpage from '../screen/Login/Login';
+import SnsLogin from '../screen/Login/SnsLogin';
 const NativeStack = createNativeStackNavigator();
 
-const Auth = () => (
+const Login = () => (
   <NativeStack.Navigator
     screenOptions={{
       headerTitle: () => (
@@ -18,9 +18,9 @@ const Auth = () => (
       contentStyle: {backgroundColor: 'white'},
       headerTitleAlign: 'center',
     }}>
-    <NativeStack.Screen name="Code" component={Code} />
-    <NativeStack.Screen name="Setting" component={Setting} />
+    <NativeStack.Screen name="localLogin" component={Loginpage} />
+    <NativeStack.Screen name="SnsLogin" component={SnsLogin} />
   </NativeStack.Navigator>
 );
 
-export default Auth;
+export default Login;
