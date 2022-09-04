@@ -132,11 +132,11 @@ const Root = () => {
                 Alert.alert(
                   '리프레시 토큰이 만료되었습니다. 다시 로그인 해주세요.',
                 );
-                dispatch(logout());
               } else {
                 Alert.alert('오류입니다. 다시 로그인 해주세요.');
-                dispatch(logout());
               }
+              await EncryptedStorage.clear();
+              dispatch(logout());
             }
           }
           if (error.response.data.code === 'wrong access') {
