@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Root from './navigation/Root';
 import {Provider} from 'react-redux';
@@ -7,6 +7,7 @@ import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import store from './store';
+import {Alert} from 'react-native';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
@@ -21,14 +22,11 @@ PushNotification.configure({
   // (required) 리모트 노티를 수신하거나, 열었거나 로컬 노티를 열었을 때 실행
   onNotification: function (notification: any) {
     console.log('NOTIFICATION:', notification);
-    if (notification.channelId === 'riders') {
-      // if (notification.message || notification.data.message) {
-      //   store.dispatch(
-      //     userSlice.actions.showPushPopup(
-      //       notification.message || notification.data.message,
-      //     ),
-      //   );
-      // }
+    if (notification.foreground) {
+      PushNotification.localNotification({
+        title: notification.title,
+        message: notification.message,
+      });
     }
     // process the notification
 
@@ -70,7 +68,30 @@ PushNotification.configure({
   requestPermissions: true,
 });
 
+PushNotification.createChannel(
+  {
+    channelId: 'default', // (required)
+    channelName: '앱 전반', // (required)
+    channelDescription: '앱 실행하는 알림', // (optional) default: undefined.
+    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    importance: 4, // (optional) default: 4. Int value of the Android notification importance
+    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+  },
+  (created: boolean) =>
+    console.log(`createChannel riders returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
+
 const App = () => {
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(
+        remoteMessage.notification?.title,
+        remoteMessage.notification?.body,
+      );
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>

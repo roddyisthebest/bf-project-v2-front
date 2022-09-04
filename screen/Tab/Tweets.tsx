@@ -158,7 +158,9 @@ const Tweets = () => {
   useEffect(() => {
     if (refresh) {
       handleRefresh();
-      target.current.scrollToOffset({animated: true, offset: 0});
+      if (target.current) {
+        target.current.scrollToOffset({animated: true, offset: 0});
+      }
       Alert.alert('성공적으로 업로드되었습니다🔥');
       dispatch(setRefresh(false));
     }
