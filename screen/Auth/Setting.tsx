@@ -1,6 +1,9 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {Switch, Alert} from 'react-native';
+import {logout, setAuth, setService} from '../../store/slice';
+import {saveMyService} from '../../api/user';
+import {useDispatch} from 'react-redux';
 
 const Container = styled.View`
   flex: 1;
@@ -61,7 +64,8 @@ const BtnText = styled.Text<{color: string}>`
   color: ${props => props.color};
   font-weight: 700;
 `;
-const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
+const Code = () => {
+  const dispatch = useDispatch();
   const [val, setVal] = useState([false, false, false]);
   const toggleVal = useCallback(
     (index: number) => {
@@ -69,6 +73,22 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
       setVal([...val]);
     },
     [val],
+  );
+
+  const checkService = useCallback(
+    async (tweet: boolean, pray: boolean, penalty: boolean) => {
+      try {
+        await saveMyService({tweet, pray, penalty});
+        tweet && dispatch(setService('tweet'));
+        pray && dispatch(setService('pray'));
+        penalty && dispatch(setService('penalty'));
+        dispatch(setAuth(true));
+      } catch (e) {
+        Alert.alert('서버오류입니다. 관리자에게 문의 부탁드립니다.');
+        dispatch(logout());
+      }
+    },
+    [dispatch],
   );
 
   const showConfirmDialog = useCallback(() => {
@@ -79,7 +99,9 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
         // The "Yes" button
         {
           text: '네',
-          onPress: () => {},
+          onPress: () => {
+            checkService(val[0], val[1], val[2]);
+          },
         },
         // The "No" button
         // Does nothing but dismiss the dialog when tapped
@@ -88,7 +110,8 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
         },
       ],
     );
-  }, []);
+  }, [checkService, val]);
+
   return (
     <Container>
       <Title>기능 사용 설정</Title>

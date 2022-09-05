@@ -76,13 +76,17 @@ const Root = () => {
     async function getToken() {
       const data = await getTokenByRefresh();
       if (data) {
-        const {
-          data: {payload},
-        }: {data: {payload: User}} = await getMyInfo();
-        console.log(payload);
-        dispatch(login(true));
-        dispatch(setUserInfo(payload));
-        dispatch(setAuth(true));
+        try {
+          const {
+            data: {payload},
+          }: {data: {payload: User}} = await getMyInfo();
+          console.log(payload);
+          dispatch(setAuth(true));
+          dispatch(login(true));
+          dispatch(setUserInfo(payload));
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     getToken();
@@ -124,7 +128,6 @@ const Root = () => {
                 originalRequest.headers.authorization = `Bearer ${access_token}`;
                 return axios(originalRequest);
               } else {
-                Alert.alert('리프레시 토큰이 없습니다. 다시 로그인 해주세요.');
                 return dispatch(logout());
               }
             } catch (e: any) {
@@ -147,6 +150,7 @@ const Root = () => {
               dispatch(setAuth(false));
             }
             Alert.alert('유저 인증 작업을 진행해주세요.');
+            return Promise.reject(error);
           }
         }
         return Promise.reject(error);
@@ -182,9 +186,9 @@ const Root = () => {
         if (!messaging().isDeviceRegisteredForRemoteMessages) {
           await messaging().registerDeviceForRemoteMessages();
         }
-        const token = await messaging().getToken();
-        console.log('phone token', token);
-        return axios.post(`${Config.API_URL}/phonetoken`, {token});
+        const phoneToken = await messaging().getToken();
+        console.log('phone token', phoneToken);
+        return api.post(`${Config.API_URL}/user/phonetoken`, {phoneToken});
       } catch (error) {
         console.error(error);
       }

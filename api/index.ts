@@ -7,7 +7,7 @@ export type response = {
   msg: string;
 };
 export const api = axios.create({
-  baseURL: 'https://api.bf-church.click' as string,
+  baseURL: Config.API_URL as string,
 });
 
 export const setToken = async () => {

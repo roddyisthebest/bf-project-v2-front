@@ -22,12 +22,7 @@ PushNotification.configure({
   // (required) 리모트 노티를 수신하거나, 열었거나 로컬 노티를 열었을 때 실행
   onNotification: function (notification: any) {
     console.log('NOTIFICATION:', notification);
-    if (notification.foreground) {
-      PushNotification.localNotification({
-        title: notification.title,
-        message: notification.message,
-      });
-    }
+
     // process the notification
 
     // (required) 리모트 노티를 수신하거나, 열었거나 로컬 노티를 열었을 때 실행
@@ -85,10 +80,11 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert(
-        remoteMessage.notification?.title,
+        remoteMessage.notification?.title as string,
         remoteMessage.notification?.body,
       );
     });
+
     return unsubscribe;
   }, []);
 

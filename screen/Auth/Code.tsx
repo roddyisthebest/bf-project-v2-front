@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {TextInput, Platform, Alert} from 'react-native';
+import {TextInput, Platform} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 import {authCode} from '../../api/user';
 
