@@ -3,6 +3,9 @@ import styled from 'styled-components/native';
 import {TextInput, Platform} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 import {authCode} from '../../api/user';
+import {api} from '../../api';
+import Config from 'react-native-config';
+import messaging from '@react-native-firebase/messaging';
 
 const Container = styled.View`
   flex: 1;
@@ -83,9 +86,22 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
     input.current.focus();
   }, []);
 
+  async function getToken() {
+    try {
+      if (!messaging().isDeviceRegisteredForRemoteMessages) {
+        await messaging().registerDeviceForRemoteMessages();
+      }
+      const phoneToken = await messaging().getToken();
+      console.log('phone token', phoneToken);
+      return api.post(`${Config.API_URL}/user/phonetoken`, {phoneToken});
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const submit = useCallback(async () => {
     try {
       await authCode(val);
+      getToken();
       return dispatch(
         CommonActions.reset({
           index: 0,
@@ -136,6 +152,7 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
           }}
           returnKeyType="go"
           autoFocus
+          testID="input"
         />
       </CellWrapper>
       <Btn

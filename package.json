@@ -19,6 +19,7 @@
     "@react-navigation/material-top-tabs": "^6.2.2",
     "@react-navigation/native-stack": "^6.7.0",
     "@reduxjs/toolkit": "^1.8.3",
+    "@testing-library/react-native": "^11.0.0",
     "@types/react-native-vector-icons": "^6.4.11",
     "axios": "^0.27.2",
     "moment": "^2.29.4",

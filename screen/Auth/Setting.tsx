@@ -1,9 +1,10 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {Switch, Alert} from 'react-native';
-import {setAuth, setService} from '../../store/slice';
-import {saveMyService} from '../../api/user';
+import {setAuth, setService, setUserInfo} from '../../store/slice';
+import {getMyInfo, saveMyService} from '../../api/user';
 import {useDispatch} from 'react-redux';
+import {User} from '../../types/User';
 
 const Container = styled.View`
   flex: 1;
@@ -82,6 +83,10 @@ const Code = () => {
         tweet && dispatch(setService('tweet'));
         pray && dispatch(setService('pray'));
         penalty && dispatch(setService('penalty'));
+        const {
+          data: {payload},
+        }: {data: {payload: User}} = await getMyInfo();
+        dispatch(setUserInfo(payload));
         dispatch(setAuth(true));
       } catch (e) {
         console.log(e);

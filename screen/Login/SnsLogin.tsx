@@ -43,12 +43,16 @@ const SnsLogin = () => {
     console.log('access', access);
 
     await setToken();
-    dispatch(setAuth(true));
     dispatch(login(true));
-    const {
-      data: {payload},
-    }: {data: {payload: User}} = await getMyInfo();
-    dispatch(setUserInfo(payload));
+    try {
+      const {
+        data: {payload},
+      }: {data: {payload: User}} = await getMyInfo();
+      dispatch(setUserInfo(payload));
+      dispatch(setAuth(true));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {

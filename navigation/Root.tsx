@@ -82,8 +82,8 @@ const Root = () => {
           }: {data: {payload: User}} = await getMyInfo();
           console.log(payload);
           dispatch(setAuth(true));
-          dispatch(login(true));
           dispatch(setUserInfo(payload));
+          dispatch(login(true));
         } catch (e) {
           console.log(e);
         }

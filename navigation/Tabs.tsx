@@ -116,7 +116,7 @@ const Tabs = ({
               }}>
               <Image
                 source={{
-                  uri: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
+                  uri: userInfo.img,
                 }}
                 style={{width: 30, height: 30, borderRadius: 30}}
               />
