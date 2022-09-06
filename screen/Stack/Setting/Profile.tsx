@@ -1,6 +1,9 @@
-import React, {useEffect} from 'react';
-import {Dimensions, Pressable, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Dimensions, Pressable, Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {saveMyInfo} from '../../../api/user';
+import {initialStateProps, setUserName} from '../../../store/slice';
 
 const Container = styled.View`
   flex: 1;
@@ -52,15 +55,31 @@ const Profile = ({
 }: {
   navigation: {setOptions: Function};
 }) => {
+  const {userInfo} = useSelector((state: initialStateProps) => ({
+    userInfo: state.userInfo,
+  }));
+  const dispatch = useDispatch();
+  const [name, setName] = useState<string>('');
+
+  useEffect(() => {
+    setName(userInfo.name);
+  }, [userInfo]);
+
   useEffect(() => {
     setOptions({
-      headerRight: () => (
-        <Pressable onPress={() => {}}>
-          <Text style={{color: '#3478F6', fontSize: 17}}>완료</Text>
-        </Pressable>
-      ),
+      headerRight: () =>
+        name !== userInfo.name ? (
+          <Pressable
+            onPress={async () => {
+              await saveMyInfo(name);
+              Alert.alert('성공적으로 회원님의 정보가 변경되었습니다.');
+              dispatch(setUserName(name));
+            }}>
+            <Text style={{color: '#3478F6', fontSize: 17}}>완료</Text>
+          </Pressable>
+        ) : null,
     });
-  }, [setOptions]);
+  }, [setOptions, name, userInfo.name, dispatch]);
 
   return (
     <Container>
@@ -69,12 +88,17 @@ const Profile = ({
         <Column>
           <Img
             source={{
-              uri: 'https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_110x110.jpg',
+              uri: userInfo.img,
             }}
           />
         </Column>
         <Label>이름</Label>
-        <Input />
+        <Input
+          value={name}
+          onChangeText={text => {
+            setName(text);
+          }}
+        />
       </UserContents>
     </Container>
   );

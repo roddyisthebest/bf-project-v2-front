@@ -106,6 +106,13 @@ const {actions, reducer} = createSlice({
       ...state,
       isAuth: payload,
     }),
+    setUserName: (state, {payload}: PayloadAction<string>) => ({
+      ...state,
+      userInfo: {
+        ...state.userInfo,
+        name: payload,
+      },
+    }),
   },
 });
 
@@ -118,6 +125,7 @@ export const {
   setRefresh,
   setService,
   setFeed,
+  setUserName,
   setAuth,
 } = actions;
 export default reducer;
