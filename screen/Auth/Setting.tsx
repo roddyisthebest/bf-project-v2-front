@@ -84,8 +84,7 @@ const Code = () => {
         penalty && dispatch(setService('penalty'));
         dispatch(setAuth(true));
       } catch (e) {
-        Alert.alert('서버오류입니다. 관리자에게 문의 부탁드립니다.');
-        dispatch(logout());
+        console.log(e);
       }
     },
     [dispatch],

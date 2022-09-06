@@ -85,7 +85,6 @@ const Tweets = () => {
         setLastId(-1);
       }
     } catch (e) {
-      Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
     }
@@ -108,9 +107,7 @@ const Tweets = () => {
               await deleteTweet(id);
               setData(tweet => tweet.filter(e => e.id !== id));
               handleRefresh();
-            } catch (e) {
-              Alert.alert('에러입니다.');
-            }
+            } catch (e) {}
           },
           style: 'destructive',
         },
@@ -141,7 +138,6 @@ const Tweets = () => {
           setData(prev => [...prev, ...payload]);
         }
       } catch (e) {
-        console.log(e);
       } finally {
         if (loading) {
           setLoading(false);

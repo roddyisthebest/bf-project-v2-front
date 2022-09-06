@@ -111,7 +111,6 @@ const PrayEditable = memo(
           await deletePray(id);
           setPrays(prev => prev?.filter(pray => pray.id !== id));
         } catch (e) {
-          Alert.alert('에러입니다.');
           prays.splice(index, 1, {...prays[index], deleteLoading: false});
           setPrays([...prays]);
         }

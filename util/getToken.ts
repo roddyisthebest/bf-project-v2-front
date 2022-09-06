@@ -27,8 +27,6 @@ const getTokenByRefresh = async () => {
 
     return true;
   } catch (e: any) {
-    console.log(e);
-    console.log('post에러');
     if (e.response.status === 401) {
       Alert.alert('refresh토큰이 만료되었습니다. 다시 로그인해주세요.');
     } else {

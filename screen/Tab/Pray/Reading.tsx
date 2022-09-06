@@ -130,14 +130,11 @@ const Reading = () => {
           }
           setData([]);
           setData(payload);
-        } catch (e) {
-          Alert.alert('오류입니다.');
-        }
+        } catch (e) {}
       } else {
         setLastId(-1);
       }
     } catch (e) {
-      Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
       setLoading(false);

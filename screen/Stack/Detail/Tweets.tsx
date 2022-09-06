@@ -37,9 +37,7 @@ const Tweets = () => {
           try {
             await deleteTweet(id);
             setData(tweet => tweet.filter(e => e.id !== id));
-          } catch (e) {
-            Alert.alert('에러입니다.');
-          }
+          } catch (e) {}
         },
         style: 'destructive',
       },

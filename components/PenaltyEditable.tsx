@@ -68,7 +68,6 @@ const PenaltyEditable = memo(({data}: {data: User}) => {
       setCheck(prev => !prev);
     } catch (e) {
       console.log(e);
-      Alert.alert('오류입니다.');
     } finally {
       setLoading(false);
     }

@@ -141,21 +141,15 @@ const Root = () => {
               await EncryptedStorage.clear();
               dispatch(logout());
             }
+          } else {
+            dispatch(logout());
+            Alert.alert('권한이 없습니다.');
           }
-          if (error.response.data.code === 'wrong access') {
-            if (!isLoggedIn) {
-              dispatch(login(true));
-            }
-            if (!isAuth) {
-              dispatch(setAuth(false));
-            }
-            Alert.alert('유저 인증 작업을 진행해주세요.');
-            return Promise.reject(error);
-          }
-        }
-        if (status === 500) {
+        } else if (status === 500) {
           dispatch(logout());
           Alert.alert('서버 에러입니다. 관리자에게 문의주세요. 01051529445');
+        } else {
+          Alert.alert(error.response.data.msg);
         }
         return Promise.reject(error);
       },
