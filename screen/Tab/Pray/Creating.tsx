@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, SafeAreaView, Alert, ActivityIndicator} from 'react-native';
+import {View, SafeAreaView, ActivityIndicator, Text} from 'react-native';
 import styled from 'styled-components/native';
 import PrayEditable from '../../../components/PrayEditable';
 import {User} from '../../../types/User';
@@ -137,6 +137,22 @@ const Creating = ({
           }}
           refreshing={refreshing}
           onRefresh={handleRefresh}
+          ListEmptyComponent={
+            <View
+              style={{
+                marginVertical: 25,
+                marginHorizontal: 100,
+                backgroundColor: '#10DDC2',
+                height: 40,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white', fontWeight: '900'}}>
+                기도제목 서비스를 사용하는 유저가 없습니다.
+              </Text>
+            </View>
+          }
         />
       )}
     </SafeAreaView>

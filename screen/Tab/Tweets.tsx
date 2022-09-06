@@ -168,21 +168,6 @@ const Tweets = () => {
         <LoadingContainer>
           <ActivityIndicator color="#687684" size={50} />
         </LoadingContainer>
-      ) : data.length === 0 ? (
-        <View
-          style={{
-            marginVertical: 25,
-            marginHorizontal: 100,
-            backgroundColor: '#10DDC2',
-            height: 40,
-            borderRadius: 15,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={{color: 'white', fontWeight: '900'}}>
-            게시글이 없습니다.
-          </Text>
-        </View>
       ) : (
         <FlatContainer>
           {newFeed !== 0 ? (
@@ -214,6 +199,22 @@ const Tweets = () => {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             ref={target}
+            ListEmptyComponent={
+              <View
+                style={{
+                  marginVertical: 25,
+                  marginHorizontal: 100,
+                  backgroundColor: '#10DDC2',
+                  height: 40,
+                  borderRadius: 15,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text style={{color: 'white', fontWeight: '900'}}>
+                  게시글이 없습니다.
+                </Text>
+              </View>
+            }
           />
         </FlatContainer>
       )}

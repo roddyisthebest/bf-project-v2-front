@@ -1,11 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  FlatList,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import {View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PrayEditable from '../../../components/PrayEditable';
@@ -139,7 +133,6 @@ const Reading = () => {
       setRefreshing(false);
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastId, weekend]);
 
   useEffect(() => {

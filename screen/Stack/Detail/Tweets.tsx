@@ -4,6 +4,7 @@ import {
   Alert,
   FlatList,
   SafeAreaView,
+  Text,
   View,
 } from 'react-native';
 import {useSelector} from 'react-redux';
@@ -111,6 +112,22 @@ const Tweets = () => {
               <ActivityIndicator color="#687684" size={30} />
             </View>
           ) : null
+        }
+        ListEmptyComponent={
+          <View
+            style={{
+              marginVertical: 25,
+              marginHorizontal: 100,
+              backgroundColor: '#10DDC2',
+              height: 40,
+              borderRadius: 15,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={{color: 'white', fontWeight: '900'}}>
+              게시글이 없습니다.
+            </Text>
+          </View>
         }
       />
     </SafeAreaView>

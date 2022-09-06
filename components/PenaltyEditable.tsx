@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import {LoggedInParamList} from '../navigation/Root';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {User} from '../types/User';
-import {ActivityIndicator, Alert} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {checkPayed} from '../api/user';
 
 const Container = styled.View`

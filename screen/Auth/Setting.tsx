@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {Switch, Alert} from 'react-native';
-import {logout, setAuth, setService} from '../../store/slice';
+import {setAuth, setService} from '../../store/slice';
 import {saveMyService} from '../../api/user';
 import {useDispatch} from 'react-redux';
 

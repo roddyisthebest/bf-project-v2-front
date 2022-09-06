@@ -158,11 +158,9 @@ const Root = () => {
 
   useEffect(() => {
     const callback = (data: {id: number}) => {
-      // if (userInfo.id !== data.id) {
-      //   dispatch(setFeed(true));
-      // }
-
-      dispatch(setFeed(true));
+      if (userInfo.id !== data.id) {
+        dispatch(setFeed(true));
+      }
     };
     if (!isLoggedIn) {
       console.log('!isLoggedIn', !isLoggedIn);

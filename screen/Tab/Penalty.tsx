@@ -75,22 +75,6 @@ const Penalty = () => {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       {loading ? (
         <ActivityIndicator color="#687684" size={50} style={{marginTop: 30}} />
-      ) : data.length === 0 ? (
-        // style={{width: Dimensions.get('window').width * 0.8}}
-        <View
-          style={{
-            marginVertical: 25,
-            marginHorizontal: 100,
-            backgroundColor: '#10DDC2',
-            height: 40,
-            borderRadius: 15,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={{color: 'white', fontWeight: '900'}}>
-            데이터가 없습니다.
-          </Text>
-        </View>
       ) : (
         <FlatList
           data={data}
@@ -106,6 +90,22 @@ const Penalty = () => {
           onRefresh={() => {
             handleRefresh(lastId);
           }}
+          ListEmptyComponent={
+            <View
+              style={{
+                marginVertical: 25,
+                marginHorizontal: 100,
+                backgroundColor: '#10DDC2',
+                height: 40,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white', fontWeight: '900'}}>
+                벌금 데이터가 없습니다.
+              </Text>
+            </View>
+          }
         />
       )}
     </SafeAreaView>
