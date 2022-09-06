@@ -125,7 +125,6 @@ const PrayEditable = memo(
         const {
           data: {payload},
         } = await postPray(id);
-
         setPrays(prev => [
           ...prev,
           {

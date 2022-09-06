@@ -46,9 +46,12 @@ const Creating = ({
   const getData = useCallback(async (id: number) => {
     try {
       const {
-        data: {payload, code},
-      }: {data: {payload: User[]; code: number}} = await getPrays(id);
-      if (code === 202) {
+        data: {payload, code, msg},
+      }: {data: {payload: User[]; code: string; msg: string}} = await getPrays(
+        id,
+      );
+      console.log('데이터입니다', payload, msg, code);
+      if (code === 'last data') {
         setDisabled(true);
       }
       if (id === -1) {
@@ -70,8 +73,8 @@ const Creating = ({
         try {
           const {
             data: {payload, code},
-          }: {data: {payload: User[]; code: number}} = await getPrays(-1);
-          if (code === 202) {
+          }: {data: {payload: User[]; code: string}} = await getPrays(-1);
+          if (code === 'last data') {
             setDisabled(true);
           }
           setData([]);
@@ -84,6 +87,7 @@ const Creating = ({
       Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
+      setLoading(false);
     }
   }, [lastId]);
 

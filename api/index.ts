@@ -3,7 +3,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
 export type response = {
   payload: any;
-  code: number;
+  code: string;
   msg: string;
 };
 export const api = axios.create({

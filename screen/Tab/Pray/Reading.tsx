@@ -1,5 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
+import {
+  View,
+  FlatList,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PrayEditable from '../../../components/PrayEditable';
@@ -56,19 +62,19 @@ const Reading = () => {
       setExistLoading(true);
       const {
         data: {code: lastCode},
-      }: {data: {code: number}} = await getPraysExistence(
+      }: {data: {code: string}} = await getPraysExistence(
         moment()
           .day(date - 7)
           .format('YYYY-MM-DD'),
       );
       const {
         data: {code: nextCode},
-      }: {data: {code: number}} = await getPraysExistence(
+      }: {data: {code: string}} = await getPraysExistence(
         moment()
           .day(date + 7)
           .format('YYYY-MM-DD'),
       );
-      setBtnStatus([lastCode === 200, nextCode === 200]);
+      setBtnStatus([lastCode === 'exist', nextCode === 'exist']);
     } catch (e) {
       console.log(e);
     } finally {
@@ -80,11 +86,14 @@ const Reading = () => {
     async (id: number, mutate: boolean) => {
       try {
         const {
-          data: {payload},
-        }: {data: {payload: User[]}} = await getPraysByDate(
+          data: {payload, code},
+        }: {data: {payload: User[]; code: string}} = await getPraysByDate(
           id,
           moment().day(weekend).format('YYYY-MM-DD'),
         );
+        if (code === 'last data') {
+          setDisabled(true);
+        }
         if (mutate) {
           setData(prev => [...prev, ...payload]);
         } else {
@@ -103,34 +112,38 @@ const Reading = () => {
     [weekend],
   );
 
-  // const handleRefresh = useCallback(async () => {
-  //   try {
-  //     setRefreshing(true);
-  //     if (lastId === -1) {
-  //       try {
-  //         const {
-  //           data: {payload, code},
-  //         }: {data: {payload: User[]; code: number}} = await getPraysByDate(
-  //           -1,
-  //           moment().day(weekend).format('YYYY-MM-DD'),
-  //         );
-  //         if (code === 202) {
-  //           setDisabled(true);
-  //         }
-  //         setData([]);
-  //         setData(payload);
-  //       } catch (e) {
-  //         Alert.alert('오류입니다.');
-  //       }
-  //     } else {
-  //       setLastId(-1);
-  //     }
-  //   } catch (e) {
-  //     Alert.alert('오류입니다.');
-  //   } finally {
-  //     setRefreshing(false);
-  //   }
-  // }, [weekend]);
+  const handleRefresh = useCallback(async () => {
+    try {
+      setRefreshing(true);
+      setLoading(true);
+      setDisabled(false);
+      if (lastId === -1) {
+        try {
+          const {
+            data: {payload, code},
+          }: {data: {payload: User[]; code: string}} = await getPraysByDate(
+            -1,
+            moment().day(weekend).format('YYYY-MM-DD'),
+          );
+          if (code === 'last data') {
+            setDisabled(true);
+          }
+          setData([]);
+          setData(payload);
+        } catch (e) {
+          Alert.alert('오류입니다.');
+        }
+      } else {
+        setLastId(-1);
+      }
+    } catch (e) {
+      Alert.alert('오류입니다.');
+    } finally {
+      setRefreshing(false);
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastId, weekend]);
 
   useEffect(() => {
     checkExist(weekend);
@@ -140,11 +153,14 @@ const Reading = () => {
   }, [weekend]);
 
   useEffect(() => {
-    if (lastId === -1) {
-      getData(lastId, false);
-    } else {
-      getData(lastId, true);
+    if (!loading && !disabled) {
+      if (lastId === -1) {
+        getData(lastId, false);
+      } else {
+        getData(lastId, true);
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastId]);
 
@@ -206,9 +222,7 @@ const Reading = () => {
             setLastId(data[data.length - 1].id);
           }}
           refreshing={refreshing}
-          onRefresh={() => {
-            setLastId(-1);
-          }}
+          onRefresh={handleRefresh}
         />
       )}
     </SafeAreaView>

@@ -16,15 +16,20 @@ const Penalty = () => {
   const [lastId, setLastId] = useState<number>(-1);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const handleRefresh = useCallback(async (id: number) => {
     try {
+      setDisabled(false);
       setRefreshing(true);
       if (id === -1) {
         const {
-          data: {payload},
-        }: {data: {payload: User[]}} = await getPenaltys(id);
+          data: {payload, code},
+        }: {data: {payload: User[]; code: string}} = await getPenaltys(id);
         setData(payload);
+        if (code === 'last data') {
+          setDisabled(true);
+        }
       } else {
         setLastId(-1);
       }
@@ -38,8 +43,12 @@ const Penalty = () => {
   const getData = useCallback(async (id: number) => {
     try {
       const {
-        data: {payload},
-      }: {data: {payload: User[]}} = await getPenaltys(id);
+        data: {payload, code},
+      }: {data: {payload: User[]; code: string}} = await getPenaltys(id);
+
+      if (code === 'last data') {
+        setDisabled(true);
+      }
 
       if (id === -1) {
         setData(payload);
@@ -56,8 +65,10 @@ const Penalty = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    getData(lastId);
-  }, [getData, lastId]);
+    if (!disabled) {
+      getData(lastId);
+    }
+  }, [disabled, getData, lastId]);
 
   const renderItem = ({item}: {item: User}) => <PenaltyEditable data={item} />;
   return (
