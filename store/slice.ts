@@ -38,6 +38,22 @@ const {actions, reducer} = createSlice({
     logout: state => ({
       ...state,
       isLoggedIn: false,
+      userInfo: {
+        id: -1,
+        oauth: '',
+        name: '',
+        img: '',
+        Followers: [],
+        Followings: [],
+        Service: {
+          penalty: false,
+          pray: false,
+          tweet: false,
+        },
+        refresh: false,
+        newFeed: 0,
+        isAuth: false,
+      },
     }),
     setUserInfo: (state, {payload}: PayloadAction<User>) => ({
       ...state,

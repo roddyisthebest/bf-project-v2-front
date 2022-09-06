@@ -153,6 +153,10 @@ const Root = () => {
             return Promise.reject(error);
           }
         }
+        if (status === 500) {
+          dispatch(logout());
+          Alert.alert('서버 에러입니다. 관리자에게 문의주세요. 01051529445');
+        }
         return Promise.reject(error);
       },
     );
