@@ -65,7 +65,7 @@ const BtnText = styled.Text<{color: string}>`
   color: ${props => props.color};
   font-weight: 700;
 `;
-const Code = () => {
+const Setting = () => {
   const dispatch = useDispatch();
   const [val, setVal] = useState([false, false, false]);
   const toggleVal = useCallback(
@@ -173,4 +173,4 @@ const Code = () => {
   );
 };
 
-export default Code;
+export default Setting;

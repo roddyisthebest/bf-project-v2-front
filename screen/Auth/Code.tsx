@@ -1,11 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {TextInput, Platform} from 'react-native';
+import {TextInput, Platform, Text} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 import {authCode} from '../../api/user';
 import {api} from '../../api';
 import Config from 'react-native-config';
 import messaging from '@react-native-firebase/messaging';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+
+import {LoggedInParamList} from '../../navigation/Root';
 
 const Container = styled.View`
   flex: 1;
@@ -72,7 +75,9 @@ const BtnText = styled.Text<{color: string}>`
   color: ${props => props.color};
   font-weight: 700;
 `;
-const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
+const Code = () => {
+  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+
   const [val, setVal] = useState('');
   const input = useRef<any>();
 
@@ -102,7 +107,7 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
     try {
       await authCode(val);
       getToken();
-      return dispatch(
+      return navigation.dispatch(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'Setting'}],
@@ -111,7 +116,7 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
     } catch (e) {
       console.log(e);
     }
-  }, [dispatch, val]);
+  }, [navigation, val]);
 
   return (
     <Container>
@@ -158,9 +163,13 @@ const Code = ({navigation: {dispatch}}: {navigation: {dispatch: Function}}) => {
       <Btn
         bkgColor={val.length === 6 ? '#10DDC2' : 'lightgray'}
         onPress={submit}
-        disabled={val.length !== 6}>
+        disabled={val.length !== 6}
+        testID="button">
         <BtnText color={val.length === 6 ? 'white' : '#6f6f6f'}>VERIFY</BtnText>
       </Btn>
+      <Text testID="inputValue" style={{display: 'none'}}>
+        {val}
+      </Text>
     </Container>
   );
 };

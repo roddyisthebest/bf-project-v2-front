@@ -4,7 +4,7 @@ import {ServiceType} from './ServiceType';
 
 export type User = {
   id: number;
-  oauth: 'KAKAO';
+  oauth: 'KAKAO' | string;
   name: string;
   img: string;
   Prays: PrayType[] | null;
