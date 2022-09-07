@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {Switch, Alert} from 'react-native';
+import {Switch, Alert, Text} from 'react-native';
 import {setAuth, setService, setUserInfo} from '../../store/slice';
 import {getMyInfo, saveMyService} from '../../api/user';
 import {useDispatch} from 'react-redux';
@@ -156,6 +156,7 @@ const Setting = () => {
         <SwitchColumn>
           <SwitchTitle>벌금</SwitchTitle>
           <Switch
+            testID="button"
             value={val[2]}
             onValueChange={() => {
               toggleVal(2);
@@ -169,6 +170,9 @@ const Setting = () => {
       <Btn bkgColor={'#10DDC2'} onPress={showConfirmDialog}>
         <BtnText color={'white'}>확인</BtnText>
       </Btn>
+      <Text testID="inputValue" style={{display: 'none'}}>
+        {val[2] ? 'true' : 'false'}
+      </Text>
     </Container>
   );
 };
