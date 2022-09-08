@@ -122,3 +122,18 @@ describe('Tweets', () => {
     }
   });
 });
+
+describe('Penalty', () => {
+  it('api 통신', async () => {
+    try {
+      const {status} = await axios.get(`${API_URL}/penalty/-1`, {
+        headers: {
+          Authorization: `bearer ${accessToken}`,
+        },
+      });
+      expect(status).toBe(200);
+    } catch (e) {
+      expect(e).toBeNaN();
+    }
+  });
+});
