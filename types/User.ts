@@ -9,10 +9,10 @@ export type User = {
   img: string;
   Prays: PrayType[] | null;
   payed: boolean;
-  Penalties: PenaltyType[];
-  Followers: User[];
-  Followings: User[];
-  Service: ServiceType;
-  createdAt: Date;
-  updatedAt: Date;
+  Penalties: PenaltyType[] | [];
+  Followers: User[] | [];
+  Followings: User[] | [];
+  Service: ServiceType | {};
+  createdAt: Date | string;
+  updatedAt: Date | string;
 };

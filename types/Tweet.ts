@@ -5,6 +5,6 @@ export type TweetType = {
   img: string;
   content: string;
   User: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 };

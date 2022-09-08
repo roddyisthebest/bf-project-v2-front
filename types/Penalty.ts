@@ -4,5 +4,5 @@ export type PenaltyType = {
   id: number;
   paper: number;
   weekend: string;
-  User: User;
+  User: User | {};
 };
