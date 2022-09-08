@@ -164,7 +164,7 @@ const Detail = ({
       try {
         setLoading(true);
         const {
-          data: {payload, msg},
+          data: {payload},
         }: {data: {payload: User; code: string}} = await saveFollow(
           !isItFollow,
           userId,

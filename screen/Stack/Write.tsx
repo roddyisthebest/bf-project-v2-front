@@ -1,6 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Alert, Platform, Text, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Platform,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, logout, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -77,9 +83,12 @@ const BtnColumn = styled.View`
 `;
 
 const UploadBtn = styled.TouchableOpacity<{bkgColor: string}>`
-  padding: 10px 20px;
+  width: 70px;
+  height: 32.5px;
   background-color: ${props => props.bkgColor};
   border-radius: 20px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const UploadBtnText = styled.Text<{color: string}>`
@@ -100,6 +109,7 @@ const Write = () => {
   const [image, setImage] = useState<ImageType>();
   const [content, setContent] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [socket, disconnect] = useSocket();
   const upload = useCallback(async () => {
@@ -142,6 +152,7 @@ const Write = () => {
   const uploadTweet = useCallback(
     async (img: ImageType | undefined, text: string) => {
       try {
+        setLoading(true);
         const formData = new FormData();
         const val = {name: img?.fileName, type: img?.type, uri: img?.uri};
         img && formData.append('img', val);
@@ -175,6 +186,8 @@ const Write = () => {
         } else {
           Alert.alert('에러입니다');
         }
+      } finally {
+        setLoading(false);
       }
     },
     [dispatch, navigation, socket, userInfo.id],
@@ -214,10 +227,14 @@ const Write = () => {
             onPress={() => {
               uploadTweet(image, content);
             }}
-            disabled={disabled}>
-            <UploadBtnText color={disabled ? '#6f6f6f' : 'white'}>
-              올리기
-            </UploadBtnText>
+            disabled={disabled && !loading}>
+            {loading ? (
+              <ActivityIndicator color="white" size={18} />
+            ) : (
+              <UploadBtnText color={disabled ? '#6f6f6f' : 'white'}>
+                올리기
+              </UploadBtnText>
+            )}
           </UploadBtn>
         </BtnColumn>
         {image ? (
