@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Alert, Platform, TouchableOpacity} from 'react-native';
+import {Alert, Platform, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, logout, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,8 @@ import {ImageType} from '../../types/Image';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import useSocket from '../../hooks/useSocket';
 import Config from 'react-native-config';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {LoggedInParamList} from '../../navigation/Root';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -86,11 +88,9 @@ const UploadBtnText = styled.Text<{color: string}>`
   font-weight: 600;
 `;
 
-const Write = ({
-  navigation: {navigate},
-}: {
-  navigation: {navigate: Function};
-}) => {
+const Write = () => {
+  const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
+
   const dispatch = useDispatch();
 
   const {userInfo} = useSelector((state: initialStateProps) => ({
@@ -117,6 +117,7 @@ const Write = ({
           mediaType: 'photo',
         });
         setImage(data.assets[0] as ImageType);
+        console.log(data);
       }
 
       // const data = await launchImageLibrary({
@@ -164,7 +165,7 @@ const Write = ({
         }
         socket?.emit('feed-uploaded', {id: userInfo.id});
         dispatch(setRefresh(true));
-        navigate('Tabs', {screen: 'Tweets'});
+        navigation.navigate('Tabs', {screen: 'Tweets', params: null});
       } catch (e: any) {
         if (e.column && Platform.OS === 'android') {
           uploadTweet(img, text);
@@ -176,7 +177,7 @@ const Write = ({
         }
       }
     },
-    [dispatch, navigate, socket, userInfo.id],
+    [dispatch, navigation, socket, userInfo.id],
   );
 
   return (
@@ -202,6 +203,7 @@ const Write = ({
           onChangeText={(text: string) => {
             setContent(text);
           }}
+          testID="input"
         />
         <BtnColumn>
           <TouchableOpacity onPress={upload}>
@@ -237,6 +239,9 @@ const Write = ({
           </TweetImgBtn>
         ) : null}
       </Right>
+      <Text style={{display: 'none'}} testID="inputValue">
+        {content}
+      </Text>
     </Container>
   );
 };

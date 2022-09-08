@@ -6,6 +6,9 @@ import axios from 'axios';
 import Setting from '../screen/Auth/Setting';
 import Login from '../screen/Login/Login';
 import SnsLogin from '../screen/Login/SnsLogin';
+import Write from '../screen/Stack/Write';
+import {useSelector} from 'react-redux';
+import FormData from 'form-data';
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-redux');
@@ -19,6 +22,9 @@ jest.mock('@react-navigation/native', () => {
     }),
   };
 });
+
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+
 const accessToken: string =
   'ZtMM-4xqBgO0DoUjoFYtHx9nXe_F84kgStggI61aCj1ylwAAAYMbJr1_';
 const API_URL = 'https://api.bf-church.click';
@@ -103,13 +109,6 @@ describe('SnsLogin', () => {
 
 describe('Tweets', () => {
   it('api 통신', async () => {
-    // const useSelectorCopy = useSelector as jest.Mock<any>;
-    // useSelectorCopy.mockImplementation(selector =>
-    //   selector({
-    //     refresh: false,
-    //   }),
-    // );
-
     try {
       const {status} = await axios.get(`${API_URL}/tweet/-1`, {
         headers: {
@@ -135,5 +134,41 @@ describe('Penalty', () => {
     } catch (e) {
       expect(e).toBeNaN();
     }
+  });
+});
+
+describe('Write', () => {
+  it('input 값 변경', async () => {
+    const useSelectorCopy = useSelector as jest.Mock<any>;
+    useSelectorCopy.mockImplementation(selector =>
+      selector({
+        userInfo: {
+          img: 'https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/296105988_735019344242739_8809340187758356692_n.jpg?stp=dst-jpg_e35_p480x480&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=8FKKENxkJq0AX_C-dmH&tn=BEmipNgrm38iVWSi&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5Mjg3OTkzOTcxNjI2OTk2Nw%3D%3D.2-ccb7-5&oh=00_AT--zRwVOwpBF0Q2WOcAZMTTTZdHO2xVJvDleUXOK-uKGw&oe=63214EBE&_nc_sid=30a2ef',
+        },
+      }),
+    );
+    const value: string = 'hello hyojin!';
+    render(<Write />);
+    fireEvent.changeText(screen.getByTestId('input'), value);
+    const codeOutput = await screen.findByTestId('inputValue');
+    expect(codeOutput).toHaveTextContent(value);
+  });
+  it('api 통신', async () => {
+    try {
+      const formData = new FormData();
+      formData.append('content', 'hello');
+      const {status} = await axios.post(`${API_URL}/tweet/`, formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      expect(status).toBe(200);
+    } catch (e: any) {
+      expect(e.response.status).toBe(406);
+    }
+  });
+  it('스냅샷', () => {
+    render(<Write />);
+    expect(screen.toJSON()).toMatchSnapshot();
   });
 });

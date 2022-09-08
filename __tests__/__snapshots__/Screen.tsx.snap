@@ -846,3 +846,239 @@ exports[`SnsLogin 스냅샷 1`] = `
   </View>
 </View>
 `;
+
+exports[`Write 스냅샷 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexDirection": "row",
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 0,
+        "paddingLeft": 25,
+        "paddingRight": 25,
+        "paddingTop": 35,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "marginRight": 20,
+          "width": 50,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "borderColor": "#eff5fb",
+            "borderRadius": 50,
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "width": 52,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityIgnoresInvertColors={true}
+        style={
+          Array [
+            Object {
+              "height": 50,
+              "width": 50,
+            },
+          ]
+        }
+      >
+        <Image
+          borderRadius={50}
+          resizeMode="cover"
+          source={
+            Object {
+              "uri": "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/296105988_735019344242739_8809340187758356692_n.jpg?stp=dst-jpg_e35_p480x480&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=8FKKENxkJq0AX_C-dmH&tn=BEmipNgrm38iVWSi&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5Mjg3OTkzOTcxNjI2OTk2Nw%3D%3D.2-ccb7-5&oh=00_AT--zRwVOwpBF0Q2WOcAZMTTTZdHO2xVJvDleUXOK-uKGw&oe=63214EBE&_nc_sid=30a2ef",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              Object {
+                "height": 50,
+                "width": 50,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+      ]
+    }
+  >
+    <TextInput
+      multiline={true}
+      numberOfLines={10}
+      onChangeText={[Function]}
+      placeholder="사진 또는 글을 올려주세요."
+      placeholderTextColor="#484848"
+      style={
+        Array [
+          Object {
+            "borderBottomWidth": 1,
+            "borderColor": "#494949",
+            "borderStyle": "solid",
+            "color": "black",
+            "height": 120,
+          },
+          Object {
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="input"
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 12.5,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "marginTop": 12.5,
+          },
+        ]
+      }
+    >
+      <View
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            Array [
+              Object {
+                "color": "#10DDC2",
+                "fontSize": 33,
+              },
+              undefined,
+              Object {
+                "fontFamily": "Ionicons",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          Object {
+            "disabled": true,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 20,
+            "opacity": 1,
+            "paddingBottom": 10,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "paddingTop": 10,
+          }
+        }
+      >
+        <Text
+          color="#6f6f6f"
+          style={
+            Array [
+              Object {
+                "color": "#6f6f6f",
+                "fontSize": 13,
+                "fontWeight": "600",
+              },
+            ]
+          }
+        >
+          올리기
+        </Text>
+      </View>
+    </View>
+  </View>
+  <Text
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    testID="inputValue"
+  >
+    
+  </Text>
+</View>
+`;

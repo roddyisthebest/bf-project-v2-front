@@ -28,11 +28,11 @@ import Login from './Login';
 export type LoggedInParamList = {
   Stack: {
     screen: string;
-    params: {id: number | null; uri: string | null};
+    params: {id: number | null; uri: string | null} | null;
   };
   Tabs: {
-    screen: string;
-    params: {id: number | null; uri: string | null};
+    screen: 'Tweets' | string;
+    params: {id: number | null; uri: string | null} | null;
   };
   Image: {
     params: {uri: string};
