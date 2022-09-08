@@ -5,6 +5,7 @@ import {render, screen, fireEvent} from '@testing-library/react-native';
 import axios from 'axios';
 import Setting from '../screen/Auth/Setting';
 import Login from '../screen/Login/Login';
+import SnsLogin from '../screen/Login/SnsLogin';
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-redux');
 jest.mock('@react-navigation/native', () => {
@@ -88,6 +89,13 @@ describe('Setting', () => {
 describe('Login', () => {
   it('스냅샷', () => {
     render(<Login />);
+    expect(screen.toJSON()).toMatchSnapshot();
+  });
+});
+
+describe('SnsLogin', () => {
+  it('스냅샷', () => {
+    render(<SnsLogin />);
     expect(screen.toJSON()).toMatchSnapshot();
   });
 });

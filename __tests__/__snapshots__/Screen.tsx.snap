@@ -776,3 +776,73 @@ exports[`Setting 스냅샷 1`] = `
   </Text>
 </View>
 `;
+
+exports[`SnsLogin 스냅샷 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flex": 1,
+          "overflow": "hidden",
+        },
+        undefined,
+      ]
+    }
+  >
+    <RNCWebView
+      cacheEnabled={true}
+      injectedJavaScript="
+  
+  const element = document.getElementsByTagName(\\"pre\\");
+  
+  if(element){
+    window.ReactNativeWebView.postMessage(element[0].innerHTML);
+    const body = document.getElementsByTagName(\\"body\\");
+    body[0].innerHTML= '잠시만 기다려주세요.'
+  }
+  "
+      injectedJavaScriptBeforeContentLoadedForMainFrameOnly={true}
+      injectedJavaScriptForMainFrameOnly={true}
+      javaScriptEnabled={true}
+      messagingEnabled={true}
+      onContentProcessDidTerminate={[Function]}
+      onHttpError={[Function]}
+      onLoadingError={[Function]}
+      onLoadingFinish={[Function]}
+      onLoadingProgress={[Function]}
+      onLoadingStart={[Function]}
+      onMessage={[Function]}
+      onShouldStartLoadWithRequest={[Function]}
+      sharedCookiesEnabled={true}
+      source={
+        Object {
+          "uri": "https://kauth.kakao.com/oauth/authorize?client_id=undefined&redirect_uri=undefined&response_type=code",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "flex": 1,
+            "overflow": "hidden",
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+          },
+          undefined,
+        ]
+      }
+      textInteractionEnabled={true}
+      thirdPartyCookiesEnabled={true}
+      useSharedProcessPool={true}
+      userAgent="Chrome"
+    />
+  </View>
+</View>
+`;
