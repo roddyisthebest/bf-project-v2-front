@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {NotLoggedInParamList} from '../../navigation/Root';
 
 const Container = styled.View`
   align-items: center;
@@ -35,11 +37,8 @@ const LoginBkg = styled.Image`
   height: 25px;
 `;
 
-const Login = ({
-  navigation: {navigate},
-}: {
-  navigation: {navigate: Function};
-}) => {
+const Login = () => {
+  const navigation = useNavigation<NavigationProp<NotLoggedInParamList>>();
   return (
     <Container>
       <TitleText>
@@ -47,7 +46,7 @@ const Login = ({
       </TitleText>
       <LoginBtn
         onPress={() => {
-          navigate('SnsLogin');
+          navigation.navigate('SnsLogin', {});
         }}>
         <LoginBkg source={require('../../assets/img/Kakao.png')} />
         <LoginText>KAKAO 로그인</LoginText>

@@ -39,6 +39,11 @@ export type LoggedInParamList = {
   };
   Auth: {};
 };
+
+export type NotLoggedInParamList = {
+  SnsLogin: {};
+  Login: {};
+};
 const LoadingContainer = styled.View`
   flex: 1;
   align-items: center;

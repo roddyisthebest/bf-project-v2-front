@@ -4,7 +4,7 @@ import Code from '../screen/Auth/Code';
 import {render, screen, fireEvent} from '@testing-library/react-native';
 import axios from 'axios';
 import Setting from '../screen/Auth/Setting';
-
+import Login from '../screen/Login/Login';
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-redux');
 jest.mock('@react-navigation/native', () => {
@@ -18,7 +18,7 @@ jest.mock('@react-navigation/native', () => {
   };
 });
 const accessToken: string =
-  'kM09-WWvhYrk6XGxqNe_IIx4JdvzTKrA_LQpCdXRCinI2AAAAYMYezJp';
+  'ZtMM-4xqBgO0DoUjoFYtHx9nXe_F84kgStggI61aCj1ylwAAAYMbJr1_';
 
 describe('Code', () => {
   const code: string = '060419';
@@ -28,7 +28,6 @@ describe('Code', () => {
     const codeOutput = await screen.findByTestId('inputValue');
     expect(codeOutput).toHaveTextContent(code);
   });
-
   it('api 통신', async () => {
     try {
       const {status} = await axios.post(
@@ -44,6 +43,10 @@ describe('Code', () => {
     } catch (e) {
       expect(e).toBeNaN();
     }
+  });
+  it('스냅샷', () => {
+    render(<Code />);
+    expect(screen.toJSON()).toMatchSnapshot();
   });
 });
 
@@ -75,5 +78,16 @@ describe('Setting', () => {
     } catch (e) {
       expect(e).toBeNaN();
     }
+  });
+  it('스냅샷', () => {
+    render(<Setting />);
+    expect(screen.toJSON()).toMatchSnapshot();
+  });
+});
+
+describe('Login', () => {
+  it('스냅샷', () => {
+    render(<Login />);
+    expect(screen.toJSON()).toMatchSnapshot();
   });
 });

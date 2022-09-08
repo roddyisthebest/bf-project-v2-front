@@ -1,0 +1,778 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Code 스냅샷 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 0,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 0,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "black",
+          "fontSize": 25,
+          "fontWeight": "800",
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
+    6자리 코드입력
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#687684",
+          "fontSize": 15,
+          "fontWeight": "400",
+        },
+        Object {
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
+    This app provides private content.
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#687684",
+          "fontSize": 15,
+          "fontWeight": "400",
+        },
+      ]
+    }
+  >
+    Please enter a 6-digit code to prove yourself.
+  </Text>
+  <View
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+          "marginBottom": 40,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "marginTop": 40,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginRight": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "blue",
+              "height": 20,
+              "width": 1,
+            },
+          ]
+        }
+      />
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginHorizontal": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginHorizontal": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginHorizontal": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginHorizontal": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 8,
+          "fontSize": 20,
+          "height": 40,
+          "justifyContent": "center",
+          "marginLeft": 5,
+          "opacity": 1,
+          "shadowColor": "#00000054",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 1,
+          "shadowRadius": 4,
+          "width": 40,
+        }
+      }
+    />
+    <TextInput
+      autoFocus={true}
+      keyboardType="number-pad"
+      onChangeText={[Function]}
+      returnKeyType="go"
+      style={
+        Object {
+          "opacity": 0,
+          "position": "absolute",
+        }
+      }
+      testID="input"
+      value=""
+    />
+  </View>
+  <View
+    accessibilityState={
+      Object {
+        "disabled": true,
+      }
+    }
+    accessible={true}
+    bkgColor="lightgray"
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "lightgray",
+          "borderRadius": 40,
+          "height": 35,
+          "justifyContent": "center",
+          "width": 95,
+        },
+      ]
+    }
+    testID="button"
+  >
+    <Text
+      color="#6f6f6f"
+      style={
+        Array [
+          Object {
+            "color": "#6f6f6f",
+            "fontSize": 15,
+            "fontWeight": "700",
+          },
+        ]
+      }
+    >
+      VERIFY
+    </Text>
+  </View>
+  <Text
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    testID="inputValue"
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Login 스냅샷 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "paddingBottom": 0,
+        "paddingLeft": 30,
+        "paddingRight": 30,
+        "paddingTop": 0,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "black",
+          "fontSize": 27,
+          "fontWeight": "900",
+          "marginBottom": 50,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "marginTop": 35,
+        },
+      ]
+    }
+  >
+    큰숲 청년부에서 무슨 일이 
+    
+
+    일어나고 있는지 알아보세요.
+  </Text>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderColor": "#cdcdcd",
+        "borderRadius": 100,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "height": 70,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../assets/img/Kakao.png",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 25,
+            "width": 25,
+          },
+        ]
+      }
+    />
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "black",
+            "fontSize": 25,
+            "fontWeight": "800",
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      KAKAO 로그인
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Setting 스냅샷 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "black",
+          "fontSize": 25,
+          "fontWeight": "800",
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
+    기능 사용 설정
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#687684",
+          "fontSize": 15,
+          "fontWeight": "400",
+        },
+        Object {
+          "marginTop": 20,
+        },
+      ]
+    }
+  >
+    Welcome to roddyisthebest's world 🔥
+  </Text>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#687684",
+          "fontSize": 15,
+          "fontWeight": "400",
+        },
+      ]
+    }
+  >
+    Please select the function you want to use.
+  </Text>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#ced5dc",
+          "borderBottomWidth": 0.5,
+          "paddingBottom": 25,
+          "paddingLeft": 40,
+          "paddingRight": 40,
+          "paddingTop": 25,
+          "width": "100%",
+        },
+        Object {
+          "borderTopColor": "#ced5dc",
+          "borderTopWidth": 0.5,
+          "marginTop": 25,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 10,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 20,
+              "fontWeight": "800",
+            },
+          ]
+        }
+      >
+        매일성경
+      </Text>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        value={false}
+      />
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#687684",
+            "fontSize": 12,
+            "fontWeight": "400",
+          },
+        ]
+      }
+    >
+      매일성경(큐티) 업로드를 사용할 수 있습니다.
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#ced5dc",
+          "borderBottomWidth": 0.5,
+          "paddingBottom": 25,
+          "paddingLeft": 40,
+          "paddingRight": 40,
+          "paddingTop": 25,
+          "width": "100%",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 10,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 20,
+              "fontWeight": "800",
+            },
+          ]
+        }
+      >
+        기도제목
+      </Text>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        value={false}
+      />
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#687684",
+            "fontSize": 12,
+            "fontWeight": "400",
+          },
+        ]
+      }
+    >
+      기도제목을 업로드하고 수정 및 삭제 할 수 있습니다.
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomColor": "#ced5dc",
+          "borderBottomWidth": 0.5,
+          "paddingBottom": 25,
+          "paddingLeft": 40,
+          "paddingRight": 40,
+          "paddingTop": 25,
+          "width": "100%",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 10,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 20,
+              "fontWeight": "800",
+            },
+          ]
+        }
+      >
+        벌금
+      </Text>
+      <RCTSwitch
+        accessibilityRole="switch"
+        onChange={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "height": 31,
+            "width": 51,
+          }
+        }
+        testID="button"
+        value={false}
+      />
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "#687684",
+            "fontSize": 12,
+            "fontWeight": "400",
+          },
+        ]
+      }
+    >
+      매일 성경(큐티) 벌금 로직에 참여할 수 있습니다.
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    bkgColor="#10DDC2"
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#10DDC2",
+          "borderRadius": 40,
+          "height": 35,
+          "justifyContent": "center",
+          "marginTop": 30,
+          "width": 95,
+        },
+      ]
+    }
+  >
+    <Text
+      color="white"
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 15,
+            "fontWeight": "700",
+          },
+        ]
+      }
+    >
+      확인
+    </Text>
+  </View>
+  <Text
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+    testID="inputValue"
+  >
+    false
+  </Text>
+</View>
+`;
