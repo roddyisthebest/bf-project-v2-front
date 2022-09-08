@@ -6,6 +6,7 @@ import axios from 'axios';
 import Setting from '../screen/Auth/Setting';
 import Login from '../screen/Login/Login';
 import SnsLogin from '../screen/Login/SnsLogin';
+
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('react-redux');
 jest.mock('@react-navigation/native', () => {
@@ -20,7 +21,7 @@ jest.mock('@react-navigation/native', () => {
 });
 const accessToken: string =
   'ZtMM-4xqBgO0DoUjoFYtHx9nXe_F84kgStggI61aCj1ylwAAAYMbJr1_';
-
+const API_URL = 'https://api.bf-church.click';
 describe('Code', () => {
   const code: string = '060419';
   it('코드 값 변경 ', async () => {
@@ -32,7 +33,7 @@ describe('Code', () => {
   it('api 통신', async () => {
     try {
       const {status} = await axios.post(
-        'https://api.bf-church.click/user/auth/code',
+        `${API_URL}/user/auth/code`,
         {code},
         {
           headers: {
@@ -63,7 +64,7 @@ describe('Setting', () => {
   it('api 통신', async () => {
     try {
       const {status} = await axios.put(
-        'https://api.bf-church.click/user/service',
+        `${API_URL}/user/service`,
         {
           tweet: true,
           pray: true,
@@ -97,5 +98,27 @@ describe('SnsLogin', () => {
   it('스냅샷', () => {
     render(<SnsLogin />);
     expect(screen.toJSON()).toMatchSnapshot();
+  });
+});
+
+describe('Tweets', () => {
+  it('api 통신', async () => {
+    // const useSelectorCopy = useSelector as jest.Mock<any>;
+    // useSelectorCopy.mockImplementation(selector =>
+    //   selector({
+    //     refresh: false,
+    //   }),
+    // );
+
+    try {
+      const {status} = await axios.get(`${API_URL}/tweet/-1`, {
+        headers: {
+          Authorization: `bearer ${accessToken}`,
+        },
+      });
+      expect(status).toBe(200);
+    } catch (e) {
+      expect(e).toBeNaN();
+    }
   });
 });
