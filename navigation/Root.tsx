@@ -162,8 +162,8 @@ const Root = () => {
   }, [dispatch, isAuth, isLoggedIn]);
 
   useEffect(() => {
-    const callback = (data: {id: number}) => {
-      if (userInfo.id !== data.id) {
+    const callback = (data: number) => {
+      if (userInfo.id !== data) {
         dispatch(setFeed(true));
       }
     };
