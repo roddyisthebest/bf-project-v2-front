@@ -164,13 +164,13 @@ const Detail = ({
       try {
         setLoading(true);
         const {
-          data: {payload, code},
-        }: {data: {payload: User; code: number}} = await saveFollow(
+          data: {payload, msg},
+        }: {data: {payload: User; code: string}} = await saveFollow(
           !isItFollow,
           userId,
         );
         setFollowing(!isItFollow);
-        if (code === 200) {
+        if (!isItFollow) {
           dispatch(setFollowings(payload));
           setFollowerNumber(prev => prev + 1);
         } else {
