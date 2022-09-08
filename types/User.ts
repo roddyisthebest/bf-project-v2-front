@@ -12,7 +12,7 @@ export type User = {
   Penalties: PenaltyType[] | [];
   Followers: User[] | [];
   Followings: User[] | [];
-  Service: ServiceType | {};
+  Service: ServiceType;
   createdAt: Date | string;
   updatedAt: Date | string;
 };

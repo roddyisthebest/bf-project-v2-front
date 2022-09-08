@@ -65,7 +65,13 @@ describe('PenaltyEditable', () => {
       Penalties: [{paper: 1000, id: 1, weekend: '2022-06-01', User: {}}],
       Followers: [],
       Followings: [],
-      Service: {},
+      Service: {
+        tweet: false,
+        penalty: false,
+        pray: false,
+        UserId: 231,
+        id: 1,
+      },
       createdAt: '2022-09-05 11:30:02',
       updatedAt: '2022-09-05 11:30:02',
     };
@@ -98,7 +104,7 @@ describe('PrayEditable', () => {
       Penalties: [],
       Followers: [],
       Followings: [],
-      Service: {},
+      Service: {tweet: false, penalty: false, pray: false, UserId: 231, id: 1},
       createdAt: '2022-09-05 11:30:02',
       updatedAt: '2022-09-05 11:30:02',
     };
@@ -132,7 +138,13 @@ describe('Tweet', () => {
         Penalties: [],
         Followers: [],
         Followings: [],
-        Service: {},
+        Service: {
+          tweet: false,
+          penalty: false,
+          pray: false,
+          UserId: 231,
+          id: 1,
+        },
         createdAt: '2022-09-05 11:30:02',
         updatedAt: '2022-09-05 11:30:02',
       },
