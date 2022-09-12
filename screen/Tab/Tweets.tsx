@@ -72,7 +72,7 @@ const Tweets = () => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastId, setLastId] = useState<number>(-1);
-
+  const [disabled, setDisabled] = useState<boolean>(false);
   const handleRefresh = useCallback(async () => {
     try {
       setRefreshing(true);
@@ -130,8 +130,11 @@ const Tweets = () => {
     async (id: number) => {
       try {
         const {
-          data: {payload},
-        }: {data: {payload: TweetType[]}} = await getTweets(id);
+          data: {payload, code},
+        }: {data: {payload: TweetType[]; code: string}} = await getTweets(id);
+        if (code === 'last data') {
+          setDisabled(true);
+        }
         if (id === -1) {
           setData(payload);
         } else {
@@ -148,8 +151,10 @@ const Tweets = () => {
   );
 
   useEffect(() => {
-    getData(lastId);
-  }, [getData, lastId]);
+    if (!disabled) {
+      getData(lastId);
+    }
+  }, [getData, lastId, disabled]);
 
   useEffect(() => {
     if (refresh) {
