@@ -114,12 +114,19 @@ const Tabs = ({
               onPress={() => {
                 setVisible(prev => !prev);
               }}>
-              <Image
-                source={{
-                  uri: userInfo.img,
-                }}
-                style={{width: 30, height: 30, borderRadius: 30}}
-              />
+              {userInfo.img.length !== 0 ? (
+                <Image
+                  source={{
+                    uri: userInfo && userInfo.img,
+                  }}
+                  style={{width: 30, height: 30, borderRadius: 30}}
+                />
+              ) : (
+                <Image
+                  source={require('../assets/img/loading.png')}
+                  style={{width: 30, height: 30, borderRadius: 30}}
+                />
+              )}
             </TouchableOpacity>
           ),
         }}>
