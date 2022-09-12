@@ -1,23 +1,25 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, FlatList, SafeAreaView} from 'react-native';
+import {View, FlatList, SafeAreaView, Text} from 'react-native';
 import {PenaltyType} from '../../../types/Penalty';
 import PenaltyComponent from '../../../components/Penalty';
-import {initialStateProps} from '../../../store/slice';
-import {useSelector} from 'react-redux';
+
 import {getPenaltysByUserId} from '../../../api/user';
-const Penalty = () => {
+const Penalty = ({
+  route: {
+    params: {id},
+  },
+}: {
+  route: {params: {id: number}};
+}) => {
   const [data, setData] = useState<PenaltyType[]>([]);
   const [lastId, setLastId] = useState<number>(-1);
-  const {userInfo} = useSelector((state: initialStateProps) => ({
-    userInfo: state.userInfo,
-  }));
 
-  const getData = useCallback(async (id: number, last: number) => {
+  const getData = useCallback(async (userId: number, last: number) => {
     try {
       const {
         data: {payload},
-      }: {data: {payload: PenaltyType[]; code: number}} =
-        await getPenaltysByUserId(id, last);
+      }: {data: {payload: PenaltyType[]; code: string}} =
+        await getPenaltysByUserId(userId, last);
 
       setData(prev => [...prev, ...payload]);
     } catch (e) {
@@ -26,9 +28,9 @@ const Penalty = () => {
   }, []);
 
   useEffect(() => {
-    getData(userInfo.id, lastId);
+    getData(id, lastId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastId]);
+  }, [id, lastId]);
 
   const renderItem = ({item}: {item: PenaltyType}) => (
     <PenaltyComponent data={item} />
@@ -45,6 +47,22 @@ const Penalty = () => {
         onEndReached={() => {
           setLastId(data[data.length - 1].id);
         }}
+        ListEmptyComponent={
+          <View
+            style={{
+              marginVertical: 25,
+              marginHorizontal: 100,
+              backgroundColor: '#10DDC2',
+              height: 40,
+              borderRadius: 15,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={{color: 'white', fontWeight: '900'}}>
+              벌금 데이터가 없습니다.
+            </Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );

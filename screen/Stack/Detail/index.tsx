@@ -264,21 +264,21 @@ const Detail = ({
           <MenuTitle>Records</MenuTitle>
           <MenuColumn
             onPress={() => {
-              navigate('Stack', {screen: 'Tweets', params: {idx: 1}});
+              navigate('Stack', {screen: 'Tweets', params: {id}});
             }}>
             <Icon name="book-outline" color="black" size={25} />
             <MenuText>매일 성경</MenuText>
           </MenuColumn>
           <MenuColumn
             onPress={() => {
-              navigate('Stack', {screen: 'Pray', params: {idx: 1}});
+              navigate('Stack', {screen: 'Pray', params: {id}});
             }}>
             <Icon name="heart-outline" color="black" size={25} />
             <MenuText>기도 제목</MenuText>
           </MenuColumn>
           <MenuColumn
             onPress={() => {
-              navigate('Stack', {screen: 'Penalty', params: {idx: 1}});
+              navigate('Stack', {screen: 'Penalty', params: {id}});
             }}>
             <Icon name="cash-outline" color="black" size={25} />
             <MenuText>벌금</MenuText>
