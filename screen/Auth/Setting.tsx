@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {Switch, Alert, Text} from 'react-native';
+import {Switch, Alert, Text, ActivityIndicator} from 'react-native';
 import {setAuth, setService, setUserInfo} from '../../store/slice';
 import {getMyInfo, saveMyService} from '../../api/user';
 import {useDispatch} from 'react-redux';
@@ -68,6 +68,7 @@ const BtnText = styled.Text<{color: string}>`
 const Setting = () => {
   const dispatch = useDispatch();
   const [val, setVal] = useState([false, false, false]);
+  const [loading, setLoading] = useState(false);
   const toggleVal = useCallback(
     (index: number) => {
       val.splice(index, 1, !val[index]);
@@ -79,6 +80,7 @@ const Setting = () => {
   const checkService = useCallback(
     async (tweet: boolean, pray: boolean, penalty: boolean) => {
       try {
+        setLoading(true);
         await saveMyService({tweet, pray, penalty});
         tweet && dispatch(setService('tweet'));
         pray && dispatch(setService('pray'));
@@ -86,6 +88,7 @@ const Setting = () => {
         const {
           data: {payload},
         }: {data: {payload: User}} = await getMyInfo();
+        setLoading(false);
         dispatch(setUserInfo(payload));
         dispatch(setAuth(true));
       } catch (e) {
@@ -167,8 +170,12 @@ const Setting = () => {
           매일 성경(큐티) 벌금 로직에 참여할 수 있습니다.
         </SwitchSubTitle>
       </SwitchWrapper>
-      <Btn bkgColor={'#10DDC2'} onPress={showConfirmDialog}>
-        <BtnText color={'white'}>확인</BtnText>
+      <Btn bkgColor={'#10DDC2'} onPress={showConfirmDialog} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color="white" size={30} />
+        ) : (
+          <BtnText color={'white'}>확인</BtnText>
+        )}
       </Btn>
       <Text testID="inputValue" style={{display: 'none'}}>
         {val[2] ? 'true' : 'false'}

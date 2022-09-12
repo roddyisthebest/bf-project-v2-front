@@ -4,7 +4,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {WebView} from 'react-native-webview';
 import {useDispatch} from 'react-redux';
 import {setToken} from '../../api';
-import {login, setAuth, setUserInfo} from '../../store/slice';
+import {login, setAuth, setAuthLoading, setUserInfo} from '../../store/slice';
 import Config from 'react-native-config';
 import {getMyInfo} from '../../api/user';
 import {User} from '../../types/User';
@@ -19,6 +19,7 @@ const SnsLogin = () => {
   if(element){
     window.ReactNativeWebView.postMessage(element[0].innerHTML);
     const body = document.getElementsByTagName("body");
+    
     body[0].innerHTML= '잠시만 기다려주세요.'
   }
   `;
@@ -45,13 +46,16 @@ const SnsLogin = () => {
     await setToken();
     dispatch(login(true));
     try {
+      dispatch(setAuthLoading(true));
       const {
         data: {payload},
       }: {data: {payload: User}} = await getMyInfo();
-      dispatch(setUserInfo(payload));
       dispatch(setAuth(true));
+      dispatch(setUserInfo(payload));
     } catch (e) {
       console.log(e);
+    } finally {
+      dispatch(setAuthLoading(false));
     }
   };
 

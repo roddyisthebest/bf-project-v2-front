@@ -1,14 +1,21 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {TextInput, Platform, Text} from 'react-native';
+import {
+  TextInput,
+  Platform,
+  Text,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 import {authCode} from '../../api/user';
 import {api} from '../../api';
-import Config from 'react-native-config';
 import messaging from '@react-native-firebase/messaging';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 import {LoggedInParamList} from '../../navigation/Root';
+import {useSelector} from 'react-redux';
+import {initialStateProps} from '../../store/slice';
 
 const Container = styled.View`
   flex: 1;
@@ -77,8 +84,11 @@ const BtnText = styled.Text<{color: string}>`
 `;
 const Code = () => {
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
-
+  const {authLoading} = useSelector((state: initialStateProps) => ({
+    authLoading: state.authLoading,
+  }));
   const [val, setVal] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
   const input = useRef<any>();
 
   useEffect(() => {
@@ -98,13 +108,14 @@ const Code = () => {
       }
       const phoneToken = await messaging().getToken();
       console.log('phone token', phoneToken);
-      return api.post(`${Config.API_URL}/user/phonetoken`, {phoneToken});
+      return api.post('/user/phonetoken', {phoneToken});
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
   const submit = useCallback(async () => {
     try {
+      setLoading(true);
       await authCode(val);
       getToken();
       return navigation.dispatch(
@@ -113,63 +124,92 @@ const Code = () => {
           routes: [{name: 'Setting'}],
         }),
       );
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      Alert.alert('잘못된 코드입니다. 다시 입력해주세요.');
+    } finally {
+      setLoading(false);
     }
   }, [navigation, val]);
 
   return (
     <Container>
-      <Title>6자리 코드입력</Title>
-      <SubTitle style={{marginTop: 20}}>
-        This app provides private content.
-      </SubTitle>
-      <SubTitle>Please enter a 6-digit code to prove yourself.</SubTitle>
-      <CellWrapper>
-        <Cell style={{marginRight: 5, elevation: 8}} onPress={focus}>
-          {val.length === 0 ? <Block /> : val[0] ? <Dot /> : null}
-        </Cell>
-        <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
-          {val.length === 1 ? <Block /> : val[1] ? <Dot /> : null}
-        </Cell>
-        <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
-          {val.length === 2 ? <Block /> : val[2] ? <Dot /> : null}
-        </Cell>
-        <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
-          {val.length === 3 ? <Block /> : val[3] ? <Dot /> : null}
-        </Cell>
-        <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
-          {val.length === 4 ? <Block /> : val[4] ? <Dot /> : null}
-        </Cell>
-        <Cell style={{marginLeft: 5, elevation: 8}} onPress={focus}>
-          {val.length === 5 ? <Block /> : val[5] ? <Dot /> : null}
-        </Cell>
-        <TextInput
-          keyboardType="number-pad"
-          ref={input}
-          style={{opacity: 0, position: 'absolute'}}
-          value={val}
-          onChangeText={(text: string) => {
-            if (text.length < 7) {
-              return setVal(text);
-            }
-            input.current.blur();
-          }}
-          returnKeyType="go"
-          autoFocus
-          testID="input"
-        />
-      </CellWrapper>
-      <Btn
-        bkgColor={val.length === 6 ? '#10DDC2' : 'lightgray'}
-        onPress={submit}
-        disabled={val.length !== 6}
-        testID="button">
-        <BtnText color={val.length === 6 ? 'white' : '#6f6f6f'}>VERIFY</BtnText>
-      </Btn>
-      <Text testID="inputValue" style={{display: 'none'}}>
-        {val}
-      </Text>
+      {authLoading ? (
+        <>
+          <ActivityIndicator
+            color="#687684"
+            size={50}
+            style={{marginTop: 30}}
+          />
+          <Text
+            style={{
+              marginTop: 20,
+              color: '#687684',
+              fontSize: 30,
+              fontWeight: '600',
+            }}>
+            잠시만 기다려주세요.
+          </Text>
+        </>
+      ) : (
+        <>
+          <Title>6자리 코드입력</Title>
+          <SubTitle style={{marginTop: 20}}>
+            This app provides private content.
+          </SubTitle>
+          <SubTitle>Please enter a 6-digit code to prove yourself.</SubTitle>
+          <CellWrapper>
+            <Cell style={{marginRight: 5, elevation: 8}} onPress={focus}>
+              {val.length === 0 ? <Block /> : val[0] ? <Dot /> : null}
+            </Cell>
+            <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
+              {val.length === 1 ? <Block /> : val[1] ? <Dot /> : null}
+            </Cell>
+            <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
+              {val.length === 2 ? <Block /> : val[2] ? <Dot /> : null}
+            </Cell>
+            <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
+              {val.length === 3 ? <Block /> : val[3] ? <Dot /> : null}
+            </Cell>
+            <Cell style={{marginHorizontal: 5, elevation: 8}} onPress={focus}>
+              {val.length === 4 ? <Block /> : val[4] ? <Dot /> : null}
+            </Cell>
+            <Cell style={{marginLeft: 5, elevation: 8}} onPress={focus}>
+              {val.length === 5 ? <Block /> : val[5] ? <Dot /> : null}
+            </Cell>
+            <TextInput
+              keyboardType="number-pad"
+              ref={input}
+              style={{opacity: 0, position: 'absolute'}}
+              value={val}
+              onChangeText={(text: string) => {
+                if (text.length < 7) {
+                  return setVal(text);
+                }
+                input.current.blur();
+              }}
+              returnKeyType="go"
+              autoFocus
+              testID="input"
+            />
+          </CellWrapper>
+          <Btn
+            bkgColor={val.length === 6 ? '#10DDC2' : 'lightgray'}
+            onPress={submit}
+            disabled={val.length !== 6 || loading}
+            testID="button">
+            {loading ? (
+              <ActivityIndicator color="white" size={30} />
+            ) : (
+              <BtnText color={val.length === 6 ? 'white' : '#6f6f6f'}>
+                VERIFY
+              </BtnText>
+            )}
+          </Btn>
+          <Text testID="inputValue" style={{display: 'none'}}>
+            {val}
+          </Text>
+        </>
+      )}
     </Container>
   );
 };

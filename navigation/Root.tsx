@@ -110,7 +110,8 @@ const Root = () => {
           config,
           response: {status},
         } = error;
-        console.log(status);
+
+        console.log(status, 'one');
         if (status === 401) {
           const originalRequest = config;
           if (error.response.data.code === 'expired') {
@@ -146,6 +147,7 @@ const Root = () => {
               await EncryptedStorage.clear();
               dispatch(logout());
             }
+          } else if (error.response.data.code === 'wrong information') {
           } else {
             dispatch(logout());
             Alert.alert('권한이 없습니다.');
@@ -153,6 +155,14 @@ const Root = () => {
         } else if (status === 500) {
           dispatch(logout());
           Alert.alert('서버 에러입니다. 관리자에게 문의주세요. 01051529445');
+        } else if (
+          status === 403 &&
+          error.response.data.msg ===
+            '자격증명이 미이행 상태입니다. 자격증명을 해주세요.'
+        ) {
+          Alert.alert(error.response.data.msg);
+          dispatch(setAuth(false));
+          dispatch(login(true));
         } else {
           Alert.alert(error.response.data.msg);
         }
@@ -188,8 +198,7 @@ const Root = () => {
           await messaging().registerDeviceForRemoteMessages();
         }
         const phoneToken = await messaging().getToken();
-        console.log('phone token', phoneToken);
-        return api.post(`${Config.API_URL}/user/phonetoken`, {phoneToken});
+        return api.post('/user/phonetoken', {phoneToken});
       } catch (error) {
         console.error(error);
       }
