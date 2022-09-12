@@ -17,6 +17,7 @@ import useSocket from '../../hooks/useSocket';
 import Config from 'react-native-config';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../../navigation/Root';
+import getTokenByRefresh from '../../util/getToken';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -114,26 +115,39 @@ const Write = () => {
   const [socket, disconnect] = useSocket();
   const upload = useCallback(async () => {
     try {
-      if (Platform.OS === 'ios') {
-        const data: any = await launchImageLibrary({
-          quality: 1,
-          mediaType: 'photo',
-        });
-        console.log(data);
-        setImage(data.assets[0] as ImageType);
-      } else {
-        const data: any = await launchCamera({
-          quality: 1,
-          mediaType: 'photo',
-        });
-        setImage(data.assets[0] as ImageType);
-        console.log(data);
-      }
+      // if (Platform.OS === 'ios') {
+      //   const data: any = await launchImageLibrary({
+      //     quality: 1,
+      //     mediaType: 'photo',
+      //   });
+      //   console.log(data);
+      //   setImage(data.assets[0] as ImageType);
+      // } else {
+      //   const data: any = await launchCamera({
+      //     quality: 0.2,
+      //     mediaType: 'photo',
+      //   });
+      //   setImage(data.assets[0] as ImageType);
+      //   console.log(data);
+      // }
 
-      // const data = await launchImageLibrary({
-      //   quality: 1,
-      //   mediaType: 'photo',
+      const data: any = await launchCamera({
+        quality: 0.2,
+        mediaType: 'photo',
+      });
+      setImage(data.assets[0] as ImageType);
+      console.log(data);
+      // if (data?.type === 'image/heic') {
+      //   const editedData = await RHHeicConverter.convert({
+      //     path: data.assets[0].uri,
+      //   });
+      //   console.log(editedData);
+      // }
+      // const editedData = await RHHeicConverter.convert({
+      //   path: data.assets[0].uri,
       // });
+      // console.log(editedData);
+      // setImage(data.assets[0] as ImageType);
     } catch (e) {
       console.log(e);
     }
@@ -154,25 +168,43 @@ const Write = () => {
       try {
         setLoading(true);
         const formData = new FormData();
-        const val = {name: img?.fileName, type: img?.type, uri: img?.uri};
+        const val = {name: img?.fileName, type: 'image/jpg', uri: img?.uri};
+
         img && formData.append('img', val);
         text && formData.append('content', text);
         const accessToken = await EncryptedStorage.getItem('accessToken');
 
-        const {status}: any = await fetch(`${Config.API_URL}/tweet/`, {
+        const data: any = await fetch(`${Config.API_URL}/tweet/`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
           },
           body: formData,
         });
-        console.log(status);
-        if ((status as number) === 403) {
+        console.log(data);
+        if ((data.status as number) === 500) {
+          Alert.alert('heic 파일 오류입니다.');
+          return;
+        } else if ((data.status as number) === 403) {
           Alert.alert('게시글을 업로드하는 서비스를 이용하지 않으셨습니다.⚠️');
           return;
-        } else if ((status as number) === 406) {
+        } else if ((data.status as number) === 406) {
           Alert.alert('오늘 업로드 된 게시물이 존재합니다. ⚠️');
           return;
+        } else if ((data.status as number) === 401) {
+          //토큰 갱신
+          try {
+            const response = await getTokenByRefresh();
+            if (!response) {
+              Alert.alert('다시 로그인 해주세요.');
+              return dispatch(logout());
+            }
+            return Alert.alert('토큰을 갱신했습니다. 다시한번 업로드해주세요!');
+          } catch (e) {
+            console.log(e);
+          }
         }
         socket?.emit('feed-uploaded', {id: userInfo.id});
         dispatch(setRefresh(true));
