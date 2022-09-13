@@ -26,10 +26,17 @@ jest.mock('@react-navigation/native', () => {
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 const accessToken: string =
-  'ZtMM-4xqBgO0DoUjoFYtHx9nXe_F84kgStggI61aCj1ylwAAAYMbJr1_';
+  'Vj_qtcM3gEFBkj9eZA6jxwpeQejOIY4p5WAq_WvXCisNIAAAAYM1YIav';
 const API_URL = 'https://api.bf-church.click';
 describe('Code', () => {
   const code: string = '060419';
+  const useSelectorCopy = useSelector as jest.Mock<any>;
+  useSelectorCopy.mockImplementation(selector =>
+    selector({
+      authLoading: false,
+    }),
+  );
+
   it('코드 값 변경 ', async () => {
     render(<Code />);
     fireEvent.changeText(screen.getByTestId('input'), code);

@@ -722,6 +722,11 @@ exports[`Setting 스냅샷 1`] = `
     </Text>
   </View>
   <View
+    accessibilityState={
+      Object {
+        "disabled": false,
+      }
+    }
     accessible={true}
     bkgColor="#10DDC2"
     collapsable={false}
@@ -805,6 +810,7 @@ exports[`SnsLogin 스냅샷 1`] = `
   if(element){
     window.ReactNativeWebView.postMessage(element[0].innerHTML);
     const body = document.getElementsByTagName(\\"body\\");
+    
     body[0].innerHTML= '잠시만 기다려주세요.'
   }
   "
@@ -1043,13 +1049,13 @@ exports[`Write 스냅샷 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           Object {
+            "alignItems": "center",
             "backgroundColor": "#E0E0E0",
             "borderRadius": 20,
+            "height": 32.5,
+            "justifyContent": "center",
             "opacity": 1,
-            "paddingBottom": 10,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "paddingTop": 10,
+            "width": 70,
           }
         }
       >
