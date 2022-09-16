@@ -126,7 +126,7 @@ const Tweet = memo(({data, del}: {data: TweetType; del: Function}) => {
               onPress={() => {
                 del(data.id);
               }}>
-              <Text style={{fontSize: 10, color: 'red'}}>삭제하기</Text>
+              <Text style={{fontSize: 10, color: 'red'}}>DELETE</Text>
             </DelBtn>
           ) : null}
         </Title>

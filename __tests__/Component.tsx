@@ -194,7 +194,7 @@ describe('Tweet', () => {
     const handleClick = jest.fn();
     render(<Tweet data={data} del={handleClick} />);
     let button = screen.getByTestId('button');
-    expect(button).toHaveTextContent('삭제하기');
+    expect(button).toHaveTextContent('DELETE');
     fireEvent(button, 'click');
     expect(handleClick).toBeCalled();
   });
