@@ -26,7 +26,7 @@ jest.mock('@react-navigation/native', () => {
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 const accessToken: string =
-  'Vj_qtcM3gEFBkj9eZA6jxwpeQejOIY4p5WAq_WvXCisNIAAAAYM1YIav';
+  'Gx0uO2BZaJ0DPi5903XeAgEvfIN3frC2BLsXF-42CilwEwAAAYNEHO1P';
 const API_URL = 'https://api.bf-church.click';
 describe('Code', () => {
   const code: string = '060419';

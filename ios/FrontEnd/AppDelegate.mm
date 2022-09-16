@@ -9,6 +9,11 @@
 
 #import <React/RCTAppSetupUtils.h>
 
+#import <CodePush/CodePush.h>
+#import <AppCenterReactNative.h>
+#import <AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes.h>
+
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -20,7 +25,6 @@
 #import <react/config/ReactNativeConfig.h>
 
 #import <UserNotifications/UserNotifications.h>
-
 
 
 
@@ -91,6 +95,12 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  [AppCenterReactNative register];
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  
+  
    // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
@@ -103,7 +113,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL];
 #endif
 }
 

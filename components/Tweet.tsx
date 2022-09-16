@@ -122,6 +122,7 @@ const Tweet = memo(({data, del}: {data: TweetType; del: Function}) => {
           </SubText>
           {userInfo.id === data.User.id ? (
             <DelBtn
+              testID="button"
               onPress={() => {
                 del(data.id);
               }}>

@@ -9,6 +9,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import store from './store';
 import {Alert} from 'react-native';
 
+import CodePush, {CodePushOptions} from 'react-native-code-push';
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
@@ -76,8 +77,35 @@ PushNotification.createChannel(
     console.log(`createChannel riders returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
 );
 
+const codePushOption: CodePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+  mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+};
+
 const App = () => {
   useEffect(() => {
+    CodePush.sync(
+      {
+        installMode: CodePush.InstallMode.IMMEDIATE,
+        mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+        updateDialog: {
+          mandatoryUpdateMessage:
+            '필수 업데이트가 있어 설치 후 앱을 재시작합니다.',
+          mandatoryContinueButtonLabel: '재시작',
+          optionalIgnoreButtonLabel: '나중에',
+          optionalInstallButtonLabel: '재시작',
+          optionalUpdateMessage: '업데이트가 있습니다. 설치하시겠습니까?',
+          title: '업데이트 안내',
+        },
+      },
+      status => {
+        console.log(`Changed ${status}`);
+      },
+    ).then(status => {
+      console.log(`CodePush ${status}`);
+    });
+
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       Alert.alert(
         remoteMessage.notification?.title as string,
@@ -97,4 +125,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default CodePush(codePushOption)(App);

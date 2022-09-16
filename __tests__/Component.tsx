@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import {render, screen} from '@testing-library/react-native';
+import {fireEvent, render, screen} from '@testing-library/react-native';
 import Penalty from '../components/Penalty';
 import {PenaltyType} from '../types/Penalty';
 import PenaltyEditable from '../components/PenaltyEditable';
@@ -153,5 +153,49 @@ describe('Tweet', () => {
     };
     render(<Tweet data={data} del={() => {}} />);
     expect(screen.toJSON()).toMatchSnapshot();
+  });
+  it('버튼 클릭시 함수 실행', () => {
+    const useSelectorCopy = useSelector as jest.Mock<any>;
+    useSelectorCopy.mockImplementation(selector =>
+      selector({
+        userInfo: {
+          img: 'https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/296105988_735019344242739_8809340187758356692_n.jpg?stp=dst-jpg_e35_p480x480&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=8FKKENxkJq0AX_C-dmH&tn=BEmipNgrm38iVWSi&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5Mjg3OTkzOTcxNjI2OTk2Nw%3D%3D.2-ccb7-5&oh=00_AT--zRwVOwpBF0Q2WOcAZMTTTZdHO2xVJvDleUXOK-uKGw&oe=63214EBE&_nc_sid=30a2ef',
+          id: 23,
+        },
+      }),
+    );
+    const data: TweetType = {
+      id: 1,
+      img: 'https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/296105988_735019344242739_8809340187758356692_n.jpg?stp=dst-jpg_e35_p480x480&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=8FKKENxkJq0AX_C-dmH&tn=BEmipNgrm38iVWSi&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5Mjg3OTkzOTcxNjI2OTk2Nw%3D%3D.2-ccb7-5&oh=00_AT--zRwVOwpBF0Q2WOcAZMTTTZdHO2xVJvDleUXOK-uKGw&oe=63214EBE&_nc_sid=30a2ef',
+      content: 'hyojin saranghae',
+      User: {
+        id: 23,
+        oauth: 'KAKAO',
+        name: 'hyojin',
+        img: 'https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/296105988_735019344242739_8809340187758356692_n.jpg?stp=dst-jpg_e35_p480x480&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_cat=103&_nc_ohc=8FKKENxkJq0AX_C-dmH&tn=BEmipNgrm38iVWSi&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5Mjg3OTkzOTcxNjI2OTk2Nw%3D%3D.2-ccb7-5&oh=00_AT--zRwVOwpBF0Q2WOcAZMTTTZdHO2xVJvDleUXOK-uKGw&oe=63214EBE&_nc_sid=30a2ef',
+        payed: true,
+        Prays: null,
+        Penalties: [],
+        Followers: [],
+        Followings: [],
+        Service: {
+          tweet: false,
+          penalty: false,
+          pray: false,
+          UserId: 231,
+          id: 1,
+        },
+        createdAt: '2022-09-05 11:30:02',
+        updatedAt: '2022-09-05 11:30:02',
+      },
+      createdAt: '2022-09-05 11:30:02',
+      updatedAt: '2022-09-05 11:30:02',
+    };
+    const handleClick = jest.fn();
+    render(<Tweet data={data} del={handleClick} />);
+    let button = screen.getByTestId('button');
+    expect(button).toHaveTextContent('삭제하기');
+    fireEvent(button, 'click');
+    expect(handleClick).toBeCalled();
   });
 });

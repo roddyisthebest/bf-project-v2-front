@@ -14,6 +14,7 @@ import com.facebook.soloader.SoLoader;
 import com.roddyisthebest.bigforest.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -37,6 +38,22 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
+
+        // @Override
+        // protected List<ReactPackage> getPackages() {
+        //     // 3. Instantiate an instance of the CodePush runtime and add it to the list of
+        //     // existing packages, specifying the right deployment key. If you don't already
+        //     // have it, you can run "appcenter codepush deployment list -a <ownerName>/<appName> --displayKeys" to retrieve your key.
+        //     return Arrays.<ReactPackage>asList(
+        //         new MainReactPackage(),
+        //         new CodePush("deployment-key-here", MainApplication.this, BuildConfig.DEBUG)
+        //     );
+        // }
+
       };
 
   private final ReactNativeHost mNewArchitectureNativeHost =
