@@ -161,22 +161,11 @@ const Tweets = () => {
     };
   }, [getData, lastId, disabled]);
 
-  useEffect(() => {
-    if (refresh) {
-      handleRefresh();
-      if (target.current) {
-        target.current.scrollToOffset({animated: true, offset: 0});
-      }
-      setDisabled(false);
-      Alert.alert('성공적으로 업로드되었습니다🔥');
-      dispatch(setRefresh(false));
-    }
-
-    return () => {
+  useEffect((): (() => void) => {
+    const unsubscribe = () => {
       if (refresh) {
         handleRefresh();
         if (target.current) {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
           target.current.scrollToOffset({animated: true, offset: 0});
         }
         setDisabled(false);
@@ -184,6 +173,8 @@ const Tweets = () => {
         dispatch(setRefresh(false));
       }
     };
+    unsubscribe();
+    return () => unsubscribe;
   }, [refresh, handleRefresh, dispatch]);
 
   return (

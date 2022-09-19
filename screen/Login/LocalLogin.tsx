@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, useRef} from 'react';
 import styled from 'styled-components/native';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Keyboard} from 'react-native';
 import {getMyInfo, localLogin} from '../../api/user';
 import {setCookie, setToken} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -51,6 +51,7 @@ const ButtonText = styled.Text<{disabled: boolean}>`
 `;
 const LocalLogin = () => {
   const dispatch = useDispatch();
+  const target = useRef<any>();
 
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -101,13 +102,24 @@ const LocalLogin = () => {
           placeholderTextColor={'#81878F'}
           value={id}
           onChangeText={(text: string) => setId(text)}
+          onSubmitEditing={() => {
+            Keyboard.dismiss();
+            if (target.current) {
+              target.current.focus();
+            }
+          }}
+          returnKeyType="next"
         />
         <Input
           placeholder="PW"
           placeholderTextColor={'#81878F'}
           secureTextEntry={true}
           value={password}
+          onSubmitEditing={() => {
+            onClick(id, password);
+          }}
           onChangeText={(text: string) => setPassword(text)}
+          ref={target}
         />
 
         <Button
