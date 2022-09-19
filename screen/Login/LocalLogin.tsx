@@ -1,17 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {ActivityIndicator, SafeAreaView} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {getMyInfo, localLogin} from '../../api/user';
 import {setCookie, setToken} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useDispatch} from 'react-redux';
 import {login, setAuth, setUserInfo} from '../../store/slice';
 
-const Container = styled.SafeAreaView`
+const ContainerWrapper = styled.SafeAreaView`
   flex: 1;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  padding: 0 20px;
+const Container = styled.View`
+  width: 88%;
 `;
 
 const Header = styled.Text`
@@ -74,59 +77,53 @@ const LocalLogin = () => {
         await setCookie('local login');
 
         const {data: myInfo} = await getMyInfo();
+        setLoading(false);
+
         dispatch(setAuth(true));
         dispatch(login(true));
         dispatch(setUserInfo(myInfo.payload));
-        console.log(data);
       } catch (e) {
-        console.log(e);
-      } finally {
         setLoading(false);
       }
     },
     [dispatch],
   );
-
   useEffect(() => {
     setDisabled(id.length === 0 || password.length === 0);
-    return setDisabled(id.length === 0 || password.length === 0);
   }, [id, password]);
 
   return (
-    <SafeAreaView>
-      <KeyboardAwareScrollView extraScrollHeight={30}>
-        <Container>
-          <Header>로그인</Header>
-          <Input
-            placeholder="ID"
-            placeholderTextColor={'#81878F'}
-            value={id}
-            onChangeText={(text: string) => setId(text)}
-          />
-          <Input
-            placeholder="PW"
-            placeholderTextColor={'#81878F'}
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text: string) => setPassword(text)}
-          />
+    <ContainerWrapper style={{flex: 1}}>
+      <Container>
+        <Header>LOGIN</Header>
+        <Input
+          placeholder="ID"
+          placeholderTextColor={'#81878F'}
+          value={id}
+          onChangeText={(text: string) => setId(text)}
+        />
+        <Input
+          placeholder="PW"
+          placeholderTextColor={'#81878F'}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text: string) => setPassword(text)}
+        />
 
-          <Button
-            dis={disabled}
-            disabled={disabled || loading}
-            onPress={() => {
-              console.log('what the hell ');
-              onClick(id, password);
-            }}>
-            {loading ? (
-              <ActivityIndicator color={'white'} size={30} />
-            ) : (
-              <ButtonText disabled={disabled}>ENTER</ButtonText>
-            )}
-          </Button>
-        </Container>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+        <Button
+          dis={disabled}
+          disabled={disabled || loading}
+          onPress={() => {
+            onClick(id, password);
+          }}>
+          {loading ? (
+            <ActivityIndicator color={'white'} size={30} />
+          ) : (
+            <ButtonText disabled={disabled}>ENTER</ButtonText>
+          )}
+        </Button>
+      </Container>
+    </ContainerWrapper>
   );
 };
 
