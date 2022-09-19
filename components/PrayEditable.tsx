@@ -4,7 +4,7 @@ import {User} from '../types/User';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import {PrayEditType} from '../types/PrayEdit';
-import {ActivityIndicator, Alert, Keyboard} from 'react-native';
+import {ActivityIndicator, Keyboard} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../navigation/Root';
 import {deletePray, postPray, updatePray} from '../api/pray';
@@ -92,13 +92,16 @@ const PrayEditable = memo(
     const target = useRef<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-      data.Prays?.map(e => {
-        setPrays(prev => [
-          ...prev,
-          {...e, edit: false, editLoading: false, deleteLoading: false},
-        ]);
-      });
+    useEffect((): (() => void) => {
+      const unSubscribe = () =>
+        data.Prays?.map(e => {
+          setPrays(prev => [
+            ...prev,
+            {...e, edit: false, editLoading: false, deleteLoading: false},
+          ]);
+        });
+      unSubscribe();
+      return () => unSubscribe;
     }, [data]);
 
     const [prays, setPrays] = useState<PrayEditType[]>([]);
@@ -136,7 +139,6 @@ const PrayEditable = memo(
           },
         ]);
       } catch (e) {
-        Alert.alert('에러입니다.');
       } finally {
         setLoading(false);
       }
@@ -149,7 +151,6 @@ const PrayEditable = memo(
         try {
           await updatePray(id, userId, prays[index].content);
         } catch (e) {
-          Alert.alert('에러입니다.');
         } finally {
           prays.splice(index, 1, {
             ...prays[index],

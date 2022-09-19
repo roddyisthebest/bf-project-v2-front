@@ -9,13 +9,6 @@ const Container = styled.View`
   padding: 0 30px;
 `;
 
-const TitleText = styled.Text`
-  color: black;
-  font-weight: 900;
-  font-size: 27px;
-  margin: 35px 0 50px 0;
-`;
-
 const LoginBtn = styled.TouchableOpacity`
   width: 100%;
   height: 70px;
@@ -26,9 +19,27 @@ const LoginBtn = styled.TouchableOpacity`
   align-items: center;
 `;
 
+const LocalLoginBtn = styled.TouchableOpacity`
+  width: 100%;
+  height: 70px;
+  border-radius: 100px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  margin: 10px 0;
+`;
+
+const LocalLoginText = styled.Text`
+  color: white;
+  font-weight: 700;
+  font-size: 25px;
+  margin-left: 15px;
+`;
+
 const LoginText = styled.Text`
   color: black;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 25px;
   margin-left: 15px;
 `;
@@ -41,9 +52,19 @@ const Login = () => {
   const navigation = useNavigation<NavigationProp<NotLoggedInParamList>>();
   return (
     <Container>
-      <TitleText>
-        큰숲 청년부에서 무슨 일이 {'\n'}일어나고 있는지 알아보세요.
-      </TitleText>
+      {/* <Input placeholder="아이디" placeholderTextColor="#000" />
+      <Input
+        placeholder="비밀번호"
+        secureTextEntry={true}
+        placeholderTextColor="#000"
+      /> */}
+      <LocalLoginBtn
+        onPress={() => {
+          navigation.navigate('LocalLogin', {});
+        }}>
+        <LocalLoginText>로그인</LocalLoginText>
+      </LocalLoginBtn>
+
       <LoginBtn
         onPress={() => {
           navigation.navigate('SnsLogin', {});

@@ -53,6 +53,15 @@ const getPraysByUserId = (
   lastId: number,
 ): Promise<AxiosResponse<response>> => api.get(`/user/${id}/prays/${lastId}`);
 
+const localLogin = (
+  userId: string,
+  password: string,
+): Promise<AxiosResponse<response>> =>
+  api.post('/user/localSignIn', {
+    userId,
+    password,
+  });
+
 export {
   getMyInfo,
   getInfoById,
@@ -65,4 +74,5 @@ export {
   getPenaltysByUserId,
   getTweetsByUserId,
   getPraysByUserId,
+  localLogin,
 };

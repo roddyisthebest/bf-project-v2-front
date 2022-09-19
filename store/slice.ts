@@ -52,10 +52,10 @@ const {actions, reducer} = createSlice({
           pray: false,
           tweet: false,
         },
-        refresh: false,
-        newFeed: 0,
-        isAuth: false,
       },
+      refresh: false,
+      newFeed: 0,
+      isAuth: false,
     }),
     setUserInfo: (state, {payload}: PayloadAction<User>) => ({
       ...state,

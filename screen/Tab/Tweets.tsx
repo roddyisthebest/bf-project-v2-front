@@ -162,6 +162,7 @@ const Tweets = () => {
       if (target.current) {
         target.current.scrollToOffset({animated: true, offset: 0});
       }
+      setDisabled(false);
       Alert.alert('성공적으로 업로드되었습니다🔥');
       dispatch(setRefresh(false));
     }

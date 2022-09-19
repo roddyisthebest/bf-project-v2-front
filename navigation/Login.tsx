@@ -3,6 +3,7 @@ import React from 'react';
 import {Image} from 'react-native';
 import Loginpage from '../screen/Login/Login';
 import SnsLogin from '../screen/Login/SnsLogin';
+import LocalLogin from '../screen/Login/LocalLogin';
 const NativeStack = createNativeStackNavigator();
 
 const Login = () => (
@@ -18,8 +19,9 @@ const Login = () => (
       contentStyle: {backgroundColor: 'white'},
       headerTitleAlign: 'center',
     }}>
-    <NativeStack.Screen name="localLogin" component={Loginpage} />
+    <NativeStack.Screen name="login" component={Loginpage} />
     <NativeStack.Screen name="SnsLogin" component={SnsLogin} />
+    <NativeStack.Screen name="LocalLogin" component={LocalLogin} />
   </NativeStack.Navigator>
 );
 

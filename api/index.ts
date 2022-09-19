@@ -12,5 +12,9 @@ export const api = axios.create({
 
 export const setToken = async () => {
   const accessToken = await EncryptedStorage.getItem('accessToken');
-  api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  api.defaults.headers.common.Authorization = accessToken as string;
+};
+
+export const setCookie = async (cookie: string) => {
+  api.defaults.headers.common.Cookie = cookie;
 };

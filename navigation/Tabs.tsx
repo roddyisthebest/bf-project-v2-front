@@ -11,6 +11,7 @@ import {initialStateProps, logout} from '../store/slice';
 import {useDispatch, useSelector} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {logoutNode} from '../api/user';
+import {setCookie} from '../api';
 const Btn = styled.TouchableOpacity`
   width: 80px;
   height: 80px;
@@ -195,8 +196,12 @@ const Tabs = ({
             <NavBtn
               onPress={async () => {
                 try {
+                  console.log(userInfo.oauth);
+                  if (userInfo.oauth === 'KAKAO') {
+                    await logoutNode();
+                  }
+                  await setCookie('');
                   dispatch(logout());
-                  await logoutNode();
                   await EncryptedStorage.clear();
                 } catch (e) {
                   console.log(e);

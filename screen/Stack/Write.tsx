@@ -10,7 +10,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, logout, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import useSocket from '../../hooks/useSocket';
@@ -173,13 +173,15 @@ const Write = () => {
         img && formData.append('img', val);
         text && formData.append('content', text);
         const accessToken = await EncryptedStorage.getItem('accessToken');
-
+        const source = await EncryptedStorage.getItem('tokenResource');
+        console.log(source);
         const data: any = await fetch(`${Config.API_URL}/tweet/`, {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: accessToken as string,
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',
+            cookie: source === 'kakao' ? '' : 'local login',
           },
           body: formData,
         });

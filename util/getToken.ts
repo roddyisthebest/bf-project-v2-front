@@ -1,12 +1,15 @@
 import {Alert} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import axios from 'axios';
-import {setToken} from '../api';
+import {setCookie, setToken} from '../api';
 import Config from 'react-native-config';
 
 const getTokenByRefresh = async () => {
   try {
+    console.log('리프레쉬!');
+
     const refreshToken = await EncryptedStorage.getItem('refreshToken');
+    const resource = await EncryptedStorage.getItem('tokenResource');
     if (!refreshToken) {
       return false;
     }
@@ -18,12 +21,21 @@ const getTokenByRefresh = async () => {
       data: {
         payload: {access_token: string};
       };
-    } = await axios.post(`${Config.API_URL}/token/refresh`, {
-      refreshToken,
-    });
-    console.log(access_token);
+    } = await axios.post(
+      `${Config.API_URL}/token/refresh`,
+      {
+        refreshToken,
+      },
+      {
+        headers: {
+          Cookie: resource === 'kakao' ? '' : 'local login',
+        },
+      },
+    );
     await EncryptedStorage.setItem('accessToken', access_token);
     await setToken();
+
+    await setCookie(resource === 'kakao' ? '' : 'local login');
 
     return true;
   } catch (e: any) {

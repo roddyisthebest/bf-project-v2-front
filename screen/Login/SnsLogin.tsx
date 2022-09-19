@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {WebView} from 'react-native-webview';
 import {useDispatch} from 'react-redux';
-import {setToken} from '../../api';
+import {setCookie, setToken} from '../../api';
 import {login, setAuth, setAuthLoading, setUserInfo} from '../../store/slice';
 import Config from 'react-native-config';
 import {getMyInfo} from '../../api/user';
@@ -40,6 +40,8 @@ const SnsLogin = () => {
   const setTokenInfo = async (access: string, refresh: string) => {
     await EncryptedStorage.setItem('refreshToken', refresh);
     await EncryptedStorage.setItem('accessToken', access);
+    await EncryptedStorage.setItem('tokenResource', 'kakao');
+    setCookie('');
     console.log('refresh', refresh);
     console.log('access', access);
 

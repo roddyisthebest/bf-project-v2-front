@@ -16,7 +16,7 @@ import Stack from './Stack';
 import getTokenByRefresh from '../util/getToken';
 import {getMyInfo} from '../api/user';
 import {User} from '../types/User';
-import {api} from '../api';
+import {api, setToken} from '../api';
 import useSocket from '../hooks/useSocket';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
@@ -43,6 +43,7 @@ export type LoggedInParamList = {
 export type NotLoggedInParamList = {
   SnsLogin: {};
   Login: {};
+  LocalLogin: {};
 };
 const LoadingContainer = styled.View`
   flex: 1;
@@ -78,6 +79,17 @@ const Root = () => {
         setLoading(false);
       }, 2000);
     }
+    async function setPhoneToken() {
+      try {
+        if (!messaging().isDeviceRegisteredForRemoteMessages) {
+          await messaging().registerDeviceForRemoteMessages();
+        }
+        const phoneToken = await messaging().getToken();
+        return api.post('/user/phonetoken', {phoneToken});
+      } catch (error) {
+        console.log('왓', error);
+      }
+    }
     async function getToken() {
       const data = await getTokenByRefresh();
       if (data) {
@@ -89,10 +101,12 @@ const Root = () => {
           dispatch(setAuth(true));
           dispatch(setUserInfo(payload));
           dispatch(login(true));
+          setPhoneToken();
         } catch (e) {
           console.log(e);
         }
       }
+      console.log(data);
     }
     getToken();
     firstLoading();
@@ -110,8 +124,6 @@ const Root = () => {
           config,
           response: {status},
         } = error;
-
-        console.log(status, 'one');
         if (status === 401) {
           const originalRequest = config;
           if (error.response.data.code === 'expired') {
@@ -119,6 +131,7 @@ const Root = () => {
               const refreshToken = await EncryptedStorage.getItem(
                 'refreshToken',
               );
+              const resource = await EncryptedStorage.getItem('tokenResource');
               if (refreshToken) {
                 const {
                   data: {
@@ -128,10 +141,21 @@ const Root = () => {
                   data: {
                     payload: {access_token: string};
                   };
-                } = await axios.post(`${Config.API_URL}/token/refresh`, {
-                  refreshToken,
-                });
-                originalRequest.headers.authorization = `Bearer ${access_token}`;
+                } = await axios.post(
+                  `${Config.API_URL}/token/refresh`,
+                  {
+                    refreshToken,
+                  },
+                  {
+                    headers: {
+                      cookie: resource === 'local' ? 'local login' : '',
+                    },
+                  },
+                );
+                originalRequest.headers.authorization = `${access_token}`;
+                await EncryptedStorage.setItem('accessToken', access_token);
+                setToken();
+                console.log('새로고');
                 return axios(originalRequest);
               } else {
                 return dispatch(logout());
@@ -145,12 +169,12 @@ const Root = () => {
                 Alert.alert('오류입니다. 다시 로그인 해주세요.');
               }
               await EncryptedStorage.clear();
-              dispatch(logout());
+              return dispatch(logout());
             }
           } else if (error.response.data.code === 'wrong information') {
           } else {
             dispatch(logout());
-            Alert.alert('권한이 없습니다.');
+            return Alert.alert('권한이 없습니다.');
           }
         } else if (status === 500) {
           dispatch(logout());
@@ -190,21 +214,6 @@ const Root = () => {
       }
     };
   }, [isLoggedIn, disconnect, socket, userInfo.id, dispatch]);
-
-  useEffect(() => {
-    async function getToken() {
-      try {
-        if (!messaging().isDeviceRegisteredForRemoteMessages) {
-          await messaging().registerDeviceForRemoteMessages();
-        }
-        const phoneToken = await messaging().getToken();
-        return api.post('/user/phonetoken', {phoneToken});
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getToken();
-  }, [dispatch]);
 
   return loading ? (
     <LoadingContainer>
