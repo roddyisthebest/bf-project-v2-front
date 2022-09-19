@@ -55,7 +55,6 @@ const SnsLogin = () => {
       dispatch(setAuth(true));
       dispatch(setUserInfo(payload));
     } catch (e) {
-      console.log(e);
     } finally {
       dispatch(setAuthLoading(false));
     }

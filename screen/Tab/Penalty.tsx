@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   SafeAreaView,
   Text,
@@ -34,7 +33,6 @@ const Penalty = () => {
         setLastId(-1);
       }
     } catch (e) {
-      Alert.alert('오류입니다.');
     } finally {
       setRefreshing(false);
     }
@@ -56,7 +54,6 @@ const Penalty = () => {
         setData(prev => [...prev, ...payload]);
       }
     } catch (e) {
-      Alert.alert('오류입니다.');
     } finally {
       if (loading) {
         setLoading(false);

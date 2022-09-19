@@ -154,6 +154,11 @@ const Tweets = () => {
     if (!disabled) {
       getData(lastId);
     }
+    return () => {
+      if (!disabled) {
+        getData(lastId);
+      }
+    };
   }, [getData, lastId, disabled]);
 
   useEffect(() => {
@@ -166,6 +171,19 @@ const Tweets = () => {
       Alert.alert('성공적으로 업로드되었습니다🔥');
       dispatch(setRefresh(false));
     }
+
+    return () => {
+      if (refresh) {
+        handleRefresh();
+        if (target.current) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          target.current.scrollToOffset({animated: true, offset: 0});
+        }
+        setDisabled(false);
+        Alert.alert('성공적으로 업로드되었습니다🔥');
+        dispatch(setRefresh(false));
+      }
+    };
   }, [refresh, handleRefresh, dispatch]);
 
   return (
