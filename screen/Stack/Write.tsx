@@ -261,7 +261,7 @@ const Write = () => {
             onPress={() => {
               uploadTweet(image, content);
             }}
-            disabled={disabled && !loading}>
+            disabled={disabled || loading}>
             {loading ? (
               <ActivityIndicator color="white" size={18} />
             ) : (
