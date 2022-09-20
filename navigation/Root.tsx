@@ -73,7 +73,7 @@ const Root = () => {
   const {isAuth} = useSelector((state: initialStateProps) => ({
     isAuth: state.isAuth,
   }));
-  useEffect(() => {
+  useEffect((): (() => void) => {
     function firstLoading() {
       return setTimeout(async () => {
         setLoading(false);
@@ -86,9 +86,7 @@ const Root = () => {
         }
         const phoneToken = await messaging().getToken();
         return api.post('/user/phonetoken', {phoneToken});
-      } catch (error) {
-        console.log('왓', error);
-      }
+      } catch (error: any) {}
     }
     async function getToken() {
       const data = await getTokenByRefresh();
@@ -102,16 +100,14 @@ const Root = () => {
           dispatch(setUserInfo(payload));
           dispatch(login(true));
           setPhoneToken();
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (error: any) {}
       }
       console.log(data);
     }
     getToken();
     firstLoading();
 
-    // return ()=>firstLoading();
+    return () => clearTimeout(firstLoading());
   }, [dispatch]);
 
   useEffect(() => {
@@ -124,6 +120,7 @@ const Root = () => {
           config,
           response: {status},
         } = error;
+        console.log(error);
         if (status === 401) {
           const originalRequest = config;
           if (error.response.data.code === 'expired') {
@@ -187,13 +184,12 @@ const Root = () => {
           Alert.alert(error.response.data.msg);
           dispatch(setAuth(false));
           dispatch(login(true));
-        } else {
-          Alert.alert(error.response.data.msg);
         }
+        Alert.alert(error.response.data.msg);
         return Promise.reject(error);
       },
     );
-  }, [dispatch, isAuth, isLoggedIn]);
+  }, [dispatch]);
 
   useEffect(() => {
     const callback = (data: number) => {

@@ -75,12 +75,14 @@ const Tweets = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
   const handleRefresh = useCallback(async () => {
     try {
+      setDisabled(false);
       setRefreshing(true);
       if (lastId === -1) {
         const {
           data: {payload},
         }: {data: {payload: TweetType[]}} = await getTweets(lastId);
         setData(payload);
+        setRefreshing(false);
       } else {
         setLastId(-1);
       }
@@ -156,16 +158,20 @@ const Tweets = () => {
     }
   }, [getData, lastId, disabled]);
 
-  useEffect(() => {
-    if (refresh) {
-      handleRefresh();
-      if (target.current) {
-        target.current.scrollToOffset({animated: true, offset: 0});
+  useEffect((): (() => void) => {
+    const unsubscribe = () => {
+      if (refresh) {
+        handleRefresh();
+        if (target.current) {
+          target.current.scrollToOffset({animated: true, offset: 0});
+        }
+        setDisabled(false);
+        Alert.alert('성공적으로 업로드되었습니다🔥');
+        dispatch(setRefresh(false));
       }
-      setDisabled(false);
-      Alert.alert('성공적으로 업로드되었습니다🔥');
-      dispatch(setRefresh(false));
-    }
+    };
+    unsubscribe();
+    return () => unsubscribe;
   }, [refresh, handleRefresh, dispatch]);
 
   return (
@@ -200,7 +206,7 @@ const Tweets = () => {
             keyExtractor={(item, index) => index.toString()}
             onEndReached={() => {
               setLastId(data[data.length - 1].id);
-              console.log('밑에 닿았어!');
+              console.log(data[data.length - 1].id);
             }}
             refreshing={refreshing}
             onRefresh={handleRefresh}
