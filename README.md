@@ -108,7 +108,7 @@
 
 ## 🛠 기술 스택 및 인프라
 
-![stacks](https://user-images.githubusercontent.com/68287181/191228026-f93feaed-22dc-4044-97a8-fd0de52a2d38.png)
+![stacks](https://user-images.githubusercontent.com/68287181/191230147-9a71319d-8f8d-419f-9ece-9c1f81ac8bff.png)
 
 설계 (스택,DB 구조)
 <br/>
