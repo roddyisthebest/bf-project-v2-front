@@ -116,7 +116,9 @@ const LocalLogin = () => {
           secureTextEntry={true}
           value={password}
           onSubmitEditing={() => {
-            onClick(id, password);
+            if (!disabled) {
+              onClick(id, password);
+            }
           }}
           onChangeText={(text: string) => setPassword(text)}
           ref={target}

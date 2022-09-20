@@ -75,12 +75,14 @@ const Tweets = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
   const handleRefresh = useCallback(async () => {
     try {
+      setDisabled(false);
       setRefreshing(true);
       if (lastId === -1) {
         const {
           data: {payload},
         }: {data: {payload: TweetType[]}} = await getTweets(lastId);
         setData(payload);
+        setRefreshing(false);
       } else {
         setLastId(-1);
       }
@@ -154,11 +156,6 @@ const Tweets = () => {
     if (!disabled) {
       getData(lastId);
     }
-    return () => {
-      if (!disabled) {
-        getData(lastId);
-      }
-    };
   }, [getData, lastId, disabled]);
 
   useEffect((): (() => void) => {
@@ -209,7 +206,7 @@ const Tweets = () => {
             keyExtractor={(item, index) => index.toString()}
             onEndReached={() => {
               setLastId(data[data.length - 1].id);
-              console.log('밑에 닿았어!');
+              console.log(data[data.length - 1].id);
             }}
             refreshing={refreshing}
             onRefresh={handleRefresh}
