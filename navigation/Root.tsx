@@ -175,13 +175,11 @@ const Root = () => {
           }
         } else if (status === 500) {
           dispatch(logout());
-          Alert.alert('서버 에러입니다. 관리자에게 문의주세요. 01051529445');
         } else if (
           status === 403 &&
           error.response.data.msg ===
             '자격증명이 미이행 상태입니다. 자격증명을 해주세요.'
         ) {
-          Alert.alert(error.response.data.msg);
           dispatch(setAuth(false));
           dispatch(login(true));
         }
