@@ -10,7 +10,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {initialStateProps, logout, setRefresh} from '../../store/slice';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {launchCamera} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ImageType} from '../../types/Image';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import useSocket from '../../hooks/useSocket';
@@ -18,6 +18,7 @@ import Config from 'react-native-config';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../../navigation/Root';
 import getTokenByRefresh from '../../util/getToken';
+import moment from 'moment';
 const Container = styled.View`
   flex-direction: row;
   padding: 35px 25px 0 25px;
@@ -83,6 +84,12 @@ const BtnColumn = styled.View`
   margin: 12.5px 0;
 `;
 
+const BtnsWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const UploadBtn = styled.TouchableOpacity<{bkgColor: string}>`
   width: 70px;
   height: 32.5px;
@@ -113,41 +120,27 @@ const Write = () => {
   const [loading, setLoading] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [socket, disconnect] = useSocket();
-  const upload = useCallback(async () => {
+  const uploadUsingCamera = useCallback(async () => {
     try {
-      // if (Platform.OS === 'ios') {
-      //   const data: any = await launchImageLibrary({
-      //     quality: 1,
-      //     mediaType: 'photo',
-      //   });
-      //   console.log(data);
-      //   setImage(data.assets[0] as ImageType);
-      // } else {
-      //   const data: any = await launchCamera({
-      //     quality: 0.2,
-      //     mediaType: 'photo',
-      //   });
-      //   setImage(data.assets[0] as ImageType);
-      //   console.log(data);
-      // }
-
       const data: any = await launchCamera({
         quality: 0.2,
         mediaType: 'photo',
       });
       setImage(data.assets[0] as ImageType);
       console.log(data);
-      // if (data?.type === 'image/heic') {
-      //   const editedData = await RHHeicConverter.convert({
-      //     path: data.assets[0].uri,
-      //   });
-      //   console.log(editedData);
-      // }
-      // const editedData = await RHHeicConverter.convert({
-      //   path: data.assets[0].uri,
-      // });
-      // console.log(editedData);
-      // setImage(data.assets[0] as ImageType);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const uploadUsingAlbum = useCallback(async () => {
+    try {
+      const data: any = await launchImageLibrary({
+        quality: 0.2,
+        mediaType: 'photo',
+      });
+      console.log(data);
+      setImage(data.assets[0] as ImageType);
     } catch (e) {
       console.log(e);
     }
@@ -167,6 +160,9 @@ const Write = () => {
     async (img: ImageType | undefined, text: string) => {
       try {
         setLoading(true);
+        if (moment().day() === 0) {
+          return Alert.alert('오늘은 일요일입니다.');
+        }
         const formData = new FormData();
         const val = {name: img?.fileName, type: 'image/jpg', uri: img?.uri};
 
@@ -253,9 +249,17 @@ const Write = () => {
           testID="input"
         />
         <BtnColumn>
-          <TouchableOpacity onPress={upload}>
-            <Icon name="image" size={33} color="#10DDC2" />
-          </TouchableOpacity>
+          <BtnsWrapper>
+            <TouchableOpacity onPress={uploadUsingAlbum}>
+              <Icon name="image" size={30} color="#10DDC2" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={uploadUsingCamera}
+              style={{marginLeft: 5}}>
+              <Icon name="camera" size={33} color="#10DDC2" />
+            </TouchableOpacity>
+          </BtnsWrapper>
+
           <UploadBtn
             bkgColor={disabled ? '#E0E0E0' : '#10DDC2'}
             onPress={() => {
